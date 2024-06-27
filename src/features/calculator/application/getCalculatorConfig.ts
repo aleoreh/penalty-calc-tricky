@@ -4,8 +4,10 @@ import { theStateConfigStaticRepo as theStateConfigRepo } from "../infrastructur
 
 export { type CalculatorConfig } from "../domain/types"
 
-export async function getCalculatorConfig(): Promise<CalculatorConfig> {
+export async function getCalculatorConfig(
+    date: Date
+): Promise<CalculatorConfig> {
     const theStateConfig = await theStateConfigRepo.getTheStateConfig()
 
-    return calculatorConfigShed.fromTheStateConfig(theStateConfig)
+    return calculatorConfigShed.fromTheStateConfig(date, theStateConfig)
 }

@@ -1,6 +1,16 @@
 import Opaque from "ts-opaque"
-import { BillingPeriod } from "../../lib/billing-period"
-import { Kopek } from "../../lib/kopek"
+import { BillingPeriod } from "../../../lib/billing-period"
+import { Kopek } from "../../../lib/kopek"
+
+export type KeyRate = number
+
+export type TheStateConfig = {
+    daysToPay: number
+    deferredDaysCount: number
+    fractionChangeDay: number
+    keyRates: [DateString, KeyRate][]
+    moratoriums: [DateString, DateString][]
+}
 
 export type Moratorium = [Date, Date]
 

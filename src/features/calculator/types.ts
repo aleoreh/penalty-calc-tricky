@@ -4,17 +4,11 @@ import { Kopek } from "../../lib/kopek"
 
 export type Moratorium = [Date, Date]
 
-export type PayoffId = Opaque<number, Payoff>
-
-export type PayoffBody = {
+export type Payoff = {
     paymentId: PaymentId
     paymentDate: Date
     repaymentAmount: Kopek
 }
-
-export type Payoff = {
-    id: PayoffId
-} & PayoffBody
 
 export type Debt = {
     period: BillingPeriod
@@ -49,3 +43,4 @@ export type Calculator = {
     debts: Debt[]
     payments: Payment[]
 }
+

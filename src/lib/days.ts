@@ -66,7 +66,7 @@ export function daysDiff(date1: Date, date2: Date): number {
     return (date2.valueOf() - date1.valueOf()) / 1000 / 3600 / 24
 }
 
-export const days = {
+export const daysShed = {
     add: addDay,
     beginOfPeriod,
     endOfPeriod,
@@ -75,5 +75,5 @@ export const days = {
     diff: daysDiff
 }
 
-export default days
+export default daysShed
 

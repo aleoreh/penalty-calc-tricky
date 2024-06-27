@@ -30,7 +30,7 @@ export function multiplyKopekByScalar(scalar: number) {
     return (x: Kopek): Kopek => (scalar * x) as Kopek
 }
 
-export const kopeks = {
+export const kopekShed = {
     asKopek: numberAsKopek,
     fromRuble: kopekFromRuble,
     toRuble: kopekToRuble,
@@ -40,5 +40,5 @@ export const kopeks = {
     multiplyByScalar: multiplyKopekByScalar,
 }
 
-export default kopeks
+export default kopekShed
 

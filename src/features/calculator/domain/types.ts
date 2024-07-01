@@ -39,21 +39,3 @@ export type Payment = {
     id: PaymentId
 } & PaymentBody
 
-export type CalculatorConfig = {
-    daysToPay: number
-    deferredDaysCount: number
-    moratoriums: Moratorium[]
-    keyRate: number
-    fractionChangeDay: number
-}
-
-export type DistributionMethod = "fifo" | "byPaymentPeriod"
-
-export type Calculator = {
-    calculationDate: Date
-    config: CalculatorConfig
-    debts: Debt[]
-    payments: Payment[]
-    distributionMethod: DistributionMethod
-}
-

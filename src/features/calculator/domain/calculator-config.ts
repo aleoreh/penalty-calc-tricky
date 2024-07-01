@@ -1,5 +1,6 @@
 import { compareDays } from "../../../lib/days"
-import { CalculatorConfig, Moratorium, TheStateConfig } from "./types"
+import { Moratorium, TheStateConfig } from "./types"
+import { CalculatorConfig } from "./calculator"
 
 function getKeyRate(keyRatesData: [string, number][], date: Date): number {
     return keyRatesData.filter(([startDate]) => {

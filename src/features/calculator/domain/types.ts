@@ -47,10 +47,13 @@ export type CalculatorConfig = {
     fractionChangeDay: number
 }
 
+export type DistributionMethod = "fifo" | "byPaymentPeriod"
+
 export type Calculator = {
     calculationDate: Date
     config: CalculatorConfig
     debts: Debt[]
     payments: Payment[]
+    distributionMethod: DistributionMethod
 }
 

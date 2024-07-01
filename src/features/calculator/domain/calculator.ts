@@ -10,3 +10,16 @@ export type Calculator = {
     payments: Payment[]
     distributionMethod: DistributionMethod
 }
+function setCalculatorConfig(config: CalculatorConfig) {
+    return (calculator: Calculator): Calculator =>
+        distributePayments({
+            ...calculator,
+            config,
+        })
+}
+
+export const calculatorShed = {
+    setConfig: setCalculatorConfig,
+}
+
+export default calculatorShed

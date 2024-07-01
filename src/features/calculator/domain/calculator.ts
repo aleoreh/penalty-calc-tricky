@@ -10,6 +10,12 @@ export type Calculator = {
     payments: Payment[]
     distributionMethod: DistributionMethod
 }
+
+function distributePayments(calculator: Calculator): Calculator {
+    calculator
+    throw new Error("not implemented")
+}
+
 function setCalculatorConfig(config: CalculatorConfig) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
@@ -18,8 +24,17 @@ function setCalculatorConfig(config: CalculatorConfig) {
         })
 }
 
+function setCalculationDate(date: Date) {
+    return (calculator: Calculator): Calculator =>
+        distributePayments({
+            ...calculator,
+            calculationDate: date,
+        })
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
+    setCalculationDate,
 }
 
 export default calculatorShed

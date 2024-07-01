@@ -32,9 +32,18 @@ function setCalculationDate(date: Date) {
         })
 }
 
+function setDistributionMethod(distributionMethod: DistributionMethod) {
+    return (calculator: Calculator): Calculator =>
+        distributePayments({
+            ...calculator,
+            distributionMethod: distributionMethod,
+        })
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
+    setDistributionMethod
 }
 
 export default calculatorShed

@@ -1,12 +1,5 @@
-import { Debt, Moratorium, Payment } from "./types"
-
-type CalculatorConfig = {
-    daysToPay: number
-    deferredDaysCount: number
-    moratoriums: Moratorium[]
-    keyRate: number
-    fractionChangeDay: number
-}
+import { CalculatorConfig } from "./calculator-config"
+import { Debt, Payment } from "./types"
 
 type DistributionMethod = "fifo" | "byPaymentPeriod"
 

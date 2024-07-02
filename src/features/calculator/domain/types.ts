@@ -1,7 +1,3 @@
-import Opaque from "ts-opaque"
-import { BillingPeriod } from "../../../lib/billing-period"
-import { Kopek } from "../../../lib/kopek"
-
 export type KeyRate = number
 
 export type TheStateConfig = {
@@ -13,16 +9,4 @@ export type TheStateConfig = {
 }
 
 export type Moratorium = [Date, Date]
-
-export type PaymentId = Opaque<string, Payment>
-
-export type PaymentBody = {
-    date: Date
-    amount: Kopek
-    period?: BillingPeriod
-}
-
-export type Payment = {
-    id: PaymentId
-} & PaymentBody
 

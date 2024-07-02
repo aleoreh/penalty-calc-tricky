@@ -3,7 +3,7 @@ import daysShed from "../../../lib/days"
 import kopekShed, { Kopek } from "../../../lib/kopek"
 import { CalculatorConfig } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
-import { Payment } from "./types"
+import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 
 type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -15,6 +15,12 @@ export type Calculator = {
     distributionMethod: DistributionMethod
     /** Нераспределённый остаток платежей */
     undistributedRemainder: Kopek
+}
+
+function generateNextId(calculator: Calculator): PaymentId {
+    return [...calculator.payments].sort(
+        (x, y) => paymentShed.idToNumber(y.id) - paymentShed.idToNumber(x.id)
+    )[0].id
 }
 
 function distributePayment(
@@ -157,6 +163,22 @@ function setCalculatorDebts(debts: Debt[]) {
     }
 }
 
+export function addCalculatorPayments(payments: PaymentBody[]) {
+    return (calculator: Calculator): Calculator => {
+        const newPayments = payments.reduce((acc, paymentBody) => {
+            const newPayment: Payment = {
+                ...paymentBody,
+                id: generateNextId(calculator),
+            }
+            return [...acc, newPayment]
+        }, calculator.payments)
+        return distributePayments({
+            ...calculator,
+            ...newPayments,
+        })
+    }
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
@@ -164,6 +186,7 @@ export const calculatorShed = {
     addDebts: addCalculatorDebts,
     clearDebts: clearCalculatorDebts,
     setDebts: setCalculatorDebts,
+    addPayments: addCalculatorPayments,
 }
 
 export default calculatorShed

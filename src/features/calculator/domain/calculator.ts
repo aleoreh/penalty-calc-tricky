@@ -114,7 +114,7 @@ function distributePayments(calculator: Calculator): Calculator {
     }
 }
 
-function setCalculatorConfig(config: CalculatorConfig) {
+export function setCalculatorConfig(config: CalculatorConfig) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
             ...calculator,
@@ -122,7 +122,7 @@ function setCalculatorConfig(config: CalculatorConfig) {
         })
 }
 
-function setCalculationDate(date: Date) {
+export function setCalculationDate(date: Date) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
             ...calculator,
@@ -130,7 +130,7 @@ function setCalculationDate(date: Date) {
         })
 }
 
-function setDistributionMethod(distributionMethod: DistributionMethod) {
+export function setDistributionMethod(distributionMethod: DistributionMethod) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
             ...calculator,
@@ -138,7 +138,7 @@ function setDistributionMethod(distributionMethod: DistributionMethod) {
         })
 }
 
-function addCalculatorDebts(debts: Debt[]) {
+export function addCalculatorDebts(debts: Debt[]) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
             ...calculator,
@@ -147,14 +147,14 @@ function addCalculatorDebts(debts: Debt[]) {
     }
 }
 
-function clearCalculatorDebts(calculator: Calculator): Calculator {
+export function clearCalculatorDebts(calculator: Calculator): Calculator {
     return distributePayments({
         ...calculator,
         debts: [],
     })
 }
 
-function setCalculatorDebts(debts: Debt[]) {
+export function setCalculatorDebts(debts: Debt[]) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
             ...calculator,

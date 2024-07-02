@@ -1,9 +1,22 @@
 import billingPeriodShed from "../../../lib/billing-period"
 import daysShed from "../../../lib/days"
 import kopekShed, { Kopek } from "../../../lib/kopek"
-import { CalculatorConfig } from "./calculator-config"
+import {
+    CalculatorConfig,
+    doesMoratoriumActs,
+    getKeyRatePart,
+} from "./calculator-config"
 import debtShed, { Debt } from "./debt"
+import formulaShed from "./formula"
+import keyRatePartShed from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
+import {
+    CalculationResult,
+    CalculationResultItem,
+    KeyRatePart,
+    Penalty,
+    PenaltyItem,
+} from "./types"
 
 type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -38,10 +51,10 @@ function distributePayment(
 
     /**
      * fifo - сортируем по возрастанию периода долга
-     * lastIsFirst - сначала целевой период (payment.period), затем - fifo
+     * byPaymentPeriod - сначала целевой период (payment.period), затем - fifo
      */
     const sorter = (d1: Debt, d2: Debt) => {
-        // для метода lastIsFirst:
+        // для метода byPaymentPeriod:
         // payment.period всегда меньше остальных,
         // любой другой всегда больше payment.period
         return method === "fifo" || !payment.period
@@ -111,6 +124,174 @@ function distributePayments(calculator: Calculator): Calculator {
         ...calculator,
         debts,
         undistributedRemainder: remainder,
+    }
+}
+
+function doesDefermentActs(
+    dueDate: Date,
+    deferredDaysCount: number,
+    date: Date
+): boolean {
+    return (
+        daysShed.compare(date, daysShed.add(dueDate, deferredDaysCount)) ===
+        "LT"
+    )
+}
+
+function daysOverdue(dueDate: Date, date: Date): number {
+    return daysShed.diff(date, dueDate)
+}
+
+function calculateDailyAmount(
+    params: {
+        dueDate: Date
+        deferredDaysCount: number
+        keyRatePart: KeyRatePart
+        keyRate: number
+        doesMoratoriumActs: boolean
+    },
+    debtAmount: Kopek,
+    date: Date
+): Kopek {
+    const k = keyRatePartShed.getNumericValue(params.keyRatePart)
+    const r = params.keyRate
+    const s = debtAmount
+
+    return (
+        doesDefermentActs(params.dueDate, params.deferredDaysCount, date) ||
+        params.doesMoratoriumActs
+            ? 0
+            : k * r * s
+    ) as Kopek
+}
+
+function calculatePenalty(debt: Debt, calculator: Calculator): Penalty {
+    // -------- helpers ------- //
+
+    const makeRow = (debtAmount: Kopek, date: Date): PenaltyItem => ({
+        id: date.valueOf(),
+        date: date,
+        debtAmount: debtAmount,
+        doesDefermentActs: doesDefermentActs(
+            debt.dueDate,
+            calculator.config.deferredDaysCount,
+            date
+        ),
+        doesMoratoriumActs: doesMoratoriumActs(calculator.config, date),
+        penaltyAmount: calculateDailyAmount(
+            {
+                deferredDaysCount: calculator.config.deferredDaysCount,
+                doesMoratoriumActs: doesMoratoriumActs(calculator.config, date),
+                dueDate: debt.dueDate,
+                keyRate: calculator.config.keyRate,
+                keyRatePart: getKeyRatePart(
+                    calculator.config,
+                    daysOverdue(debt.dueDate, date)
+                ),
+            },
+            debtAmount,
+            date
+        ),
+        rate: calculator.config.keyRate,
+        ratePart: getKeyRatePart(
+            calculator.config,
+            daysOverdue(debt.dueDate, date)
+        ),
+    })
+    const nextRow = (row: PenaltyItem): PenaltyItem => {
+        const dayPayment = debt.payoffs
+            .filter((payoff) => daysShed.equals(payoff.paymentDate, row.date))
+            .reduce((acc, value) => acc + value.repaymentAmount, 0)
+
+        const newDebtAmount = row.debtAmount - dayPayment
+        const newDay = daysShed.add(row.date, 1)
+
+        return makeRow(kopekShed.asKopek(newDebtAmount), newDay)
+    }
+
+    // --------- main --------- //
+
+    const rows: PenaltyItem[] = []
+
+    let curRow: PenaltyItem = makeRow(debt.amount, debt.dueDate)
+
+    while (daysShed.compare(curRow.date, calculator.calculationDate) === "LT") {
+        rows.push(curRow)
+        curRow = nextRow(curRow)
+    }
+
+    return {
+        period: debt.period,
+        rows,
+    }
+}
+
+function penaltyToResult(penalty: Penalty): CalculationResult {
+    const addResultRow = (row: PenaltyItem): CalculationResultItem => {
+        return {
+            ...row,
+            dateFrom: row.date,
+            dateTo: row.date,
+            totalDays: 1,
+            ratePart: row.ratePart,
+            formula: formulaShed.empty,
+        }
+    }
+
+    const joinResultRow = (
+        resultRow: CalculationResultItem,
+        row: PenaltyItem
+    ): CalculationResultItem => {
+        const res = {
+            ...resultRow,
+            dateTo: row.date,
+            totalDays: resultRow.totalDays + 1,
+            penaltyAmount: (resultRow.penaltyAmount +
+                row.penaltyAmount) as Kopek,
+            formula: "",
+        }
+        return { ...res, formula: formulaShed.create(res) }
+    }
+
+    const equals = (
+        resultRow: Pick<
+            CalculationResultItem,
+            | "debtAmount"
+            | "rate"
+            | "ratePart"
+            | "doesMoratoriumActs"
+            | "doesDefermentActs"
+        >,
+        penaltyRow: Pick<
+            PenaltyItem,
+            | "debtAmount"
+            | "rate"
+            | "ratePart"
+            | "doesDefermentActs"
+            | "doesMoratoriumActs"
+        >
+    ) => {
+        return (
+            resultRow.debtAmount === penaltyRow.debtAmount &&
+            resultRow.rate === penaltyRow.rate &&
+            keyRatePartShed.equals(resultRow.ratePart, penaltyRow.ratePart) &&
+            resultRow.doesMoratoriumActs === penaltyRow.doesMoratoriumActs &&
+            resultRow.doesDefermentActs === penaltyRow.doesDefermentActs
+        )
+    }
+
+    return {
+        period: penalty.period,
+        rows: penalty.rows.reduce(
+            (acc, row) =>
+                acc.length === 0 || !equals(acc[acc.length - 1], row)
+                    ? [...acc, addResultRow(row)]
+                    : [
+                          ...acc.slice(0, -1),
+                          joinResultRow(acc[acc.length - 1], row),
+                      ],
+            [] as CalculationResult["rows"]
+        ),
     }
 }
 
@@ -189,6 +370,13 @@ export function setCalculatorPayments(payments: Payment[]) {
     }
 }
 
+export function calculate(
+    calculator: Calculator,
+    debt: Debt
+): CalculationResult {
+    return penaltyToResult(calculatePenalty(debt, calculator))
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
@@ -199,6 +387,7 @@ export const calculatorShed = {
     addPayments: addCalculatorPayments,
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,
+    calculate,
 }
 
 export default calculatorShed

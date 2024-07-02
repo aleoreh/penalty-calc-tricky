@@ -141,11 +141,19 @@ function addCalculatorDebts(debts: Debt[]) {
     }
 }
 
+function clearCalculatorDebts(calculator: Calculator): Calculator {
+    return distributePayments({
+        ...calculator,
+        debts: [],
+    })
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
     setDistributionMethod,
     addDebts: addCalculatorDebts,
+    clearDebts: clearCalculatorDebts,
 }
 
 export default calculatorShed

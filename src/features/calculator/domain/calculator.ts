@@ -148,12 +148,21 @@ function clearCalculatorDebts(calculator: Calculator): Calculator {
     })
 }
 
+function setCalculatorDebts(debts: Debt[]) {
+    return (calculator: Calculator): Calculator => {
+        debts
+        calculator
+        throw new Error("not implemented")
+    }
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
     setDistributionMethod,
     addDebts: addCalculatorDebts,
     clearDebts: clearCalculatorDebts,
+    setDebts: setCalculatorDebts,
 }
 
 export default calculatorShed

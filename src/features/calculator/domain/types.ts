@@ -14,25 +14,12 @@ export type TheStateConfig = {
 
 export type Moratorium = [Date, Date]
 
-export type Payoff = {
-    paymentId: PaymentId
-    paymentDate: Date
-    repaymentAmount: Kopek
-}
-
-export type Debt = {
-    period: BillingPeriod
-    amount: Kopek
-    dueDate: Date
-    payoffs: Payoff[]
-}
-
 export type PaymentId = Opaque<string, Payment>
 
 export type PaymentBody = {
     date: Date
     amount: Kopek
-    period?: Date
+    period?: BillingPeriod
 }
 
 export type Payment = {

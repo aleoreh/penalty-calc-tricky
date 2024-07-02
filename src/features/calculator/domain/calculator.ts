@@ -183,6 +183,12 @@ export function clearCalculatorPayments(calculator: Calculator): Calculator {
     return distributePayments({ ...calculator, payments: [] })
 }
 
+export function setCalculatorPayments(payments: Payment[]) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({ ...calculator, payments })
+    }
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
@@ -192,6 +198,7 @@ export const calculatorShed = {
     setDebts: setCalculatorDebts,
     addPayments: addCalculatorPayments,
     clearPayments: clearCalculatorPayments,
+    setPayments: setCalculatorPayments,
 }
 
 export default calculatorShed

@@ -132,10 +132,20 @@ function setDistributionMethod(distributionMethod: DistributionMethod) {
         })
 }
 
+function addCalculatorDebts(debts: Debt[]) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({
+            ...calculator,
+            debts: [...calculator.debts, ...debts],
+        })
+    }
+}
+
 export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
     setDistributionMethod,
+    addDebts: addCalculatorDebts,
 }
 
 export default calculatorShed

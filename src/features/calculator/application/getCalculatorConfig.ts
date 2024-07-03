@@ -1,18 +1,18 @@
-import { TheStateConfigRepo } from "../domain"
+import { TheStateConstantsRepo } from "../domain"
 import calculatorConfigShed, { LegalEntity } from "../domain/calculator-config"
 
 export { type CalculatorConfig } from "../domain/calculator-config"
 
 export function createGetCalculatorConfigUseCase(
-    theStateConfigRepo: TheStateConfigRepo
+    theStateConstantsRepo: TheStateConstantsRepo
 ) {
     return async (date: Date, legalEntity: LegalEntity) => {
-        const theStateConfig = await theStateConfigRepo.getTheStateConfig()
+        const theStateConstants = await theStateConstantsRepo.getTheStateConstants()
 
-        return calculatorConfigShed.fromTheStateConfig(
+        return calculatorConfigShed.fromTheStateConstants(
             date,
             legalEntity,
-            theStateConfig
+            theStateConstants
         )
     }
 }

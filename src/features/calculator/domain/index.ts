@@ -1,5 +1,5 @@
-import { TheStateConfig } from "./types"
+import { TheStateConstants } from "./types"
 
-export type TheStateConfigRepo = {
-    getTheStateConfig: () => Promise<TheStateConfig>
+export type TheStateConstantsRepo = {
+    getTheStateConstants: () => Promise<TheStateConstants>
 }

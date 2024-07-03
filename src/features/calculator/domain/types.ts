@@ -1,6 +1,6 @@
 export type KeyRate = number
 
-export type TheStateConfig = {
+export type TheStateConstants = {
     daysToPay: number
     deferredDaysCount: number
     fractionChangeDay: number

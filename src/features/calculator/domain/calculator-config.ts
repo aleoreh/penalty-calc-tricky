@@ -2,7 +2,7 @@ import daysShed, { compareDays } from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
 import { TheStateConfig } from "./types"
 
-type Moratorium = [Date, Date]
+export type Moratorium = [Date, Date]
 
 function getKeyRate(keyRatesData: [string, number][], date: Date): number {
     return keyRatesData.filter(([startDate]) => {
@@ -10,7 +10,16 @@ function getKeyRate(keyRatesData: [string, number][], date: Date): number {
     })[keyRatesData.length - 1][1]
 }
 
+export type LegalEntity = "natural" | "artificial"
+
+export type CalculatorConfigTemplate = {
+    theStateConstants: TheStateConfig
+    keyRate: number
+}
+
 export type CalculatorConfig = {
+    legalEntity: LegalEntity
+    theStateConstants: TheStateConfig
     daysToPay: number
     deferredDaysCount: number
     moratoriums: Moratorium[]
@@ -50,20 +59,26 @@ function getMoratoriums(moratoriumsData: [string, string][]): Moratorium[] {
 
 function fromTheStateConfig(
     date: Date,
-    {
-        daysToPay,
-        deferredDaysCount,
-        fractionChangeDay,
-        keyRates,
-        moratoriums,
-    }: TheStateConfig
+    legalEntity: LegalEntity,
+    theStateConstants: TheStateConfig
 ): CalculatorConfig {
-    return {
-        daysToPay,
-        deferredDaysCount,
-        fractionChangeDay,
-        keyRate: getKeyRate(keyRates, date),
-        moratoriums: getMoratoriums(moratoriums),
+    const naturalConfig: CalculatorConfig = {
+        ...theStateConstants,
+        legalEntity,
+        theStateConstants,
+        keyRate: getKeyRate(theStateConstants.keyRates, date),
+        moratoriums: getMoratoriums(theStateConstants.moratoriums),
+    }
+
+    switch (legalEntity) {
+        case "natural":
+            return naturalConfig
+        case "artificial":
+            return {
+                ...naturalConfig,
+                deferredDaysCount: 0,
+                fractionChangeDay: -Infinity,
+            }
     }
 }
 

@@ -12,11 +12,6 @@ function getKeyRate(keyRatesData: [string, number][], date: Date): number {
 
 export type LegalEntity = "natural" | "artificial"
 
-export type CalculatorConfigTemplate = {
-    theStateConstants: TheStateConfig
-    keyRate: number
-}
-
 export type CalculatorConfig = {
     legalEntity: LegalEntity
     theStateConstants: TheStateConfig

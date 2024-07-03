@@ -1,5 +1,5 @@
 import { Kopek } from "../../../lib/kopek"
-import { KeyRatePart } from "./types"
+import { KeyRatePart } from "./keyrate-part"
 
 export type Formula = string
 

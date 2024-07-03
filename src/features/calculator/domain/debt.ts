@@ -1,8 +1,8 @@
 import { BillingPeriod } from "../../../lib/billing-period"
 import kopekShed, { Kopek } from "../../../lib/kopek"
-import { PaymentId } from "./types"
+import { PaymentId } from "./payment"
 
-export type Payoff = {
+type Payoff = {
     paymentId: PaymentId
     paymentDate: Date
     repaymentAmount: Kopek
@@ -59,3 +59,4 @@ export const debtShed = {
 }
 
 export default debtShed
+

@@ -1,5 +1,14 @@
 import daysShed, { compareDays } from "../../../lib/days"
-import { KeyRatePart, Moratorium, TheStateConfig } from "./types"
+import { KeyRatePart } from "./keyrate-part"
+import { TheStateConfig } from "./types"
+
+type Moratorium = [Date, Date]
+
+function getKeyRate(keyRatesData: [string, number][], date: Date): number {
+    return keyRatesData.filter(([startDate]) => {
+        return compareDays(date, new Date(startDate)) === "GT"
+    })[keyRatesData.length - 1][1]
+}
 
 export type CalculatorConfig = {
     daysToPay: number
@@ -7,12 +16,6 @@ export type CalculatorConfig = {
     moratoriums: Moratorium[]
     keyRate: number
     fractionChangeDay: number
-}
-
-function getKeyRate(keyRatesData: [string, number][], date: Date): number {
-    return keyRatesData.filter(([startDate]) => {
-        return compareDays(date, new Date(startDate)) === "GT"
-    })[keyRatesData.length - 1][1]
 }
 
 export function getKeyRatePart(

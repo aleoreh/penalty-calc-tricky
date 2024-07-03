@@ -1,4 +1,7 @@
-import { KeyRatePart } from "./types"
+export type KeyRatePart = {
+    numerator: number
+    denominator: number
+}
 
 export function getKeyRatePartNumericValue(keyRatePart: KeyRatePart) {
     return keyRatePart.numerator / keyRatePart.denominator

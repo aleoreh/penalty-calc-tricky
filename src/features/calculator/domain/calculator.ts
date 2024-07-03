@@ -7,27 +7,44 @@ import {
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
-import formulaShed from "./formula"
-import keyRatePartShed from "./keyrate-part"
+import formulaShed, { Formula } from "./formula"
+import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
-import {
-    CalculationResult,
-    CalculationResultItem,
-    KeyRatePart,
-    Penalty,
-    PenaltyItem,
-} from "./types"
 
 type DistributionMethod = "fifo" | "byPaymentPeriod"
 
-export type Calculator = {
-    calculationDate: Date
-    config: CalculatorConfig
-    debts: Debt[]
-    payments: Payment[]
-    distributionMethod: DistributionMethod
-    /** Нераспределённый остаток платежей */
-    undistributedRemainder: Kopek
+type PenaltyItem = {
+    id: number
+    date: Date
+    debtAmount: Kopek
+    ratePart: KeyRatePart
+    rate: number
+    doesMoratoriumActs: boolean
+    doesDefermentActs: boolean
+    penaltyAmount: Kopek
+}
+
+type Penalty = {
+    period: Date
+    rows: PenaltyItem[]
+}
+
+type CalculationResultItem = {
+    debtAmount: Kopek
+    dateFrom: Date
+    dateTo: Date
+    totalDays: number
+    ratePart: KeyRatePart
+    rate: number
+    doesMoratoriumActs: boolean
+    doesDefermentActs: boolean
+    formula: Formula
+    penaltyAmount: Kopek
+}
+
+type CalculationResult = {
+    period: Date
+    rows: CalculationResultItem[]
 }
 
 function generateNextId(calculator: Calculator): PaymentId {
@@ -293,6 +310,16 @@ function penaltyToResult(penalty: Penalty): CalculationResult {
             [] as CalculationResult["rows"]
         ),
     }
+}
+
+export type Calculator = {
+    calculationDate: Date
+    config: CalculatorConfig
+    debts: Debt[]
+    payments: Payment[]
+    distributionMethod: DistributionMethod
+    /** Нераспределённый остаток платежей */
+    undistributedRemainder: Kopek
 }
 
 export function setCalculatorConfig(config: CalculatorConfig) {

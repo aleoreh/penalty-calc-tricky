@@ -1,6 +1,6 @@
 import { BillingPeriod } from "@/lib/billing-period"
 import { Kopek } from "@/lib/kopek"
-import Opaque from "ts-opaque"
+import Opaque, { create, widen } from "ts-opaque"
 
 export type PaymentId = Opaque<number, Payment>
 
@@ -15,11 +15,16 @@ export type Payment = {
 } & PaymentBody
 
 export function paymentIdToNumber(paymentId: PaymentId): number {
-    return paymentId as number
+    return widen(paymentId)
+}
+
+export function numberToPaymentId(value: number): PaymentId {
+    return create(value)
 }
 
 export const paymentShed = {
     idToNumber: paymentIdToNumber,
+    numberToId: numberToPaymentId,
 }
 
 export default paymentShed

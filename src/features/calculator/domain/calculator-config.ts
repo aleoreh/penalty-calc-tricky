@@ -52,7 +52,7 @@ function getMoratoriums(moratoriumsData: [string, string][]): Moratorium[] {
     ])
 }
 
-function fromTheStateConstants(
+export function fromTheStateConstants(
     date: Date,
     legalEntity: LegalEntity,
     theStateConstants: TheStateConstants

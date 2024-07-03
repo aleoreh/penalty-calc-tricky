@@ -5,10 +5,9 @@ import {
     keyRates,
     moratoriums,
 } from "@/data"
-import { TheStateConstantsRepo } from "../domain"
-import { TheStateConstants } from "../domain/types"
+import { type TheStateConstantsRepo } from "../domain"
 
-async function getTheStateConstants(): Promise<TheStateConstants> {
+async function getTheStateConstants() {
     return {
         daysToPay,
         deferredDaysCount,
@@ -19,7 +18,7 @@ async function getTheStateConstants(): Promise<TheStateConstants> {
 }
 
 export const theStateConstantsStaticRepo: TheStateConstantsRepo = {
-    getTheStateConstants: getTheStateConstants,
+    getTheStateConstants,
 }
 
 export default theStateConstantsStaticRepo

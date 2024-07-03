@@ -2,7 +2,7 @@ import { BillingPeriod } from "@/lib/billing-period"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { PaymentId } from "./payment"
 
-type Payoff = {
+export type Payoff = {
     paymentId: PaymentId
     paymentDate: Date
     repaymentAmount: Kopek
@@ -13,6 +13,19 @@ export type Debt = {
     amount: Kopek
     dueDate: Date
     payoffs: Payoff[]
+}
+
+export function initDebt(
+    period: BillingPeriod,
+    dueDate: Date,
+    amount: Kopek
+): Debt {
+    return {
+        period,
+        amount,
+        dueDate,
+        payoffs: [],
+    }
 }
 
 export function getDebtRemainingBalance(debt: Debt): Kopek {
@@ -53,6 +66,7 @@ export function updateDebtPayoff(payoff: Payoff) {
 }
 
 export const debtShed = {
+    initDebt,
     addPayoff: addDebtPayoff,
     updatePayoff: updateDebtPayoff,
     getRemainingBalance: getDebtRemainingBalance,

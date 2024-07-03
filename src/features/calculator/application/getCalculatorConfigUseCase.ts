@@ -1,7 +1,6 @@
-import {
+import domain, {
     type GetCalculatorConfigUseCase,
     type TheStateConstantsRepo,
-    fromTheStateConstants,
 } from "../domain"
 
 export function createGetCalculatorConfigUseCase(
@@ -11,6 +10,10 @@ export function createGetCalculatorConfigUseCase(
         const theStateConstants =
             await theStateConstantsRepo.getTheStateConstants()
 
-        return fromTheStateConstants(date, legalEntity, theStateConstants)
+        return domain.fromTheStateConstants(
+            date,
+            legalEntity,
+            theStateConstants
+        )
     }
 }

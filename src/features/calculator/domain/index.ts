@@ -1,4 +1,8 @@
-import { CalculatorConfig, LegalEntity } from "./calculator-config"
+import {
+    CalculatorConfig,
+    LegalEntity,
+    fromTheStateConstants,
+} from "./calculator-config"
 import { TheStateConstants } from "./types"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
@@ -8,11 +12,17 @@ export type GetCalculatorConfigUseCase = (
     legalEntity: LegalEntity
 ) => Promise<CalculatorConfig>
 
-export { fromTheStateConstants } from "./calculator-config"
-
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 
 export type TheStateConstantsRepo = {
     getTheStateConstants: () => Promise<TheStateConstants>
 }
+
+// ~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~ //
+
+export const domain = {
+    fromTheStateConstants,
+}
+
+export default domain
 

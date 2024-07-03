@@ -1,6 +1,6 @@
+import { BillingPeriod } from "@/lib/billing-period"
+import { Kopek } from "@/lib/kopek"
 import Opaque from "ts-opaque"
-import { BillingPeriod } from "../../../lib/billing-period"
-import { Kopek } from "../../../lib/kopek"
 
 export type PaymentId = Opaque<number, Payment>
 

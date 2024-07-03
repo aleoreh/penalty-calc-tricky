@@ -1,5 +1,5 @@
-import { BillingPeriod } from "../../../lib/billing-period"
-import kopekShed, { Kopek } from "../../../lib/kopek"
+import { BillingPeriod } from "@/lib/billing-period"
+import kopekShed, { Kopek } from "@/lib/kopek"
 import { PaymentId } from "./payment"
 
 type Payoff = {

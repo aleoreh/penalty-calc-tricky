@@ -1,6 +1,6 @@
-import billingPeriodShed from "../../../lib/billing-period"
-import daysShed from "../../../lib/days"
-import kopekShed, { Kopek } from "../../../lib/kopek"
+import billingPeriodShed from "@/lib/billing-period"
+import daysShed from "@/lib/days"
+import kopekShed, { Kopek } from "@/lib/kopek"
 import {
     CalculatorConfig,
     doesMoratoriumActs,

@@ -1,4 +1,4 @@
-import daysShed, { compareDays } from "../../../lib/days"
+import daysShed, { compareDays } from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
 import { TheStateConfig } from "./types"
 

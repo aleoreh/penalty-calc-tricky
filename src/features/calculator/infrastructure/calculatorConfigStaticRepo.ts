@@ -1,4 +1,10 @@
-import { daysToPay, deferredDaysCount, fractionChangeDay, keyRates, moratoriums } from "../../../data"
+import {
+    daysToPay,
+    deferredDaysCount,
+    fractionChangeDay,
+    keyRates,
+    moratoriums,
+} from "@/data"
 import { TheStateConfigRepo } from "../domain"
 import { TheStateConfig } from "../domain/types"
 

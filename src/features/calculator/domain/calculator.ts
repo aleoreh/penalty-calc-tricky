@@ -189,33 +189,38 @@ function calculatePenalty(
 ): Penalty {
     // -------- helpers ------- //
 
-    const makeRow = (debtAmount: Kopek, date: Date): PenaltyItem => ({
-        id: date.valueOf(),
-        date: date,
-        debtAmount: debtAmount,
-        doesDefermentActs: doesDefermentActs(
+    const makeRow = (debtAmount: Kopek, date: Date): PenaltyItem => {
+        const overdueCount = daysOverdue(debt.dueDate, date)
+        const hasDeferment = doesDefermentActs(
             debt.dueDate,
             config.deferredDaysCount,
             date
-        ),
-        doesMoratoriumActs: doesMoratoriumActs(config, date),
-        penaltyAmount: calculateDailyAmount(
+        )
+        const hasMoratorium = doesMoratoriumActs(config, date)
+        const ratePart = getKeyRatePart(config, overdueCount)
+        const penaltyAmount = calculateDailyAmount(
             {
                 deferredDaysCount: config.deferredDaysCount,
                 doesMoratoriumActs: doesMoratoriumActs(config, date),
                 dueDate: debt.dueDate,
                 keyRate: config.keyRate,
-                keyRatePart: getKeyRatePart(
-                    config,
-                    daysOverdue(debt.dueDate, date)
-                ),
+                keyRatePart: ratePart,
             },
             debtAmount,
             date
-        ),
-        rate: config.keyRate,
-        ratePart: getKeyRatePart(config, daysOverdue(debt.dueDate, date)),
-    })
+        )
+
+        return {
+            id: date.valueOf(),
+            date,
+            debtAmount,
+            doesDefermentActs: hasDeferment,
+            doesMoratoriumActs: hasMoratorium,
+            penaltyAmount,
+            rate: config.keyRate,
+            ratePart,
+        }
+    }
     const nextRow = (row: PenaltyItem): PenaltyItem => {
         const dayPayment = debt.payoffs
             .filter((payoff) => daysShed.equals(payoff.paymentDate, row.date))

@@ -48,6 +48,8 @@ type CalculationResult = {
 }
 
 function generateNextId(calculator: Calculator): PaymentId {
+    if (calculator.payments.length === 0) return paymentShed.numberToId(1)
+
     return [...calculator.payments].sort(
         (x, y) => paymentShed.idToNumber(y.id) - paymentShed.idToNumber(x.id)
     )[0].id

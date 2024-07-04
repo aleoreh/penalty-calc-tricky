@@ -156,7 +156,7 @@ function doesDefermentActs(
 }
 
 function daysOverdue(dueDate: Date, date: Date): number {
-    return daysShed.diff(date, dueDate)
+    return daysShed.diff(dueDate, date)
 }
 
 function calculateDailyAmount(

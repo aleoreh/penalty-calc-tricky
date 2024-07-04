@@ -1,13 +1,14 @@
 import billingPeriodShed from "@/lib/billing-period"
 import daysShed from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
+import { CalculationResult, CalculationResultItem } from "./calculation-result"
 import {
     CalculatorConfig,
     doesMoratoriumActs,
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
-import formulaShed, { Formula } from "./formula"
+import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 
@@ -27,24 +28,6 @@ type PenaltyItem = {
 type Penalty = {
     period: Date
     rows: PenaltyItem[]
-}
-
-type CalculationResultItem = {
-    debtAmount: Kopek
-    dateFrom: Date
-    dateTo: Date
-    totalDays: number
-    ratePart: KeyRatePart
-    rate: number
-    doesMoratoriumActs: boolean
-    doesDefermentActs: boolean
-    formula: Formula
-    penaltyAmount: Kopek
-}
-
-type CalculationResult = {
-    period: Date
-    rows: CalculationResultItem[]
 }
 
 function generateNextId(calculator: Calculator): PaymentId {

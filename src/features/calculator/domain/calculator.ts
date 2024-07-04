@@ -405,7 +405,7 @@ export function addCalculatorPayments(payments: PaymentBody[]) {
         }, calculator.payments)
         return distributePayments({
             ...calculator,
-            ...newPayments,
+            payments: newPayments,
         })
     }
 }

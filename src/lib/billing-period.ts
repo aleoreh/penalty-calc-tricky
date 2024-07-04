@@ -18,8 +18,8 @@ export function billingPeriodsEqual(
     period2: BillingPeriod
 ): boolean {
     return (
-        daysShed.beginOfPeriod(widen(period1), "month") ===
-        daysShed.beginOfPeriod(widen(period2), "month")
+        daysShed.beginOfPeriod(widen(period1), "month").getTime() ===
+        daysShed.beginOfPeriod(widen(period2), "month").getTime()
     )
 }
 

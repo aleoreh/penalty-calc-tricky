@@ -9,6 +9,10 @@ export function billingPeriodFromDate(
     return create(beginOfPeriod(anyDateWithinPeriod, "month"))
 }
 
+export function billingPeriodToDate(billingPeriod: BillingPeriod): Date {
+    return widen(billingPeriod)
+}
+
 export function billingPeriodsEqual(
     period1: BillingPeriod,
     period2: BillingPeriod
@@ -21,6 +25,7 @@ export function billingPeriodsEqual(
 
 export const billingPeriodShed = {
     fromDate: billingPeriodFromDate,
+    toDate: billingPeriodToDate,
     equal: billingPeriodsEqual,
 }
 

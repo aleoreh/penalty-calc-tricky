@@ -322,6 +322,21 @@ export type Calculator = {
     undistributedRemainder: Kopek
 }
 
+export function initCalculator(
+    calculationDate: Date,
+    config: CalculatorConfig,
+    distributionMethod: DistributionMethod
+): Calculator {
+    return {
+        calculationDate,
+        config,
+        debts: [],
+        payments: [],
+        distributionMethod,
+        undistributedRemainder: kopekShed.asKopek(0),
+    }
+}
+
 export function setCalculatorConfig(config: CalculatorConfig) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
@@ -405,6 +420,7 @@ export function calculate(
 }
 
 export const calculatorShed = {
+    init: initCalculator,
     setConfig: setCalculatorConfig,
     setCalculationDate,
     setDistributionMethod,

@@ -11,7 +11,7 @@ import formulaShed, { Formula } from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 
-type DistributionMethod = "fifo" | "byPaymentPeriod"
+export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
 type PenaltyItem = {
     id: number
@@ -182,7 +182,11 @@ function calculateDailyAmount(
     ) as Kopek
 }
 
-function calculatePenalty(debt: Debt, calculator: Calculator): Penalty {
+function calculatePenalty(
+    debt: Debt,
+    config: CalculatorConfig,
+    calculationDate: Date
+): Penalty {
     // -------- helpers ------- //
 
     const makeRow = (debtAmount: Kopek, date: Date): PenaltyItem => ({
@@ -191,29 +195,26 @@ function calculatePenalty(debt: Debt, calculator: Calculator): Penalty {
         debtAmount: debtAmount,
         doesDefermentActs: doesDefermentActs(
             debt.dueDate,
-            calculator.config.deferredDaysCount,
+            config.deferredDaysCount,
             date
         ),
-        doesMoratoriumActs: doesMoratoriumActs(calculator.config, date),
+        doesMoratoriumActs: doesMoratoriumActs(config, date),
         penaltyAmount: calculateDailyAmount(
             {
-                deferredDaysCount: calculator.config.deferredDaysCount,
-                doesMoratoriumActs: doesMoratoriumActs(calculator.config, date),
+                deferredDaysCount: config.deferredDaysCount,
+                doesMoratoriumActs: doesMoratoriumActs(config, date),
                 dueDate: debt.dueDate,
-                keyRate: calculator.config.keyRate,
+                keyRate: config.keyRate,
                 keyRatePart: getKeyRatePart(
-                    calculator.config,
+                    config,
                     daysOverdue(debt.dueDate, date)
                 ),
             },
             debtAmount,
             date
         ),
-        rate: calculator.config.keyRate,
-        ratePart: getKeyRatePart(
-            calculator.config,
-            daysOverdue(debt.dueDate, date)
-        ),
+        rate: config.keyRate,
+        ratePart: getKeyRatePart(config, daysOverdue(debt.dueDate, date)),
     })
     const nextRow = (row: PenaltyItem): PenaltyItem => {
         const dayPayment = debt.payoffs
@@ -232,7 +233,7 @@ function calculatePenalty(debt: Debt, calculator: Calculator): Penalty {
 
     let curRow: PenaltyItem = makeRow(debt.amount, debt.dueDate)
 
-    while (daysShed.compare(curRow.date, calculator.calculationDate) === "LT") {
+    while (daysShed.compare(curRow.date, calculationDate) === "LT") {
         rows.push(curRow)
         curRow = nextRow(curRow)
     }
@@ -412,11 +413,11 @@ export function setCalculatorPayments(payments: Payment[]) {
     }
 }
 
-export function calculate(
-    calculator: Calculator,
-    debt: Debt
-): CalculationResult {
-    return penaltyToResult(calculatePenalty(debt, calculator))
+export function calculate(calculator: Calculator): CalculationResult[] {
+    const penalties = calculator.debts.map((debt) =>
+        calculatePenalty(debt, calculator.config, calculator.calculationDate)
+    )
+    return penalties.map(penaltyToResult)
 }
 
 export const calculatorShed = {

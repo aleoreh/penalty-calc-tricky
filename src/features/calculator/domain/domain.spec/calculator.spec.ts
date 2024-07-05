@@ -44,7 +44,7 @@ describe("Калькулятор", () => {
     const result = calculatorShed.calculate(calculator)
     const calculationResult = result[0]
     const startDebtResultItems = calculationResult.rows.filter(
-        (row) => (row.debtAmount = startDebtAmount)
+        (row) => row.debtAmount === startDebtAmount
     )
     const one130DebtResultItems = calculationResult.rows.filter(
         (row) => row.ratePart.denominator === 130
@@ -54,9 +54,7 @@ describe("Калькулятор", () => {
         resultLength: 8,
         penaltyAmount: kopekShed.fromRuble(835.05),
         penaltyAmountOfStartDebt: kopekShed.fromRuble(103.04),
-        penaltyAmountOfOne130: calculationResultItemsTotal(
-            one130DebtResultItems
-        ),
+        penaltyAmountOfOne130: kopekShed.fromRuble(816.05),
     }
 
     it(`Количество строк расчета = ${expected.resultLength}`, () => {
@@ -75,6 +73,15 @@ describe("Калькулятор", () => {
     )} = ${kopekShed.toRuble(expected.penaltyAmountOfStartDebt)}`, () => {
         expect(calculationResultItemsTotal(startDebtResultItems)).toBeCloseTo(
             expected.penaltyAmountOfStartDebt,
+            0
+        )
+    })
+
+    it(`Сумма пеней по доле 1/130 = ${kopekShed.toRuble(
+        expected.penaltyAmountOfOne130
+    )}`, () => {
+        expect(calculationResultItemsTotal(one130DebtResultItems)).toBeCloseTo(
+            expected.penaltyAmountOfOne130,
             0
         )
     })

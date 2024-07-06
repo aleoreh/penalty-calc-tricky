@@ -13,6 +13,11 @@ export type GetCalculatorConfigUseCase = (
     legalEntity: LegalEntity
 ) => Promise<CalculatorConfig>
 
+export type SetCalculatorConfigUseCase = (
+    calculatorConfig: CalculatorConfig,
+    calculator: Calculator
+) => Promise<void>
+
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 
 export type TheStateConstantsRepo = {

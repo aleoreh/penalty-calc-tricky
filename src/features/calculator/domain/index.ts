@@ -4,6 +4,7 @@ import {
     LegalEntity,
     fromTheStateConstants,
 } from "./calculator-config"
+import { Debt } from "./debt"
 import { TheStateConstants } from "./types"
 import { UserSettings } from "./userSettings"
 
@@ -32,6 +33,11 @@ export type SetUserSettingsUseCase = (
 
 export type SetCalculationDateUseCase = (
     calculationDate: Date,
+    calculator: Calculator
+) => Promise<void>
+
+export type AddDebtUseCase = (
+    debt: Debt,
     calculator: Calculator
 ) => Promise<void>
 

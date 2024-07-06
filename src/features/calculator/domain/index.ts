@@ -1,4 +1,4 @@
-import { Calculator } from "./calculator"
+import { Calculator, DistributionMethod } from "./calculator"
 import {
     CalculatorConfig,
     LegalEntity,
@@ -8,6 +8,12 @@ import { TheStateConstants } from "./types"
 import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
+
+export type ConfigureCalculatorUseCase = (
+    calculationDate: Date,
+    legalEntity: LegalEntity,
+    distributionMethod: DistributionMethod
+) => Promise<void>
 
 export type GetCalculatorConfigUseCase = (
     date: Date,

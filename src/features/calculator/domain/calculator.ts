@@ -389,6 +389,17 @@ export function setCalculatorDebts(debts: Debt[]) {
     }
 }
 
+export function updateCalculatorDebt(debt: Debt) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({
+            ...calculator,
+            debts: calculator.debts.map((x) =>
+                x.period !== debt.period ? x : debt
+            ),
+        })
+    }
+}
+
 export function addCalculatorPayments(payments: PaymentBody[]) {
     return (calculator: Calculator): Calculator => {
         const newPayments = payments.reduce((acc, paymentBody) => {
@@ -436,6 +447,7 @@ export const calculatorShed = {
     deleteDebt: deleteCalculatorDebt,
     clearDebts: clearCalculatorDebts,
     setDebts: setCalculatorDebts,
+    updateDebt: updateCalculatorDebt,
     addPayments: addCalculatorPayments,
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,

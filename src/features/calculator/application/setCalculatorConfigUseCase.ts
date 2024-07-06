@@ -1,7 +1,7 @@
 import { CalculatorStoreRepo, SetCalculatorConfigUseCase } from "../domain"
 import calculatorShed from "../domain/calculator"
 
-export function createSetCalculatorUseCase(
+export function createSetCalculatorConfigUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
 ): SetCalculatorConfigUseCase {
     return async (calculatorConfig, calculator) => {

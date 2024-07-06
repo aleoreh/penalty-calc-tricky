@@ -1,3 +1,4 @@
+import { Calculator } from "./calculator"
 import {
     CalculatorConfig,
     LegalEntity,
@@ -16,6 +17,11 @@ export type GetCalculatorConfigUseCase = (
 
 export type TheStateConstantsRepo = {
     getTheStateConstants: () => Promise<TheStateConstants>
+}
+
+export type CalculatorStoreRepo = {
+    setCalculator: (calculator: Calculator) => Promise<void>
+    getCalculator: () => Promise<Calculator | undefined>
 }
 
 // ~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~ //

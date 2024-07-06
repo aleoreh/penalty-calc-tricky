@@ -1,3 +1,4 @@
+import { BillingPeriod } from "../../../lib/billing-period"
 import { Calculator, DistributionMethod } from "./calculator"
 import {
     CalculatorConfig,
@@ -38,6 +39,11 @@ export type SetCalculationDateUseCase = (
 
 export type AddDebtUseCase = (
     debt: Debt,
+    calculator: Calculator
+) => Promise<void>
+
+export type DeleteDebtUseCase = (
+    debtPeriod: BillingPeriod,
     calculator: Calculator
 ) => Promise<void>
 

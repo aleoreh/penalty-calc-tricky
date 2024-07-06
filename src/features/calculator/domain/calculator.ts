@@ -366,8 +366,8 @@ export function deleteCalculatorDebt(debtPeriod: BillingPeriod) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
             ...calculator,
-            debts: calculator.debts.filter((x) =>
-                billingPeriodShed.equal(x.period, debtPeriod)
+            debts: calculator.debts.filter(
+                (x) => !billingPeriodShed.equal(x.period, debtPeriod)
             ),
         })
     }

@@ -5,6 +5,7 @@ import {
     fromTheStateConstants,
 } from "./calculator-config"
 import { TheStateConstants } from "./types"
+import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
@@ -15,6 +16,11 @@ export type GetCalculatorConfigUseCase = (
 
 export type SetCalculatorConfigUseCase = (
     calculatorConfig: CalculatorConfig,
+    calculator: Calculator
+) => Promise<void>
+
+export type SetUserSettingsUseCase = (
+    userSettings: UserSettings,
     calculator: Calculator
 ) => Promise<void>
 

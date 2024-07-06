@@ -52,6 +52,8 @@ export type UpdateDebtUseCase = (
     calculator: Calculator
 ) => Promise<void>
 
+export type ClearDebtsUseCase = (calculator: Calculator) => Promise<void>
+
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 
 export type TheStateConstantsRepo = {

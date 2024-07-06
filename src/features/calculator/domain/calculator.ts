@@ -11,6 +11,7 @@ import debtShed, { Debt } from "./debt"
 import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
+import { UserSettings } from "./userSettings"
 
 export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -114,7 +115,11 @@ function distributePayments(calculator: Calculator): Calculator {
     const [debts, remainder] = calculator.payments.reduce(
         ([debts, remainder], payment) => {
             const { debts: newDebts, remainder: newRemainder } =
-                distributePayment(payment, debts, calculator.distributionMethod)
+                distributePayment(
+                    payment,
+                    debts,
+                    calculator.userSettings.distributionMethod
+                )
             return [newDebts, kopekShed.add(remainder, newRemainder)] as [
                 Debt[],
                 Kopek
@@ -306,9 +311,9 @@ function penaltyToResult(penalty: Penalty): CalculationResult {
 export type Calculator = {
     calculationDate: Date
     config: CalculatorConfig
+    userSettings: UserSettings
     debts: Debt[]
     payments: Payment[]
-    distributionMethod: DistributionMethod
     /** Нераспределённый остаток платежей */
     undistributedRemainder: Kopek
 }
@@ -318,12 +323,16 @@ export function initCalculator(
     config: CalculatorConfig,
     distributionMethod: DistributionMethod
 ): Calculator {
+    const userSettings: UserSettings = {
+        distributionMethod,
+        legalEntity: config.legalEntity,
+    }
     return {
         calculationDate,
         config,
+        userSettings,
         debts: [],
         payments: [],
-        distributionMethod,
         undistributedRemainder: kopekShed.asKopek(0),
     }
 }
@@ -341,14 +350,6 @@ export function setCalculationDate(date: Date) {
         distributePayments({
             ...calculator,
             calculationDate: date,
-        })
-}
-
-export function setDistributionMethod(distributionMethod: DistributionMethod) {
-    return (calculator: Calculator): Calculator =>
-        distributePayments({
-            ...calculator,
-            distributionMethod: distributionMethod,
         })
 }
 
@@ -410,17 +411,23 @@ export function calculate(calculator: Calculator): CalculationResult[] {
     return penalties.map(penaltyToResult)
 }
 
+export function setCalculatorUserSettings(userSettings: UserSettings) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({ ...calculator, ...userSettings })
+    }
+}
+
 export const calculatorShed = {
     init: initCalculator,
     setConfig: setCalculatorConfig,
     setCalculationDate,
-    setDistributionMethod,
     addDebts: addCalculatorDebts,
     clearDebts: clearCalculatorDebts,
     setDebts: setCalculatorDebts,
     addPayments: addCalculatorPayments,
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,
+    setUserSettings: setCalculatorUserSettings,
     calculate,
 }
 

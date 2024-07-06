@@ -6,7 +6,8 @@ export type Moratorium = [Date, Date]
 
 function getKeyRate(keyRatesData: [string, number][], date: Date): number {
     return keyRatesData.filter(([startDate]) => {
-        return compareDays(date, new Date(startDate)) === "GT"
+        const res = compareDays(date, new Date(startDate))
+        return res === "EQ" || res === "GT"
     })[keyRatesData.length - 1][1]
 }
 

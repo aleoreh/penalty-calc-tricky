@@ -24,6 +24,11 @@ export type SetUserSettingsUseCase = (
     calculator: Calculator
 ) => Promise<void>
 
+export type SetCalculationDateUseCase = (
+    calculationDate: Date,
+    calculator: Calculator
+) => Promise<void>
+
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 
 export type TheStateConstantsRepo = {

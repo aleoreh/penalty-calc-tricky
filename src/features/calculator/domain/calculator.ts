@@ -1,4 +1,4 @@
-import billingPeriodShed from "@/lib/billing-period"
+import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
 import daysShed from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { CalculationResult, CalculationResultItem } from "./calculation-result"
@@ -362,6 +362,17 @@ export function addCalculatorDebts(debts: Debt[]) {
     }
 }
 
+export function deleteCalculatorDebt(debtPeriod: BillingPeriod) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({
+            ...calculator,
+            debts: calculator.debts.filter((x) =>
+                billingPeriodShed.equal(x.period, debtPeriod)
+            ),
+        })
+    }
+}
+
 export function clearCalculatorDebts(calculator: Calculator): Calculator {
     return distributePayments({
         ...calculator,
@@ -422,6 +433,7 @@ export const calculatorShed = {
     setConfig: setCalculatorConfig,
     setCalculationDate,
     addDebts: addCalculatorDebts,
+    deleteDebt: deleteCalculatorDebt,
     clearDebts: clearCalculatorDebts,
     setDebts: setCalculatorDebts,
     addPayments: addCalculatorPayments,

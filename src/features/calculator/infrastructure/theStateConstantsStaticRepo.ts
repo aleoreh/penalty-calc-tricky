@@ -12,7 +12,9 @@ async function getTheStateConstants() {
         daysToPay,
         deferredDaysCount,
         fractionChangeDay,
-        keyRates,
+        keyRates: keyRates.map(([dateString, value]) => {
+            return [new Date(dateString), value] as [Date, number]
+        }),
         moratoriums,
     }
 }

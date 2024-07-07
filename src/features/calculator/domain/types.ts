@@ -4,7 +4,7 @@ export type TheStateConstants = {
     daysToPay: number
     deferredDaysCount: number
     fractionChangeDay: number
-    keyRates: [DateString, KeyRate][]
+    keyRates: [Date, KeyRate][]
     moratoriums: [DateString, DateString][]
 }
 

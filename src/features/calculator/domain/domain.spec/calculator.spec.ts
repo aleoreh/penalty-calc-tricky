@@ -1,4 +1,3 @@
-import * as data from "@/data"
 import { it } from "@fast-check/vitest"
 import { pipe } from "@mobily/ts-belt"
 import { describe, expect } from "vitest"
@@ -9,6 +8,18 @@ import calculatorShed from "../calculator"
 import calculatorConfigShed from "../calculator-config"
 import debtShed, { getDefaultDueDate } from "../debt"
 import paymentShed, { Payment } from "../payment"
+import { TheStateConstants } from "../types"
+
+const theStateConstants: TheStateConstants = {
+    daysToPay: 10,
+    deferredDaysCount: 30,
+    fractionChangeDay: 90,
+    keyRates: [[new Date("1900-01-01"), 0.095]],
+    moratoriums: [
+        ["2020-04-06", "2021-01-01"],
+        ["2022-03-31", "2022-10-01"],
+    ],
+}
 
 const calculationDate = new Date("2024-04-19")
 const debtPeriod = billingPeriodShed.fromDate(new Date("2019-05-01"))
@@ -17,12 +28,12 @@ const debtAmount = kopekShed.fromRuble(1000)
 const naturalConfig = calculatorConfigShed.fromTheStateConstants(
     calculationDate,
     "natural",
-    data
+    theStateConstants
 )
 
 const initialDebt = debtShed.initDebt(
     debtPeriod,
-    getDefaultDueDate(debtPeriod, data.daysToPay),
+    getDefaultDueDate(debtPeriod, theStateConstants.daysToPay),
     debtAmount
 )
 const payments: Payment[] = [

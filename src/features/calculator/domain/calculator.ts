@@ -5,6 +5,7 @@ import { CalculationResult, CalculationResultItem } from "./calculation-result"
 import {
     CalculatorConfig,
     doesMoratoriumActs,
+    getKeyRate,
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
@@ -193,7 +194,7 @@ function calculatePenalty(
                 deferredDaysCount: config.deferredDaysCount,
                 doesMoratoriumActs: doesMoratoriumActs(config, date),
                 dueDate: debt.dueDate,
-                keyRate: config.keyRate,
+                keyRate: getKeyRate(config, calculationDate),
                 keyRatePart: ratePart,
             },
             debtAmount,
@@ -207,7 +208,7 @@ function calculatePenalty(
             doesDefermentActs: hasDeferment,
             doesMoratoriumActs: hasMoratorium,
             penaltyAmount,
-            rate: config.keyRate,
+            rate: getKeyRate(config, calculationDate),
             ratePart,
         }
     }

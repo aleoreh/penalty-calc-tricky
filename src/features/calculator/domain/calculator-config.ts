@@ -4,7 +4,8 @@ import { TheStateConstants } from "./types"
 
 export type Moratorium = [Date, Date]
 
-function getKeyRate(keyRatesData: [string, number][], date: Date): number {
+export function getKeyRate(calculatorConfig: CalculatorConfig, date: Date): number {
+    const keyRatesData = calculatorConfig.theStateConstants.keyRates
     return keyRatesData.filter(([startDate]) => {
         const res = compareDays(date, new Date(startDate))
         return res === "EQ" || res === "GT"
@@ -19,7 +20,6 @@ export type CalculatorConfig = {
     daysToPay: number
     deferredDaysCount: number
     moratoriums: Moratorium[]
-    keyRate: number
     fractionChangeDay: number
 }
 
@@ -62,7 +62,6 @@ export function fromTheStateConstants(
         ...theStateConstants,
         legalEntity,
         theStateConstants,
-        keyRate: getKeyRate(theStateConstants.keyRates, date),
         moratoriums: getMoratoriums(theStateConstants.moratoriums),
     }
 
@@ -81,6 +80,7 @@ export function fromTheStateConstants(
 export const calculatorConfigShed = {
     fromTheStateConstants,
     getKeyRatePart,
+    getKeyRate,
     doesMoratoriumActs,
 }
 

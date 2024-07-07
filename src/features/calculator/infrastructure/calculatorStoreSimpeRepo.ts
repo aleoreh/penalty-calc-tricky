@@ -1,17 +1,22 @@
 import { CalculatorStoreRepo } from "../domain"
 import { Calculator } from "../domain/calculator"
 
-let store: Calculator | undefined
+export function createCalculatorStoreSimpleRepo(
+    calculator: Calculator
+): CalculatorStoreRepo {
+    let value = calculator
 
-async function setCalculator(calculator: Calculator) {
-    store = calculator
+    async function setCalculator(calculator: Calculator) {
+        value = calculator
+    }
+
+    async function getCalculator() {
+        return value
+    }
+
+    return {
+        setCalculator,
+        getCalculator,
+    }
 }
 
-async function getCalculator() {
-    return store
-}
-
-export const calculatorStoreSimpeRepo: CalculatorStoreRepo = {
-    setCalculator,
-    getCalculator,
-}

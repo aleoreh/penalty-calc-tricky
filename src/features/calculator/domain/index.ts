@@ -13,6 +13,8 @@ import { UserSettings } from "./userSettings"
 
 export type InitialiseCalculatorUseCase = () => Promise<Calculator>
 
+export type AddDebtUseCase = (debt: Debt) => Promise<Calculator>
+
 export type ConfigureCalculatorUseCase = (
     calculationDate: Date,
     legalEntity: LegalEntity,
@@ -39,11 +41,6 @@ export type SetCalculationDateUseCase = (
     calculator: Calculator
 ) => Promise<void>
 
-export type AddDebtUseCase = (
-    debt: Debt,
-    calculator: Calculator
-) => Promise<void>
-
 export type DeleteDebtUseCase = (
     debtPeriod: BillingPeriod,
     calculator: Calculator
@@ -64,7 +61,7 @@ export type TheStateConstantsRepo = {
 
 export type CalculatorStoreRepo = {
     setCalculator: (calculator: Calculator) => Promise<void>
-    getCalculator: () => Promise<Calculator | undefined>
+    getCalculator: () => Promise<Calculator>
 }
 
 // ~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~ //

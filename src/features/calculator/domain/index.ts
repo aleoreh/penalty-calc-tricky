@@ -1,4 +1,5 @@
-import { BillingPeriod } from "../../../lib/billing-period"
+import { BillingPeriod } from "@/lib/billing-period"
+import { Kopek } from "@/lib/kopek"
 import { Calculator, DistributionMethod } from "./calculator"
 import {
     CalculatorConfig,
@@ -17,6 +18,14 @@ export type AddDebtUseCase = (debt: Debt) => Promise<Calculator>
 
 export type DeleteDebtUseCase = (
     debtPeriod: BillingPeriod
+) => Promise<Calculator>
+
+export type UpdateDebtUseCase = (
+    params: {
+        dueDate?: Date
+        amount?: Kopek
+    },
+    debt: Debt
 ) => Promise<Calculator>
 
 export type ConfigureCalculatorUseCase = (
@@ -42,11 +51,6 @@ export type SetUserSettingsUseCase = (
 
 export type SetCalculationDateUseCase = (
     calculationDate: Date,
-    calculator: Calculator
-) => Promise<void>
-
-export type UpdateDebtUseCase = (
-    debt: Debt,
     calculator: Calculator
 ) => Promise<void>
 

@@ -11,6 +11,8 @@ import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
+export type InitialiseCalculatorUseCase = () => Promise<Calculator>
+
 export type ConfigureCalculatorUseCase = (
     calculationDate: Date,
     legalEntity: LegalEntity,

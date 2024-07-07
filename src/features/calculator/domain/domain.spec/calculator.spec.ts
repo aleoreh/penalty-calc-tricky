@@ -26,7 +26,6 @@ const debtPeriod = billingPeriodShed.fromDate(new Date("2019-05-01"))
 const debtAmount = kopekShed.fromRuble(1000)
 
 const naturalConfig = calculatorConfigShed.fromTheStateConstants(
-    calculationDate,
     "natural",
     theStateConstants
 )

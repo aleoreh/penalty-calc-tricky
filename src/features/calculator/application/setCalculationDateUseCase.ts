@@ -10,7 +10,6 @@ export function createSetCalculationDateUseCase(
 ): SetCalculationDateUseCase {
     return async (calculationDate, calculator) => {
         const calculatorConfig = domain.fromTheStateConstants(
-            calculationDate,
             calculator.userSettings.legalEntity,
             calculator.config.theStateConstants
         )

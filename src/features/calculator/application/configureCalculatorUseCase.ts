@@ -18,7 +18,6 @@ export function createConfigureCalculatorUseCase(
             await theStateConstantsRepo.getTheStateConstants()
 
         const calculatorConfig = domain.fromTheStateConstants(
-            calculationDate,
             legalEntity,
             theStateConstants
         )

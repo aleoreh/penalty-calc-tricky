@@ -15,6 +15,10 @@ export type InitialiseCalculatorUseCase = () => Promise<Calculator>
 
 export type AddDebtUseCase = (debt: Debt) => Promise<Calculator>
 
+export type DeleteDebtUseCase = (
+    debtPeriod: BillingPeriod
+) => Promise<Calculator>
+
 export type ConfigureCalculatorUseCase = (
     calculationDate: Date,
     legalEntity: LegalEntity,
@@ -38,11 +42,6 @@ export type SetUserSettingsUseCase = (
 
 export type SetCalculationDateUseCase = (
     calculationDate: Date,
-    calculator: Calculator
-) => Promise<void>
-
-export type DeleteDebtUseCase = (
-    debtPeriod: BillingPeriod,
     calculator: Calculator
 ) => Promise<void>
 

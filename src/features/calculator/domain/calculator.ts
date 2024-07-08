@@ -440,6 +440,12 @@ export function setCalculatorUserSettings(userSettings: UserSettings) {
     }
 }
 
+export function calculatorTotalDebtAmount(calculator: Calculator): Kopek {
+    return calculator.debts.reduce((acc, x) => {
+        return kopekShed.add(acc, x.amount)
+    }, kopekShed.asKopek(0))
+}
+
 export const calculatorShed = {
     init: initCalculator,
     setConfig: setCalculatorConfig,
@@ -453,6 +459,7 @@ export const calculatorShed = {
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,
     setUserSettings: setCalculatorUserSettings,
+    totalDebtAmount: calculatorTotalDebtAmount,
     calculate,
 }
 

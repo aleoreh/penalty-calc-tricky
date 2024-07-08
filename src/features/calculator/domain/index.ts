@@ -6,7 +6,7 @@ import {
     LegalEntity,
     fromTheStateConstants,
 } from "./calculator-config"
-import { Debt } from "./debt"
+import { Debt, getDefaultDueDate } from "./debt"
 import { TheStateConstants } from "./types"
 import { UserSettings } from "./userSettings"
 
@@ -14,7 +14,11 @@ import { UserSettings } from "./userSettings"
 
 export type InitialiseCalculatorUseCase = () => Promise<Calculator>
 
-export type AddDebtUseCase = (debt: Debt) => Promise<Calculator>
+export type AddDebtUseCase = (
+    debtPeriod: BillingPeriod,
+    dueDate: Date,
+    debtAmount: Kopek
+) => Promise<void>
 
 export type DeleteDebtUseCase = (
     debtPeriod: BillingPeriod
@@ -71,6 +75,7 @@ export type CalculatorStoreRepo = {
 
 export const domain = {
     fromTheStateConstants,
+    getDefaultDueDate
 }
 
 export default domain

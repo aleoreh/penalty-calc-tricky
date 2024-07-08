@@ -6,11 +6,11 @@ export function createCalculatorStoreSimpleRepo(
 ): CalculatorStoreRepo {
     let value = calculator
 
-    async function setCalculator(calculator: Calculator) {
+    function setCalculator(calculator: Calculator) {
         value = calculator
     }
 
-    async function getCalculator() {
+    function getCalculator() {
         return value
     }
 

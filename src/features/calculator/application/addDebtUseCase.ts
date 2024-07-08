@@ -8,11 +8,11 @@ export function createAddDebtUseCase(
     return async (debtPeriod, dueDate, debtAmount) => {
         const debt = debtShed.initDebt(debtPeriod, dueDate, debtAmount)
 
-        const calculator = await calculatorStoreRepo.getCalculator()
+        const calculator = calculatorStoreRepo.getCalculator()
 
         const newCalculator = calculatorShed.addDebts([debt])(calculator)
 
-        await calculatorStoreRepo.setCalculator(newCalculator)
+        calculatorStoreRepo.setCalculator(newCalculator)
     }
 }
 

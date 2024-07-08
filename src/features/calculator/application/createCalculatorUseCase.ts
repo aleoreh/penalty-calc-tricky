@@ -1,4 +1,8 @@
-import { CreateCalculatorUseCase, TheStateConstantsRepo } from "../domain"
+import {
+    CreateCalculatorFromConstantsUseCase,
+    CreateCalculatorUseCase,
+    TheStateConstantsRepo,
+} from "../domain"
 import { initCalculator } from "../domain/calculator"
 import calculatorConfigShed from "../domain/calculator-config"
 import { UserSettings } from "../domain/userSettings"
@@ -28,3 +32,21 @@ export function createCreateCalculatorsUseCase(
         return calculator
     }
 }
+
+export function createCreateCalculatorFromConstantsUseCase(): CreateCalculatorFromConstantsUseCase {
+    return (theStateConstants) => {
+        const calculatorConfig = calculatorConfigShed.fromTheStateConstants(
+            defaultUserSettings.legalEntity,
+            theStateConstants
+        )
+
+        const calculator = initCalculator(
+            new Date(),
+            calculatorConfig,
+            defaultUserSettings.distributionMethod
+        )
+
+        return calculator
+    }
+}
+

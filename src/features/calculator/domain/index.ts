@@ -12,7 +12,15 @@ import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
+export type GetTheStateConstantsUseCase = () => Promise<TheStateConstants>
+
 export type CreateCalculatorUseCase = () => Promise<Calculator>
+
+export type CreateCalculatorFromConstantsUseCase = (
+    theStateConstants: TheStateConstants
+) => Calculator
+
+export type GetCalculatorUseCase = () => Calculator
 
 export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,
@@ -67,15 +75,15 @@ export type TheStateConstantsRepo = {
 }
 
 export type CalculatorStoreRepo = {
-    setCalculator: (calculator: Calculator) => Promise<void>
-    getCalculator: () => Promise<Calculator>
+    setCalculator: (calculator: Calculator) => void
+    getCalculator: () => Calculator
 }
 
 // ~~~~~~~~~~~~~~ functions ~~~~~~~~~~~~~~ //
 
 export const domain = {
     fromTheStateConstants,
-    getDefaultDueDate
+    getDefaultDueDate,
 }
 
 export default domain

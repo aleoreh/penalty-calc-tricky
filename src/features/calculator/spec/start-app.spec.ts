@@ -1,9 +1,9 @@
 import { it } from "@fast-check/vitest"
 import { describe, expect } from "vitest"
-import { createInitialiseCalculatorsUseCase } from "../application/initialiseCalculatorUseCase"
+import { createCreateCalculatorsUseCase } from "../application/createCalculatorUseCase"
 import { theStateConstantsStaticRepo as theStateConstantsRepo } from "../infrastructure/theStateConstantsStaticRepo"
 
-const initialiseCalculator = createInitialiseCalculatorsUseCase(
+const initialiseCalculator = createCreateCalculatorsUseCase(
     theStateConstantsRepo
 )
 

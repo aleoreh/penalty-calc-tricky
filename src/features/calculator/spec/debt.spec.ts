@@ -7,7 +7,7 @@ import { beforeEach, describe, expect } from "vitest"
 import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { createAddDebtUseCase } from "../application/addDebtUseCase"
-import { createInitialiseCalculatorsUseCase } from "../application/initialiseCalculatorUseCase"
+import { createCreateCalculatorsUseCase } from "../application/createCalculatorUseCase"
 import domain, { AddDebtUseCase, CalculatorStoreRepo } from "../domain"
 import { createCalculatorStoreSimpleRepo } from "../infrastructure/calculatorStoreSimpeRepo"
 import { theStateConstantsStaticRepo as theStateConstantsRepo } from "../infrastructure/theStateConstantsStaticRepo"
@@ -19,7 +19,7 @@ const debtPeriodArb: Arbitrary<BillingPeriod> = date().map(
 )
 const debtAmountArb: Arbitrary<Kopek> = integer().map(kopekShed.asKopek)
 
-const initialiseCalculator = createInitialiseCalculatorsUseCase(
+const createCalculator = createCreateCalculatorsUseCase(
     theStateConstantsRepo
 )
 
@@ -27,7 +27,7 @@ let addDebt: AddDebtUseCase
 let calculatorStoreRepo: CalculatorStoreRepo
 
 beforeEach(async () => {
-    const calculator = await initialiseCalculator()
+    const calculator = await createCalculator()
 
     calculatorStoreRepo = createCalculatorStoreSimpleRepo(calculator)
 

@@ -1,4 +1,4 @@
-import { InitialiseCalculatorUseCase, TheStateConstantsRepo } from "../domain"
+import { CreateCalculatorUseCase, TheStateConstantsRepo } from "../domain"
 import { initCalculator } from "../domain/calculator"
 import calculatorConfigShed from "../domain/calculator-config"
 import { UserSettings } from "../domain/userSettings"
@@ -8,9 +8,9 @@ const defaultUserSettings: UserSettings = {
     distributionMethod: "fifo",
 }
 
-export function createInitialiseCalculatorsUseCase(
+export function createCreateCalculatorsUseCase(
     theStateConstantsRepo: TheStateConstantsRepo
-): InitialiseCalculatorUseCase {
+): CreateCalculatorUseCase {
     return async () => {
         const constants = await theStateConstantsRepo.getTheStateConstants()
 

@@ -12,7 +12,7 @@ import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
-export type InitialiseCalculatorUseCase = () => Promise<Calculator>
+export type CreateCalculatorUseCase = () => Promise<Calculator>
 
 export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,

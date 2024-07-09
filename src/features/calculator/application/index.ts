@@ -5,6 +5,7 @@ import { createGetCalculatorUseCase } from "./getCalculatorUseCase"
 import { createApplyUserSettingsUseCase } from "./applyUserSettingsUseCase"
 import { createSetCalculationDateUseCase } from "./setCalculationDateUseCase"
 import { createUpdateDebtUseCase } from "./updateDebtUseCase"
+import { createGetCalculatorDebtUseCase } from "./getCalculatorDebtUseCase"
 
 export function createCalculatorUseCases(
     calculatorStoreRepo: CalculatorStoreRepo
@@ -12,6 +13,7 @@ export function createCalculatorUseCases(
     return {
         createCalculatorFromConstants: createInitialiseCalculatorUseCase(),
         getCalculator: createGetCalculatorUseCase(calculatorStoreRepo),
+        getDebt: createGetCalculatorDebtUseCase(calculatorStoreRepo),
         addDebt: createAddDebtUseCase(calculatorStoreRepo),
         applyUserSettings: createApplyUserSettingsUseCase(calculatorStoreRepo),
         setCalculationDate:

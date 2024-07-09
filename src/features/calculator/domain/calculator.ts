@@ -354,6 +354,15 @@ export function setCalculationDate(date: Date) {
         })
 }
 
+export function getCalculatorDebt(
+    debtPeriod: BillingPeriod,
+    calculator: Calculator
+): Debt | undefined {
+    return calculator.debts.find((x) =>
+        billingPeriodShed.equal(x.period, debtPeriod)
+    )
+}
+
 export function addCalculatorDebts(debts: Debt[]) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
@@ -450,6 +459,7 @@ export const calculatorShed = {
     init: initCalculator,
     setConfig: setCalculatorConfig,
     setCalculationDate,
+    getDebt: getCalculatorDebt,
     addDebts: addCalculatorDebts,
     deleteDebt: deleteCalculatorDebt,
     clearDebts: clearCalculatorDebts,

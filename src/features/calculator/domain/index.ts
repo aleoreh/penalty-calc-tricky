@@ -24,6 +24,10 @@ export type ApplyUserSettingsUseCase = (
 
 export type SetCalculationDateUseCase = (calculationDate: Date) => void
 
+export type GetCalculatorDebtUseCase = (
+    debtPeriod: BillingPeriod
+) => Debt | undefined
+
 export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,
     dueDate: Date,

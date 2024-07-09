@@ -3,7 +3,11 @@ import Opaque, * as O from "ts-opaque"
 export type Kopek = Opaque<number, "Kopek">
 
 export function numberAsKopek(x: number): Kopek {
-    return x as Kopek
+    return O.create(x)
+}
+
+export function kopekAsNumber(x: Kopek): number {
+    return O.widen(x)
 }
 
 export const kopekFromRuble = (x: number): Kopek => {
@@ -32,6 +36,7 @@ export function multiplyKopekByScalar(scalar: number) {
 
 export const kopekShed = {
     asKopek: numberAsKopek,
+    asNumber: kopekAsNumber,
     fromRuble: kopekFromRuble,
     toRuble: kopekToRuble,
     add: addKopeks,

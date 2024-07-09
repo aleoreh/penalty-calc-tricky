@@ -14,6 +14,7 @@ import userSettingsShed from "../domain/userSettings"
 
 const billingPeriodArb = date().map(billingPeriodFromDate)
 const kopekArb = integer().map(numberAsKopek)
+const dateArb = date({ min: new Date("1970-01-01") })
 
 let calculator: Calculator
 let calculatorStoreRepo: CalculatorStoreRepo
@@ -52,15 +53,22 @@ describe("Приложение", () => {
         }
     )
 
-    it(
-        "позволяет устанавливать в калькулятор пользовательские настройки",
-        () => {
-            const prev = calculatorStoreRepo.getCalculator()
-            const userSettings = userSettingsShed.init()
-            useCases.applyUserSettings(userSettings)
-            const result = calculatorStoreRepo.getCalculator()
+    it("позволяет устанавливать в калькулятор пользовательские настройки", () => {
+        const prev = calculatorStoreRepo.getCalculator()
+        const userSettings = userSettingsShed.init()
+        useCases.applyUserSettings(userSettings)
+        const result = calculatorStoreRepo.getCalculator()
 
-            expect(result.userSettings).toBe(prev.userSettings)
+        expect(result.userSettings).toBe(prev.userSettings)
+    })
+
+    it.prop([dateArb])(
+        "позволяет устанавливать дату расчёта",
+        (calculationDate) => {
+            useCases.setCalculationDate(calculationDate)
+            const next = calculatorStoreRepo.getCalculator()
+
+            expect(next.calculationDate).toEqual(calculationDate)
         }
     )
 })

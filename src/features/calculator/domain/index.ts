@@ -22,6 +22,8 @@ export type ApplyUserSettingsUseCase = (
     userSettings: Partial<UserSettings>
 ) => void
 
+export type SetCalculationDateUseCase = (calculationDate: Date) => void
+
 export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,
     dueDate: Date,
@@ -60,11 +62,6 @@ export type SetCalculatorConfigUseCase = (
 
 export type SetUserSettingsUseCase = (
     userSettings: UserSettings,
-    calculator: Calculator
-) => Promise<void>
-
-export type SetCalculationDateUseCase = (
-    calculationDate: Date,
     calculator: Calculator
 ) => Promise<void>
 

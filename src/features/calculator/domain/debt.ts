@@ -81,8 +81,8 @@ export function updateDebt(params: { dueDate?: Date; amount?: Kopek }) {
     return (debt: Debt): Debt => {
         return {
             ...debt,
-            dueDate: params.dueDate || debt.dueDate,
-            amount: params.amount || debt.amount,
+            dueDate: params.dueDate ?? debt.dueDate,
+            amount: params.amount ?? debt.amount,
         }
     }
 }

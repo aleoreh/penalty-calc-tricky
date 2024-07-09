@@ -14,9 +14,7 @@ import { UserSettings } from "./userSettings"
 
 export type GetTheStateConstantsUseCase = () => Promise<TheStateConstants>
 
-export type CreateCalculatorUseCase = () => Promise<Calculator>
-
-export type CreateCalculatorFromConstantsUseCase = (
+export type CreateInitialiseCalculatorUseCase = (
     theStateConstants: TheStateConstants
 ) => Calculator
 

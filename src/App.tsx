@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { ApplicationProvider } from "./contexts/applicationContext"
-import { createCreateCalculatorFromConstantsUseCase } from "./features/calculator/application/createCalculatorUseCase"
+import { createInitialiseUseCase } from "./features/calculator/application/initialiseCalculatorUseCase"
 import { Calculator } from "./features/calculator/domain/calculator"
 import { createCalculatorStoreSimpleRepo } from "./features/calculator/infrastructure/calculatorStoreSimpeRepo"
 import { theStateConstantsStaticRepo as theStateConstantsRepo } from "./features/calculator/infrastructure/theStateConstantsStaticRepo"
@@ -13,7 +13,7 @@ function createDependencies(calculator: Calculator) {
 }
 
 const createCalculatorFromConstants =
-    createCreateCalculatorFromConstantsUseCase()
+    createInitialiseUseCase()
 
 function App() {
     const [calculator, setCalculator] = useState<Calculator | undefined>(

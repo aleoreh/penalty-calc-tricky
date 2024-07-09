@@ -1,9 +1,9 @@
 import { ReactNode, createContext } from "react"
-import { createCalculatorApplication } from "../features/calculator/application"
+import { createCalculatorUseCases } from "../features/calculator/application"
 import { CalculatorStoreRepo } from "../features/calculator/domain"
 
 type ApplicationContextType = {
-    calculatorApplication: ReturnType<typeof createCalculatorApplication>
+    useCases: ReturnType<typeof createCalculatorUseCases>
 }
 
 export const ApplicationContext = createContext<ApplicationContextType>(
@@ -25,8 +25,8 @@ export function ApplicationProvider({
     return (
         <ApplicationContext.Provider
             value={{
-                calculatorApplication:
-                    createCalculatorApplication(calculatorStoreRepo),
+                useCases:
+                    createCalculatorUseCases(calculatorStoreRepo),
             }}
         >
             {children}

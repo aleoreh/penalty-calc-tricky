@@ -1,17 +1,33 @@
-import { useApplicationContext } from "../contexts/applicationContextHook"
+import { useState } from "react"
+import { useApplication as useApplicationUseCases } from "../contexts/applicationContextHook"
 import domain from "../features/calculator/domain"
 import { billingPeriodFromDate } from "../lib/billing-period"
 import { kopekFromRuble } from "../lib/kopek"
 
+function useCalculator() {
+    const { useCases } = useApplicationUseCases()
+    const [calculator, setCalculator] = useState(useCases.getCalculator())
+
+    const dispatch = (callback: () => void) => {
+        callback()
+        setCalculator(useCases.getCalculator())
+    }
+
+    return {
+        calculator,
+        dispatch,
+        ...useCases,
+    }
+}
+
 export function Home() {
-    const { app } = useApplicationContext()
-    const calculator = app.getCalculator()
+    const { calculator, dispatch, addDebt } = useCalculator()
 
     const clickHandler = () => {
-        console.log("click")
         const debtPeriod = billingPeriodFromDate(new Date("2024-01-01"))
         const dueDate = domain.getDefaultDueDate(debtPeriod, 10)
-        app.addDebt(debtPeriod, dueDate, kopekFromRuble(1000))
+
+        dispatch(() => addDebt(debtPeriod, dueDate, kopekFromRuble(1000)))
     }
 
     return (
@@ -20,3 +36,4 @@ export function Home() {
         </div>
     )
 }
+

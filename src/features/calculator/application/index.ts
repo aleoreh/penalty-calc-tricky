@@ -1,14 +1,14 @@
 import { CalculatorStoreRepo } from "../domain"
 import { createAddDebtUseCase } from "./addDebtUseCase"
-import { createCreateCalculatorFromConstantsUseCase } from "./createCalculatorUseCase"
+import { createInitialiseUseCase } from "./initialiseCalculatorUseCase"
 import { createGetCalculatorUseCase } from "./getCalculatorUseCase"
 
-export function createCalculatorApplication(
+export function createCalculatorUseCases(
     calculatorStoreRepo: CalculatorStoreRepo
 ) {
     return {
         createCalculatorFromConstants:
-            createCreateCalculatorFromConstantsUseCase(),
+            createInitialiseUseCase(),
         getCalculator: createGetCalculatorUseCase(calculatorStoreRepo),
         addDebt: createAddDebtUseCase(calculatorStoreRepo),
     }

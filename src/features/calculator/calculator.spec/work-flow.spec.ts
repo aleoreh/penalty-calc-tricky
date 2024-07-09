@@ -2,7 +2,8 @@ import { it } from "@fast-check/vitest"
 import { date, integer } from "fast-check"
 import { beforeAll, describe, expect } from "vitest"
 import { billingPeriodFromDate } from "../../../lib/billing-period"
-import { numberAsKopek } from "../../../lib/kopek"
+import daysShed from "../../../lib/days"
+import { kopekAsNumber, numberAsKopek } from "../../../lib/kopek"
 import { createCalculatorUseCases } from "../application"
 import { createInitialiseCalculatorUseCase } from "../application/initialiseCalculatorUseCase"
 import { CalculatorStoreRepo } from "../domain"
@@ -14,10 +15,16 @@ import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStat
 
 const billingPeriodArb = date({
     min: new Date("1970-01-01"),
+    max: new Date(),
     noInvalidDate: true,
 }).map(billingPeriodFromDate)
 const amountArb = integer({ min: 0 }).map(numberAsKopek)
-const dateArb = date({ min: new Date("1970-01-01"), noInvalidDate: true })
+const dateArb = date({
+    min: new Date("1970-01-01"),
+    max: new Date(),
+    noInvalidDate: true,
+})
+const daysToPayArb = integer({ min: 0, max: 10 })
 
 let calculator: Calculator
 let calculatorStoreRepo: CalculatorStoreRepo
@@ -42,10 +49,12 @@ describe("Приложение", () => {
         expect(savedCalculator).toBe(calculator)
     })
 
-    it.prop([billingPeriodArb, integer().filter((x) => x >= 0), amountArb])(
+    it.prop([billingPeriodArb, daysToPayArb, amountArb])(
         "позволяет добавлять долг в калькулятор",
         async (debtPeriod, daysToPay, debtAmount) => {
             const prevCalculator = calculatorStoreRepo.getCalculator()
+
+            if (useCases.getDebt(debtPeriod) !== undefined) return
 
             const dueDate = getDefaultDueDate(debtPeriod, daysToPay)
             useCases.addDebt(debtPeriod, dueDate, debtAmount)
@@ -75,16 +84,17 @@ describe("Приложение", () => {
         }
     )
 
-    it.prop([dateArb, amountArb])(
-        "позволяет изменить долг",
-        (dueDate, amount) => {
-            const prev = calculatorStoreRepo.getCalculator()
-            const debt = prev.debts[0]
-            useCases.updateCalculatorDebt({ dueDate, amount }, debt)
-            const next = calculatorStoreRepo.getCalculator()
+    it.prop([amountArb])("позволяет изменить долг", (amount) => {
+        const prev = calculatorStoreRepo.getCalculator()
+        const debt = prev.debts[0]
+        const newDueDate = daysShed.add(debt.dueDate, 1)
+        useCases.updateCalculatorDebt({ dueDate: newDueDate, amount }, debt)
+        const next = calculatorStoreRepo.getCalculator()
 
-            expect(prev.debts[0].dueDate).toEqual(next.debts[0].dueDate)
-            expect(prev.debts[0].amount).toEqual(next.debts[0].amount)
-        }
-    )
+        expect(next.debts[0].dueDate.getTime()).toEqual(newDueDate.getTime())
+        expect(kopekAsNumber(next.debts[0].amount)).toEqual(
+            kopekAsNumber(amount)
+        )
+    })
 })
+

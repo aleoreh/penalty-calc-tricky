@@ -12,8 +12,6 @@ import { UserSettings } from "./userSettings"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
-export type GetTheStateConstantsUseCase = () => Promise<TheStateConstants>
-
 export type CreateInitialiseCalculatorUseCase = (
     theStateConstants: TheStateConstants
 ) => Calculator

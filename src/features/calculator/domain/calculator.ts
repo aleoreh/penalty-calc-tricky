@@ -404,7 +404,7 @@ export function updateCalculatorDebt(debt: Debt) {
         return distributePayments({
             ...calculator,
             debts: calculator.debts.map((x) =>
-                x.period !== debt.period ? x : debt
+                !billingPeriodShed.equal(x.period, debt.period) ? x : debt
             ),
         })
     }

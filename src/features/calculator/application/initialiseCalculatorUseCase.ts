@@ -8,7 +8,7 @@ const defaultUserSettings: UserSettings = {
     distributionMethod: "fifo",
 }
 
-export function createInitialiseUseCase(): CreateInitialiseCalculatorUseCase {
+export function createInitialiseCalculatorUseCase(): CreateInitialiseCalculatorUseCase {
     return (theStateConstants) => {
         const calculatorConfig = calculatorConfigShed.fromTheStateConstants(
             defaultUserSettings.legalEntity,

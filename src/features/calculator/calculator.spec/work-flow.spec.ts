@@ -10,6 +10,7 @@ import { Calculator } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
 import { createCalculatorStoreSimpleRepo } from "../infrastructure/calculatorStoreSimpeRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
+import userSettingsShed from "../domain/userSettings"
 
 const billingPeriodArb = date().map(billingPeriodFromDate)
 const kopekArb = integer().map(numberAsKopek)
@@ -27,11 +28,11 @@ beforeAll(async () => {
 })
 
 describe("Приложение", () => {
-    it("Инциализирует калькулятор при запуске", async () => {
+    it("инциализирует калькулятор при запуске", async () => {
         expect(calculator).haveOwnProperty("calculationDate")
     })
 
-    it("Хранит калькулятор в хранилище", () => {
+    it("хранит калькулятор в хранилище", () => {
         const savedCalculator = calculatorStoreRepo.getCalculator()
 
         expect(savedCalculator).toBe(calculator)
@@ -48,6 +49,18 @@ describe("Приложение", () => {
             const result = calculatorStoreRepo.getCalculator()
 
             expect(result.debts.length).toBe(prevCalculator.debts.length + 1)
+        }
+    )
+
+    it(
+        "позволяет устанавливать в калькулятор пользовательские настройки",
+        () => {
+            const prev = calculatorStoreRepo.getCalculator()
+            const userSettings = userSettingsShed.init()
+            useCases.applyUserSettings(userSettings)
+            const result = calculatorStoreRepo.getCalculator()
+
+            expect(result.userSettings).toBe(prev.userSettings)
         }
     )
 })

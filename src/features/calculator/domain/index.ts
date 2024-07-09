@@ -18,11 +18,17 @@ export type CreateInitialiseCalculatorUseCase = (
 
 export type GetCalculatorUseCase = () => Calculator
 
+export type ApplyUserSettingsUseCase = (
+    userSettings: Partial<UserSettings>
+) => void
+
 export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,
     dueDate: Date,
     debtAmount: Kopek
 ) => Promise<void>
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export type DeleteDebtUseCase = (
     debtPeriod: BillingPeriod

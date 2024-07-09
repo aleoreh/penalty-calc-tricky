@@ -30,18 +30,18 @@ export type AddDebtUseCase = (
     debtAmount: Kopek
 ) => Promise<void>
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-export type DeleteDebtUseCase = (
-    debtPeriod: BillingPeriod
-) => Promise<Calculator>
-
 export type UpdateDebtUseCase = (
     params: {
         dueDate?: Date
         amount?: Kopek
     },
     debt: Debt
+) => void
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+export type DeleteDebtUseCase = (
+    debtPeriod: BillingPeriod
 ) => Promise<Calculator>
 
 export type ConfigureCalculatorUseCase = (

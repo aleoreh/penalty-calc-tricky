@@ -8,13 +8,16 @@ import { createInitialiseCalculatorUseCase } from "../application/initialiseCalc
 import { CalculatorStoreRepo } from "../domain"
 import { Calculator } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
+import userSettingsShed from "../domain/userSettings"
 import { createCalculatorStoreSimpleRepo } from "../infrastructure/calculatorStoreSimpeRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
-import userSettingsShed from "../domain/userSettings"
 
-const billingPeriodArb = date().map(billingPeriodFromDate)
-const kopekArb = integer().map(numberAsKopek)
-const dateArb = date({ min: new Date("1970-01-01") })
+const billingPeriodArb = date({
+    min: new Date("1970-01-01"),
+    noInvalidDate: true,
+}).map(billingPeriodFromDate)
+const amountArb = integer({ min: 0 }).map(numberAsKopek)
+const dateArb = date({ min: new Date("1970-01-01"), noInvalidDate: true })
 
 let calculator: Calculator
 let calculatorStoreRepo: CalculatorStoreRepo
@@ -39,7 +42,7 @@ describe("Приложение", () => {
         expect(savedCalculator).toBe(calculator)
     })
 
-    it.prop([billingPeriodArb, integer().filter((x) => x >= 0), kopekArb])(
+    it.prop([billingPeriodArb, integer().filter((x) => x >= 0), amountArb])(
         "позволяет добавлять долг в калькулятор",
         async (debtPeriod, daysToPay, debtAmount) => {
             const prevCalculator = calculatorStoreRepo.getCalculator()
@@ -69,6 +72,19 @@ describe("Приложение", () => {
             const next = calculatorStoreRepo.getCalculator()
 
             expect(next.calculationDate).toEqual(calculationDate)
+        }
+    )
+
+    it.prop([dateArb, amountArb])(
+        "позволяет изменить долг",
+        (dueDate, amount) => {
+            const prev = calculatorStoreRepo.getCalculator()
+            const debt = prev.debts[0]
+            useCases.updateCalculatorDebt({ dueDate, amount }, debt)
+            const next = calculatorStoreRepo.getCalculator()
+
+            expect(prev.debts[0].dueDate).toEqual(next.debts[0].dueDate)
+            expect(prev.debts[0].amount).toEqual(next.debts[0].amount)
         }
     )
 })

@@ -5,15 +5,13 @@ import debtShed from "../domain/debt"
 export function createUpdateDebtUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
 ): UpdateDebtUseCase {
-    return async (params, debt) => {
-        const calculator = await calculatorStoreRepo.getCalculator()
-
+    return (params, debt) => {
+        const calculator = calculatorStoreRepo.getCalculator()
         const newDebt = debtShed.updateDebt(params)(debt)
-
         const newCalculator = calculatorShed.updateDebt(newDebt)(calculator)
-
-        await calculatorStoreRepo.setCalculator(newCalculator)
+        calculatorStoreRepo.setCalculator(newCalculator)
 
         return newCalculator
     }
 }
+

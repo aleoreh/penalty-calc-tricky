@@ -14,6 +14,18 @@ export type Payment = {
     id: PaymentId
 } & PaymentBody
 
+export function initPayment(
+    date: Date,
+    amount: Kopek,
+    period?: BillingPeriod
+): PaymentBody {
+    return {
+        date,
+        amount,
+        period,
+    }
+}
+
 export function paymentIdToNumber(paymentId: PaymentId): number {
     return widen(paymentId)
 }
@@ -23,8 +35,10 @@ export function numberToPaymentId(value: number): PaymentId {
 }
 
 export const paymentShed = {
+    init: initPayment,
     idToNumber: paymentIdToNumber,
     numberToId: numberToPaymentId,
 }
 
 export default paymentShed
+

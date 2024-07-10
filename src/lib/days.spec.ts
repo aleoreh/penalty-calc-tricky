@@ -1,7 +1,14 @@
 import { it } from "@fast-check/vitest"
 import { Arbitrary, constant, date, oneof } from "fast-check"
 import { describe, expect } from "vitest"
-import { addDay, beginOfPeriod, compareDays, endOfPeriod } from "./days"
+import {
+    addDay,
+    beginOfPeriod,
+    compareDays,
+    daysDiff,
+    daysEqual,
+    endOfPeriod,
+} from "./days"
 
 const dateArb = date({
     min: new Date("1970-01-01"),
@@ -68,4 +75,17 @@ describe("days", () => {
             expect(res).toEqual("GT")
         }
     })
+
+    it.prop([dateArb, dateArb])(
+        "вычисляет разницу в днях между датами",
+        (date1, date2) => {
+            const expectedRes = daysDiff(date1, date2)
+            const check = addDay(date1, expectedRes)
+
+            expect(
+                daysEqual(check, date2),
+                `expected that ${date1} + ${expectedRes} = ${date2}`
+            ).toEqual(true)
+        }
+    )
 })

@@ -96,5 +96,14 @@ describe("Приложение", () => {
             kopekAsNumber(amount)
         )
     })
+
+    it("позволяет удалить долг", () => {
+        const prev = calculatorStoreRepo.getCalculator()
+        const debt = prev.debts[0]
+        useCases.deleteCalculatorDebt(debt.period)
+        const next = calculatorStoreRepo.getCalculator()
+
+        expect(next.debts.length).toEqual(prev.debts.length - 1)
+    })
 })
 

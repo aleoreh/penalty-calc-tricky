@@ -6,6 +6,7 @@ import { createApplyUserSettingsUseCase } from "./applyUserSettingsUseCase"
 import { createSetCalculationDateUseCase } from "./setCalculationDateUseCase"
 import { createUpdateDebtUseCase } from "./updateDebtUseCase"
 import { createGetCalculatorDebtUseCase } from "./getCalculatorDebtUseCase"
+import { createDeleteDebtUseCase } from "./deleteDebtUseCase"
 
 export function createCalculatorUseCases(
     calculatorStoreRepo: CalculatorStoreRepo
@@ -19,6 +20,7 @@ export function createCalculatorUseCases(
         setCalculationDate:
             createSetCalculationDateUseCase(calculatorStoreRepo),
         updateCalculatorDebt: createUpdateDebtUseCase(calculatorStoreRepo),
+        deleteCalculatorDebt: createDeleteDebtUseCase(calculatorStoreRepo),
     }
 }
 

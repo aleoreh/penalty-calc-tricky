@@ -42,11 +42,11 @@ export type UpdateDebtUseCase = (
     debt: Debt
 ) => void
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
 export type DeleteDebtUseCase = (
     debtPeriod: BillingPeriod
-) => Promise<Calculator>
+) => void
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export type ConfigureCalculatorUseCase = (
     calculationDate: Date,

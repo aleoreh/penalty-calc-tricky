@@ -5,12 +5,9 @@ export function createDeleteDebtUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
 ): DeleteDebtUseCase {
     return async (debtPeriod) => {
-        const calculator = await calculatorStoreRepo.getCalculator()
-
+        const calculator = calculatorStoreRepo.getCalculator()
         const newCalculator = calculatorShed.deleteDebt(debtPeriod)(calculator)
-
-        await calculatorStoreRepo.setCalculator(newCalculator)
-
-        return newCalculator
+        calculatorStoreRepo.setCalculator(newCalculator)
     }
 }
+

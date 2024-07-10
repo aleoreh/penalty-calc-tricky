@@ -62,7 +62,7 @@ export const compareDays = (date1: Date, date2: Date): Ordering => {
     }
 }
 
-export function daysDiff(date1: Date, date2: Date): number {
+export function daysDelta(date1: Date, date2: Date): number {
     // https://stackoverflow.com/a/12863278
     const greg = (y0: number, m0: number, d0: number) => {
         const m = Math.floor((m0 + 9) % 12)
@@ -89,7 +89,7 @@ export const daysShed = {
     endOfPeriod,
     equals: daysEqual,
     compare: compareDays,
-    diff: daysDiff,
+    delta: daysDelta,
 }
 
 export default daysShed

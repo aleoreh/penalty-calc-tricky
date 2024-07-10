@@ -5,7 +5,7 @@ import {
     addDay,
     beginOfPeriod,
     compareDays,
-    daysDiff,
+    daysDelta,
     daysEqual,
     endOfPeriod,
 } from "./days"
@@ -79,7 +79,7 @@ describe("days", () => {
     it.prop([dateArb, dateArb])(
         "вычисляет разницу в днях между датами",
         (date1, date2) => {
-            const expectedRes = daysDiff(date1, date2)
+            const expectedRes = daysDelta(date1, date2)
             const check = addDay(date1, expectedRes)
 
             expect(

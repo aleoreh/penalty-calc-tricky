@@ -67,7 +67,7 @@ function distributePayment(
             ? -1
             : billingPeriodShed.equal(d2.period, payment.period)
             ? 1
-            : daysShed.diff(d1.period, d2.period)
+            : daysShed.delta(d1.period, d2.period)
     }
 
     const sortedDebts = [...debts].sort(sorter)
@@ -147,7 +147,7 @@ function doesDefermentActs(
 }
 
 function daysOverdue(dueDate: Date, date: Date): number {
-    return daysShed.diff(dueDate, date)
+    return daysShed.delta(dueDate, date)
 }
 
 function calculateDailyAmount(

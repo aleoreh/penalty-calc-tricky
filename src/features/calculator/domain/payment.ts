@@ -26,6 +26,21 @@ export function initPayment(
     }
 }
 
+export function updatePayment(params: {
+    date?: Date
+    amount?: Kopek
+    period?: BillingPeriod
+}) {
+    return (payment: Payment): Payment => {
+        return {
+            ...payment,
+            date: params.date ?? payment.date,
+            amount: params.amount ?? payment.amount,
+            period: params.period ?? payment.period,
+        }
+    }
+}
+
 export function paymentIdToNumber(paymentId: PaymentId): number {
     return widen(paymentId)
 }
@@ -36,6 +51,7 @@ export function numberToPaymentId(value: number): PaymentId {
 
 export const paymentShed = {
     init: initPayment,
+    update: updatePayment,
     idToNumber: paymentIdToNumber,
     numberToId: numberToPaymentId,
 }

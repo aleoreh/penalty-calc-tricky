@@ -12,6 +12,7 @@ import { getDefaultDueDate } from "../domain/debt"
 import userSettingsShed from "../domain/userSettings"
 import { createCalculatorStoreSimpleRepo } from "../infrastructure/calculatorStoreSimpeRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
+import paymentShed from "../domain/payment"
 
 const billingPeriodArb = date({
     min: new Date("1970-01-01"),
@@ -105,5 +106,10 @@ describe("Приложение", () => {
 
         expect(next.debts.length).toEqual(prev.debts.length - 1)
     })
+
+    // it.prop([])("позволяет добавить оплату", () => {
+    //     const prev = calculatorStoreRepo.getCalculator()
+    //     const newPayment = paymentShed.init()
+    // })
 })
 

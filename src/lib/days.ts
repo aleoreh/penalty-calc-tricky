@@ -18,9 +18,9 @@ export const beginOfPeriod = (date: Date, part: "month" | "year"): Date => {
     }
 }
 
-export const addDay = (date: Date, count: number = 1): Date => {
+export const addDay = (date: Date, count?: number): Date => {
     const res = new Date(date)
-    res.setDate(date.getDate() + count)
+    res.setDate(date.getDate() + (count === undefined ? 1 : Math.round(count)))
     return res
 }
 

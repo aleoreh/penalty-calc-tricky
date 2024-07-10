@@ -410,6 +410,13 @@ export function updateCalculatorDebt(debt: Debt) {
     }
 }
 
+export function getCalculatorPayment(
+    id: PaymentId,
+    calculator: Calculator
+): Payment | undefined {
+    return calculator.payments.find((x) => x.id === id)
+}
+
 export function addCalculatorPayments(payments: PaymentBody[]) {
     return (calculator: Calculator): Calculator => {
         const newPayments = payments.reduce((acc, paymentBody) => {
@@ -465,6 +472,7 @@ export const calculatorShed = {
     clearDebts: clearCalculatorDebts,
     setDebts: setCalculatorDebts,
     updateDebt: updateCalculatorDebt,
+    getPayment: getCalculatorPayment,
     addPayments: addCalculatorPayments,
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,

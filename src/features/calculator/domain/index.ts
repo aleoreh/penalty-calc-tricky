@@ -9,6 +9,7 @@ import {
 import { Debt, getDefaultDueDate } from "./debt"
 import { TheStateConstants } from "./types"
 import { UserSettings } from "./userSettings"
+import { Payment, PaymentId } from "./payment"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
@@ -42,9 +43,9 @@ export type UpdateDebtUseCase = (
     debt: Debt
 ) => void
 
-export type DeleteDebtUseCase = (
-    debtPeriod: BillingPeriod
-) => void
+export type DeleteDebtUseCase = (debtPeriod: BillingPeriod) => void
+
+export type GetCalculatorPaymentUseCase = (id: PaymentId) => Payment | undefined
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 

@@ -63,7 +63,24 @@ export const compareDays = (date1: Date, date2: Date): Ordering => {
 }
 
 export function daysDiff(date1: Date, date2: Date): number {
-    return (date2.valueOf() - date1.valueOf()) / 1000 / 3600 / 24
+    // https://stackoverflow.com/a/12863278
+    const greg = (y0: number, m0: number, d0: number) => {
+        const m = Math.floor((m0 + 9) % 12)
+        const y = y0 - Math.floor(m / 10)
+        return (
+            365 * y +
+            Math.floor(y / 4) -
+            Math.floor(y / 100) +
+            Math.floor(y / 400) +
+            Math.floor((m * 306 + 5) / 10) +
+            (d0 - 1)
+        )
+    }
+
+    return (
+        greg(date2.getFullYear(), date2.getMonth() + 1, date2.getDate()) -
+        greg(date1.getFullYear(), date1.getMonth() + 1, date1.getDate())
+    )
 }
 
 export const daysShed = {
@@ -72,7 +89,7 @@ export const daysShed = {
     endOfPeriod,
     equals: daysEqual,
     compare: compareDays,
-    diff: daysDiff
+    diff: daysDiff,
 }
 
 export default daysShed

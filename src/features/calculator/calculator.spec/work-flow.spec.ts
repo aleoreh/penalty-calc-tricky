@@ -116,5 +116,17 @@ describe("Приложение", () => {
             expect(next.payments.length).toEqual(prev.payments.length + 1)
         }
     )
+
+    it.prop([dateArb, amountArb, billingPeriodArb])(
+        "позволяет изменить оплату",
+        (date, amount, period) => {
+            const prev = calculatorStoreRepo.getCalculator()
+            const payment = prev.payments[0]
+            useCases.updatePayment({ date, amount, period }, payment)
+            const next = calculatorStoreRepo.getCalculator()
+
+            expect(next.payments[0].amount).toEqual(next.payments[0].amount)
+        }
+    )
 })
 

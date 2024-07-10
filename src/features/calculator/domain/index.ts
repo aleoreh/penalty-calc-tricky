@@ -53,6 +53,14 @@ export type AddPaymentUseCase = (
     period?: BillingPeriod
 ) => void
 
+export type UpdatePaymentUseCase = (
+    params: {
+        date?: Date
+        amount?: Kopek
+        period?: BillingPeriod
+    },
+    payment: Payment
+) => void
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export type ConfigureCalculatorUseCase = (

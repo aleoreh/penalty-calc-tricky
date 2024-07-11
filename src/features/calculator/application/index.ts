@@ -12,6 +12,7 @@ import { createUpdatePaymentUseCase } from "./updatePaymentUseCase"
 import { createDeletePaymentUseCase } from "../deletePaymentUseCase"
 import { createClearDebtsUseCase } from "./clearDebtsUseCase"
 import { createClearPaymentsUseCase } from "./clearPaymentsUseCase"
+import { createSetCalculationKeyRateUseCase } from "./setCalculationKeyRateUseCase"
 
 export function createCalculatorUseCases(
     calculatorStoreRepo: CalculatorStoreRepo
@@ -24,6 +25,7 @@ export function createCalculatorUseCases(
         applyUserSettings: createApplyUserSettingsUseCase(calculatorStoreRepo),
         setCalculationDate:
             createSetCalculationDateUseCase(calculatorStoreRepo),
+        setCalculationKeyRate: createSetCalculationKeyRateUseCase(calculatorStoreRepo),
         updateCalculatorDebt: createUpdateDebtUseCase(calculatorStoreRepo),
         deleteCalculatorDebt: createDeleteDebtUseCase(calculatorStoreRepo),
         clearCalculatorDebts: createClearDebtsUseCase(calculatorStoreRepo),

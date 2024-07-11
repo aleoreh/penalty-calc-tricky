@@ -1,5 +1,5 @@
 import { it } from "@fast-check/vitest"
-import { Arbitrary, array, date, integer, record } from "fast-check"
+import { Arbitrary, array, date, float, integer, record } from "fast-check"
 import { beforeAll, describe, expect } from "vitest"
 import { billingPeriodFromDate } from "../../../lib/billing-period"
 import daysShed from "../../../lib/days"
@@ -13,6 +13,7 @@ import { numberToPaymentId, Payment } from "../domain/payment"
 import userSettingsShed from "../domain/userSettings"
 import { createCalculatorStoreReduxRepo } from "../infrastructure/calculatorStoreReduxRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
+import { getKeyRate } from "../domain/calculator-config"
 
 const billingPeriodArb = date({
     min: new Date("1970-01-01"),
@@ -32,13 +33,7 @@ const paymentArb: Arbitrary<Payment> = record({
     amount: amountArb,
 })
 const paymentsArb = array(paymentArb, { minLength: 2 })
-// const generatePayments = property(gen(), (g) => {
-//     const size = g(nat, { max: 10 })
-//     const res = [] as Payment[]
-//     for (let index = 0; index !== size; ++index) {
-//         res.push(g(() => paymentArb))
-//     }
-// })
+const keyRateArb = float({ noDefaultInfinity: true, noNaN: true })
 
 let calculator: Calculator
 let calculatorStoreRepo: CalculatorStoreRepo
@@ -98,6 +93,18 @@ describe("Приложение", () => {
             const next = calculatorStoreRepo.getCalculator()
 
             expect(next.calculationDate).toEqual(calculationDate)
+        }
+    )
+
+    it.prop([keyRateArb])(
+        "позволяет устанавливать ключевую ставку",
+        (keyRate) => {
+            useCases.setCalculationKeyRate(keyRate)
+            const next = calculatorStoreRepo.getCalculator()
+
+            expect(getKeyRate(next.config, next.calculationDate)).toEqual(
+                keyRate
+            )
         }
     )
 

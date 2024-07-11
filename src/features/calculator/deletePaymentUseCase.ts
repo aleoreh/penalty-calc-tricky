@@ -1,9 +1,9 @@
-import { CalculatorStoreRepo, deletePaymentUseCase } from "./domain"
+import { CalculatorStoreRepo, DeletePaymentUseCase } from "./domain"
 import calculatorShed from "./domain/calculator"
 
 export function createDeletePaymentUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
-): deletePaymentUseCase {
+): DeletePaymentUseCase {
     return (paymentId) => {
         const calculator = calculatorStoreRepo.getCalculator()
         const newCalculator =

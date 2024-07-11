@@ -1,11 +1,11 @@
 import { CalculatorStoreRepo } from "../domain"
-import { createAddDebtUseCase } from "./addDebtUseCase"
+import { createAddDebtUseCase as createAddCalculatorDebtUseCase } from "./addDebtUseCase"
 import { createInitialiseCalculatorUseCase } from "./initialiseCalculatorUseCase"
 import { createGetCalculatorUseCase } from "./getCalculatorUseCase"
 import { createApplyUserSettingsUseCase } from "./applyUserSettingsUseCase"
 import { createSetCalculationDateUseCase } from "./setCalculationDateUseCase"
 import { createUpdateDebtUseCase } from "./updateDebtUseCase"
-import { createGetCalculatorDebtUseCase } from "./getCalculatorDebtUseCase"
+import { createGetDebtUseCase } from "./getDebtUseCase"
 import { createDeleteDebtUseCase } from "./deleteDebtUseCase"
 import { createAddPaymentUseCase } from "./addPaymentUseCase"
 import { createUpdatePaymentUseCase } from "./updatePaymentUseCase"
@@ -20,8 +20,8 @@ export function createCalculatorUseCases(
     return {
         createCalculatorFromConstants: createInitialiseCalculatorUseCase(),
         getCalculator: createGetCalculatorUseCase(calculatorStoreRepo),
-        getDebt: createGetCalculatorDebtUseCase(calculatorStoreRepo),
-        addDebt: createAddDebtUseCase(calculatorStoreRepo),
+        getCalculatorDebt: createGetDebtUseCase(calculatorStoreRepo),
+        addCalculatorDebt: createAddCalculatorDebtUseCase(calculatorStoreRepo),
         applyUserSettings: createApplyUserSettingsUseCase(calculatorStoreRepo),
         setCalculationDate:
             createSetCalculationDateUseCase(calculatorStoreRepo),
@@ -29,8 +29,8 @@ export function createCalculatorUseCases(
         updateCalculatorDebt: createUpdateDebtUseCase(calculatorStoreRepo),
         deleteCalculatorDebt: createDeleteDebtUseCase(calculatorStoreRepo),
         clearCalculatorDebts: createClearDebtsUseCase(calculatorStoreRepo),
-        addPayment: createAddPaymentUseCase(calculatorStoreRepo),
-        updatePayment: createUpdatePaymentUseCase(calculatorStoreRepo),
+        addCalculatorPayment: createAddPaymentUseCase(calculatorStoreRepo),
+        updateCalculatorPayment: createUpdatePaymentUseCase(calculatorStoreRepo),
         deleteCalculatorPayment:
             createDeletePaymentUseCase(calculatorStoreRepo),
         clearCalculatorPayments:

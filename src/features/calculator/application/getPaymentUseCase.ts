@@ -1,9 +1,9 @@
-import { CalculatorStoreRepo, GetCalculatorPaymentUseCase } from "../domain"
+import { CalculatorStoreRepo, GetPaymentUseCase } from "../domain"
 import calculatorShed from "../domain/calculator"
 
-export function createGetCalculatorPaymentUseCase(
+export function createGetPaymentUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
-): GetCalculatorPaymentUseCase {
+): GetPaymentUseCase {
     return (id) => {
         const calculator = calculatorStoreRepo.getCalculator()
         return calculatorShed.getPayment(id, calculator)

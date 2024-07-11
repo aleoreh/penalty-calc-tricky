@@ -21,7 +21,7 @@ function useCalculator() {
 }
 
 export function Home() {
-    const { calculator, dispatch, addDebt } = useCalculator()
+    const { calculator, dispatch, addCalculatorDebt: addDebt } = useCalculator()
 
     const clickHandler = () => {
         const debtPeriod = billingPeriodFromDate(new Date("2024-01-01"))

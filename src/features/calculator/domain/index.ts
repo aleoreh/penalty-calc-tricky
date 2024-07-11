@@ -23,7 +23,7 @@ export type ApplyUserSettingsUseCase = (
 
 export type SetCalculationDateUseCase = (calculationDate: Date) => void
 
-export type GetCalculatorDebtUseCase = (
+export type GetDebtUseCase = (
     debtPeriod: BillingPeriod
 ) => Debt | undefined
 
@@ -45,7 +45,7 @@ export type DeleteDebtUseCase = (debtPeriod: BillingPeriod) => void
 
 export type ClearDebtsUseCase = () => void
 
-export type GetCalculatorPaymentUseCase = (id: PaymentId) => Payment | undefined
+export type GetPaymentUseCase = (id: PaymentId) => Payment | undefined
 
 export type AddPaymentUseCase = (
     date: Date,

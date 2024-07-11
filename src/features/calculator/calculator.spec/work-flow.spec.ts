@@ -66,10 +66,10 @@ describe("Приложение", () => {
         async (debtPeriod, daysToPay, debtAmount) => {
             const prevCalculator = calculatorStoreRepo.getCalculator()
 
-            if (useCases.getDebt(debtPeriod) !== undefined) return
+            if (useCases.getCalculatorDebt(debtPeriod) !== undefined) return
 
             const dueDate = getDefaultDueDate(debtPeriod, daysToPay)
-            useCases.addDebt(debtPeriod, dueDate, debtAmount)
+            useCases.addCalculatorDebt(debtPeriod, dueDate, debtAmount)
 
             const result = calculatorStoreRepo.getCalculator()
 
@@ -146,7 +146,7 @@ describe("Приложение", () => {
         "позволяет добавить оплату",
         (date, amount, period) => {
             const prev = calculatorStoreRepo.getCalculator()
-            useCases.addPayment(date, amount, period)
+            useCases.addCalculatorPayment(date, amount, period)
             const next = calculatorStoreRepo.getCalculator()
 
             expect(next.payments.length).toEqual(prev.payments.length + 1)
@@ -158,7 +158,7 @@ describe("Приложение", () => {
         (date, amount, period) => {
             const prev = calculatorStoreRepo.getCalculator()
             const payment = prev.payments[0]
-            useCases.updatePayment({ date, amount, period }, payment)
+            useCases.updateCalculatorPayment({ date, amount, period }, payment)
             const next = calculatorStoreRepo.getCalculator()
 
             expect(next.payments[0].amount).toEqual(next.payments[0].amount)
@@ -176,7 +176,7 @@ describe("Приложение", () => {
 
     it.prop([paymentsArb])("позволяет очистить список оплат", (payments) => {
         payments.forEach((payment) =>
-            useCases.addPayment(payment.date, payment.amount)
+            useCases.addCalculatorPayment(payment.date, payment.amount)
         )
         const prev = calculatorStoreRepo.getCalculator()
         useCases.clearCalculatorPayments()

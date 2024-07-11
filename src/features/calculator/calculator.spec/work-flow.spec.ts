@@ -39,14 +39,17 @@ beforeAll(async () => {
 })
 
 describe("Приложение", () => {
-    it("инциализирует калькулятор при запуске", async () => {
-        expect(calculator).haveOwnProperty("calculationDate")
+    it("возвращает новую ссылку при изменении", () => {
+        const prev = calculatorStoreRepo.getCalculator()
+        useCases.setCalculationDate(prev.calculationDate)
+        const next = calculatorStoreRepo.getCalculator()
+
+        expect(prev).toEqual(next)
+        expect(prev).not.toBe(next)
     })
 
-    it("хранит калькулятор в хранилище", () => {
-        const savedCalculator = calculatorStoreRepo.getCalculator()
-
-        expect(savedCalculator).toBe(calculator)
+    it("инциализирует калькулятор при запуске", async () => {
+        expect(calculator).haveOwnProperty("calculationDate")
     })
 
     it.prop([billingPeriodArb, daysToPayArb, amountArb])(
@@ -71,7 +74,7 @@ describe("Приложение", () => {
         useCases.applyUserSettings(userSettings)
         const result = calculatorStoreRepo.getCalculator()
 
-        expect(result.userSettings).toBe(prev.userSettings)
+        expect(result.userSettings).toEqual(prev.userSettings)
     })
 
     it.prop([dateArb])(

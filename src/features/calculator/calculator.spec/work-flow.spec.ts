@@ -131,5 +131,14 @@ describe("Приложение", () => {
             expect(next.payments[0].amount).toEqual(next.payments[0].amount)
         }
     )
+
+    it("позволяет удалить оплату", () => {
+        const prev = calculatorStoreRepo.getCalculator()
+        const paymentToDelete = prev.payments[0]
+        useCases.deleteCalculatorPayment(paymentToDelete.id)
+        const next = calculatorStoreRepo.getCalculator()
+
+        expect(next.payments.length).toEqual(prev.payments.length - 1)
+    })
 })
 

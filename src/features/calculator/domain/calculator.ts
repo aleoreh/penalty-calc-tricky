@@ -433,6 +433,15 @@ export function addCalculatorPayments(payments: PaymentBody[]) {
     }
 }
 
+export function deleteCalculatorPayment(paymentId: PaymentId) {
+    return (calculator: Calculator): Calculator => {
+        return distributePayments({
+            ...calculator,
+            payments: calculator.payments.filter((x) => x.id !== paymentId),
+        })
+    }
+}
+
 export function clearCalculatorPayments(calculator: Calculator): Calculator {
     return distributePayments({ ...calculator, payments: [] })
 }
@@ -474,6 +483,7 @@ export const calculatorShed = {
     updateDebt: updateCalculatorDebt,
     getPayment: getCalculatorPayment,
     addPayments: addCalculatorPayments,
+    deletePayment: deleteCalculatorPayment,
     clearPayments: clearCalculatorPayments,
     setPayments: setCalculatorPayments,
     setUserSettings: setCalculatorUserSettings,

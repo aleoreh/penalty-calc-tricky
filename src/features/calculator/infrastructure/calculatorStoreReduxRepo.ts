@@ -1,3 +1,5 @@
+import { BillingPeriod, billingPeriodFromDate } from "@/lib/billing-period"
+import { Kopek, kopekAsNumber, numberAsKopek } from "@/lib/kopek"
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import {
     array,
@@ -10,11 +12,6 @@ import {
     string,
     tuple,
 } from "decoders"
-import {
-    BillingPeriod,
-    billingPeriodFromDate,
-} from "../../../lib/billing-period"
-import { Kopek, kopekAsNumber, numberAsKopek } from "../../../lib/kopek"
 import { CalculatorStoreRepo } from "../domain"
 import { Calculator, DistributionMethod } from "../domain/calculator"
 import {

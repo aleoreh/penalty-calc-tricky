@@ -1,8 +1,8 @@
 import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
+import daysShed from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
-import { PaymentId } from "./payment"
-import daysShed from "../../../lib/days"
 import { pipe } from "@mobily/ts-belt"
+import { PaymentId } from "./payment"
 
 export type Payoff = {
     paymentId: PaymentId

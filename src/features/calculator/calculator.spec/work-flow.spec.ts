@@ -1,5 +1,5 @@
 import { it } from "@fast-check/vitest"
-import { date, integer } from "fast-check"
+import { Arbitrary, array, date, integer, record } from "fast-check"
 import { beforeAll, describe, expect } from "vitest"
 import { billingPeriodFromDate } from "../../../lib/billing-period"
 import daysShed from "../../../lib/days"
@@ -9,6 +9,7 @@ import { createInitialiseCalculatorUseCase } from "../application/initialiseCalc
 import { CalculatorStoreRepo } from "../domain"
 import { Calculator } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
+import { numberToPaymentId, Payment } from "../domain/payment"
 import userSettingsShed from "../domain/userSettings"
 import { createCalculatorStoreReduxRepo } from "../infrastructure/calculatorStoreReduxRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
@@ -25,6 +26,19 @@ const dateArb = date({
     noInvalidDate: true,
 })
 const daysToPayArb = integer({ min: 0, max: 10 })
+const paymentArb: Arbitrary<Payment> = record({
+    id: integer().map(numberToPaymentId),
+    date: dateArb,
+    amount: amountArb,
+})
+const paymentsArb = array(paymentArb, { minLength: 2 })
+// const generatePayments = property(gen(), (g) => {
+//     const size = g(nat, { max: 10 })
+//     const res = [] as Payment[]
+//     for (let index = 0; index !== size; ++index) {
+//         res.push(g(() => paymentArb))
+//     }
+// })
 
 let calculator: Calculator
 let calculatorStoreRepo: CalculatorStoreRepo
@@ -151,6 +165,21 @@ describe("Приложение", () => {
         const next = calculatorStoreRepo.getCalculator()
 
         expect(next.payments.length).toEqual(prev.payments.length - 1)
+    })
+
+    it.prop([paymentsArb])("позволяет очистить список оплат", (payments) => {
+        payments.forEach((payment) =>
+            useCases.addPayment(payment.date, payment.amount)
+        )
+        const prev = calculatorStoreRepo.getCalculator()
+        useCases.clearCalculatorPayments()
+        const next = calculatorStoreRepo.getCalculator()
+
+        expect(
+            prev.payments.length,
+            "начальный список оплат был пустым"
+        ).toBeGreaterThan(0)
+        expect(next.payments.length).toEqual(0)
     })
 })
 

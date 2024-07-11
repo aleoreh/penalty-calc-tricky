@@ -66,6 +66,8 @@ export type UpdatePaymentUseCase = (
 
 export type DeletePaymentUseCase = (id: PaymentId) => void
 
+export type ClearPaymentsUseCase = () => void
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export type ConfigureCalculatorUseCase = (

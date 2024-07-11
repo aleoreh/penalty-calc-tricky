@@ -9,9 +9,9 @@ import { createGetCalculatorDebtUseCase } from "./getCalculatorDebtUseCase"
 import { createDeleteDebtUseCase } from "./deleteDebtUseCase"
 import { createAddPaymentUseCase } from "./addPaymentUseCase"
 import { createUpdatePaymentUseCase } from "./updatePaymentUseCase"
-import { createDeletePaymentUseCase } from "../deletePaymentUseCase"
 import { createClearDebtsUseCase } from "./clearDebtsUseCase"
 import { createClearPaymentsUseCase } from "./clearPaymentsUseCase"
+import { createDeletePaymentUseCase } from "./deletePaymentUseCase"
 import { createSetCalculationKeyRateUseCase } from "./setCalculationKeyRateUseCase"
 
 export function createCalculatorUseCases(

@@ -1,5 +1,5 @@
-import { CalculatorStoreRepo, DeletePaymentUseCase } from "./domain"
-import calculatorShed from "./domain/calculator"
+import { CalculatorStoreRepo, DeletePaymentUseCase } from "../domain"
+import calculatorShed from "../domain/calculator"
 
 export function createDeletePaymentUseCase(
     calculatorStoreRepo: CalculatorStoreRepo

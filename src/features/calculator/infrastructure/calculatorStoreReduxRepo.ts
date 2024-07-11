@@ -80,6 +80,7 @@ const calculatorConfigDecoder: Decoder<CalculatorConfig> = object({
     deferredDaysCount: number,
     moratoriums: array(moratoriumDecoder),
     fractionChangeDay: number,
+    calculationKeyRate: optional(keyRateDecoder),
 })
 
 const calculatorConfigEncode = (value: CalculatorConfig) => ({
@@ -87,6 +88,7 @@ const calculatorConfigEncode = (value: CalculatorConfig) => ({
     legalEntity: legalEntityEncode(value.legalEntity),
     theStateConstants: theStateConstantsEncode(value.theStateConstants),
     moratoriums: value.moratoriums.map(moratoriumEncode),
+    calculationKeyRate: value.calculationKeyRate,
 })
 
 const distributionMethodDecoder: Decoder<DistributionMethod> = oneOf([

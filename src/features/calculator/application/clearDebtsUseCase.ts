@@ -4,9 +4,9 @@ import calculatorShed from "../domain/calculator"
 export function createClearDebtsUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
 ): ClearDebtsUseCase {
-    return async (calculator) => {
+    return (calculator) => {
         const newCalculator = calculatorShed.clearDebts(calculator)
-
-        await calculatorStoreRepo.setCalculator(newCalculator)
+        calculatorStoreRepo.setCalculator(newCalculator)
     }
 }
+

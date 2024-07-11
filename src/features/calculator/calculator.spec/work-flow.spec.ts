@@ -109,6 +109,18 @@ describe("Приложение", () => {
         expect(next.debts.length).toEqual(prev.debts.length - 1)
     })
 
+    it("позволяет очистить список долгов", () => {
+        const prev = calculatorStoreRepo.getCalculator()
+        useCases.clearCalculatorDebts(prev)
+        const next = calculatorStoreRepo.getCalculator()
+
+        expect(
+            prev.debts.length,
+            "начальный список долгов был пустым"
+        ).toBeGreaterThan(0)
+        expect(next.debts.length).toEqual(0)
+    })
+
     it.prop([dateArb, amountArb, billingPeriodArb])(
         "позволяет добавить оплату",
         (date, amount, period) => {

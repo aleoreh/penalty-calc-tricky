@@ -45,6 +45,8 @@ export type UpdateDebtUseCase = (
 
 export type DeleteDebtUseCase = (debtPeriod: BillingPeriod) => void
 
+export type ClearDebtsUseCase = (calculator: Calculator) => void
+
 export type GetCalculatorPaymentUseCase = (id: PaymentId) => Payment | undefined
 
 export type AddPaymentUseCase = (
@@ -86,8 +88,6 @@ export type SetUserSettingsUseCase = (
     userSettings: UserSettings,
     calculator: Calculator
 ) => Promise<void>
-
-export type ClearDebtsUseCase = (calculator: Calculator) => Promise<void>
 
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 

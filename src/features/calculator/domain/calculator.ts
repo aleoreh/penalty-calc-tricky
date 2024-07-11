@@ -2,7 +2,7 @@ import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
 import daysShed from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { CalculationResult, CalculationResultItem } from "./calculation-result"
-import {
+import calculatorConfigShed, {
     CalculatorConfig,
     doesMoratoriumActs,
     getKeyRate,
@@ -13,6 +13,7 @@ import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 import { UserSettings } from "./userSettings"
+import { KeyRate } from "./types"
 
 export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -471,10 +472,23 @@ export function calculatorTotalDebtAmount(calculator: Calculator): Kopek {
     }, kopekShed.asKopek(0))
 }
 
+export function setCalculationKeyRate(keyRate: KeyRate) {
+    return (calculator: Calculator): Calculator => {
+        const newConfig = calculatorConfigShed.setCalculationKeyRate(keyRate)(
+            calculator.config
+        )
+        return distributePayments({
+            ...calculator,
+            config: newConfig,
+        })
+    }
+}
+
 export const calculatorShed = {
     init: initCalculator,
     setConfig: setCalculatorConfig,
     setCalculationDate,
+    setKeyRate: setCalculationKeyRate,
     getDebt: getCalculatorDebt,
     addDebts: addCalculatorDebts,
     deleteDebt: deleteCalculatorDebt,

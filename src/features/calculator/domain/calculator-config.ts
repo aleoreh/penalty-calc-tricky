@@ -1,6 +1,6 @@
 import daysShed, { compareDays } from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
-import { TheStateConstants } from "./types"
+import { KeyRate, TheStateConstants } from "./types"
 
 export type Moratorium = [Date, Date]
 
@@ -8,6 +8,9 @@ export function getKeyRate(
     calculatorConfig: CalculatorConfig,
     date: Date
 ): number {
+    if (calculatorConfig.calculationKeyRate !== undefined)
+        return calculatorConfig.calculationKeyRate
+
     const keyRatesData = calculatorConfig.theStateConstants.keyRates
     return keyRatesData.filter(([startDate]) => {
         const res = compareDays(date, new Date(startDate))
@@ -24,6 +27,7 @@ export type CalculatorConfig = {
     deferredDaysCount: number
     moratoriums: Moratorium[]
     fractionChangeDay: number
+    calculationKeyRate?: KeyRate
 }
 
 export function getKeyRatePart(
@@ -79,11 +83,21 @@ export function fromTheStateConstants(
     }
 }
 
+export function setCalculationKeyRate(keyRate: KeyRate) {
+    return (calculatorConfig: CalculatorConfig): CalculatorConfig => {
+        return {
+            ...calculatorConfig,
+            calculationKeyRate: keyRate,
+        }
+    }
+}
+
 export const calculatorConfigShed = {
     fromTheStateConstants,
     getKeyRatePart,
     getKeyRate,
     doesMoratoriumActs,
+    setCalculationKeyRate,
 }
 
 export default calculatorConfigShed

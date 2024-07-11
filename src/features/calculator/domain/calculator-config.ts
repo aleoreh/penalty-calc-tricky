@@ -83,7 +83,7 @@ export function fromTheStateConstants(
     }
 }
 
-export function setCalculationKeyRate(keyRate: KeyRate) {
+export function withCalculationKeyRate(keyRate: KeyRate) {
     return (calculatorConfig: CalculatorConfig): CalculatorConfig => {
         return {
             ...calculatorConfig,
@@ -97,7 +97,7 @@ export const calculatorConfigShed = {
     getKeyRatePart,
     getKeyRate,
     doesMoratoriumActs,
-    setCalculationKeyRate,
+    withCalculationKeyRate,
 }
 
 export default calculatorConfigShed

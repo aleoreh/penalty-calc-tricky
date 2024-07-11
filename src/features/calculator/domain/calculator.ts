@@ -92,7 +92,7 @@ function distributePayment(
 
             const updatedDebt =
                 foundPayoff !== undefined
-                    ? debtShed.updatePayoff({
+                    ? debtShed.withPayoff({
                           ...foundPayoff,
                           repaymentAmount,
                       })(debt)
@@ -339,7 +339,7 @@ export function initCalculator(
     }
 }
 
-export function setCalculatorConfig(config: CalculatorConfig) {
+export function withCalculatorConfig(config: CalculatorConfig) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
             ...calculator,
@@ -347,7 +347,7 @@ export function setCalculatorConfig(config: CalculatorConfig) {
         })
 }
 
-export function setCalculationDate(date: Date) {
+export function withCalculationDate(date: Date) {
     return (calculator: Calculator): Calculator =>
         distributePayments({
             ...calculator,
@@ -391,7 +391,7 @@ export function clearCalculatorDebts(calculator: Calculator): Calculator {
     })
 }
 
-export function setCalculatorDebts(debts: Debt[]) {
+export function withCalculatorDebts(debts: Debt[]) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
             ...calculator,
@@ -447,7 +447,7 @@ export function clearCalculatorPayments(calculator: Calculator): Calculator {
     return distributePayments({ ...calculator, payments: [] })
 }
 
-export function setCalculatorPayments(payments: Payment[]) {
+export function withCalculatorPayments(payments: Payment[]) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({ ...calculator, payments })
     }
@@ -460,7 +460,7 @@ export function calculate(calculator: Calculator): CalculationResult[] {
     return penalties.map(penaltyToResult)
 }
 
-export function setCalculatorUserSettings(userSettings: UserSettings) {
+export function withCalculatorUserSettings(userSettings: UserSettings) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({ ...calculator, ...userSettings })
     }
@@ -472,9 +472,9 @@ export function calculatorTotalDebtAmount(calculator: Calculator): Kopek {
     }, kopekShed.asKopek(0))
 }
 
-export function setCalculationKeyRate(keyRate: KeyRate) {
+export function withCalculationKeyRate(keyRate: KeyRate) {
     return (calculator: Calculator): Calculator => {
-        const newConfig = calculatorConfigShed.setCalculationKeyRate(keyRate)(
+        const newConfig = calculatorConfigShed.withCalculationKeyRate(keyRate)(
             calculator.config
         )
         return distributePayments({
@@ -486,21 +486,21 @@ export function setCalculationKeyRate(keyRate: KeyRate) {
 
 export const calculatorShed = {
     init: initCalculator,
-    setConfig: setCalculatorConfig,
-    setCalculationDate,
-    setKeyRate: setCalculationKeyRate,
+    withConfig: withCalculatorConfig,
+    withCalculationDate,
+    withKeyRate: withCalculationKeyRate,
     getDebt: getCalculatorDebt,
     addDebts: addCalculatorDebts,
     deleteDebt: deleteCalculatorDebt,
     clearDebts: clearCalculatorDebts,
-    setDebts: setCalculatorDebts,
+    withDebts: withCalculatorDebts,
     updateDebt: updateCalculatorDebt,
     getPayment: getCalculatorPayment,
     addPayments: addCalculatorPayments,
     deletePayment: deleteCalculatorPayment,
     clearPayments: clearCalculatorPayments,
-    setPayments: setCalculatorPayments,
-    setUserSettings: setCalculatorUserSettings,
+    withPayments: withCalculatorPayments,
+    withUserSettings: withCalculatorUserSettings,
     totalDebtAmount: calculatorTotalDebtAmount,
     calculate,
 }

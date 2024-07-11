@@ -7,7 +7,7 @@ export function createSetCalculationDateUseCase(
     return (calculationDate) => {
         const calculator = calculatorStoreRepo.getCalculator()
         const newCalculator =
-            calculatorShed.setCalculationDate(calculationDate)(calculator)
+            calculatorShed.withCalculationDate(calculationDate)(calculator)
         calculatorStoreRepo.setCalculator(newCalculator)
     }
 }

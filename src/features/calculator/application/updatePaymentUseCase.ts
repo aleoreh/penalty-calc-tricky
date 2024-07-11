@@ -8,7 +8,7 @@ export function createUpdatePaymentUseCase(
     return (params, payment) => {
         const calculator = calculatorStoreRepo.getCalculator()
         const newPayment = paymentShed.update(params)(payment)
-        const newCalculator = calculatorShed.setPayments([newPayment])(
+        const newCalculator = calculatorShed.withPayments([newPayment])(
             calculator
         )
         calculatorStoreRepo.setCalculator(newCalculator)

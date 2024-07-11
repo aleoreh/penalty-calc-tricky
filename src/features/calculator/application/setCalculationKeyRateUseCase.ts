@@ -6,7 +6,7 @@ export function createSetCalculationKeyRateUseCase(
 ): SetKeyRateUseCase {
     return (keyRate) => {
         const calculator = calculatorStoreRepo.getCalculator()
-        const newCalculator = calculatorShed.setKeyRate(keyRate)(calculator)
+        const newCalculator = calculatorShed.withKeyRate(keyRate)(calculator)
         calculatorStoreRepo.setCalculator(newCalculator)
     }
 }

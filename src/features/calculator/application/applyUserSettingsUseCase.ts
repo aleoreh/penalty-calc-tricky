@@ -6,7 +6,7 @@ export function createApplyUserSettingsUseCase(
 ): ApplyUserSettingsUseCase {
     return (partialSettings) => {
         const calculator = calculatorStoreRepo.getCalculator()
-        const newCalculator = calculatorShed.setUserSettings({
+        const newCalculator = calculatorShed.withUserSettings({
             ...calculator.userSettings,
             ...partialSettings,
         })(calculator)

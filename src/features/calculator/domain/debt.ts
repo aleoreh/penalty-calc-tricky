@@ -58,7 +58,7 @@ export function addDebtPayoff({
     })
 }
 
-export function updateDebtPayoff(payoff: Payoff) {
+export function withDebtPayoff(payoff: Payoff) {
     return (debt: Debt): Debt => ({
         ...debt,
         payoffs: debt.payoffs.map((x) =>
@@ -90,7 +90,7 @@ export function updateDebt(params: { dueDate?: Date; amount?: Kopek }) {
 export const debtShed = {
     initDebt,
     addPayoff: addDebtPayoff,
-    updatePayoff: updateDebtPayoff,
+    withPayoff: withDebtPayoff,
     getRemainingBalance: getDebtRemainingBalance,
     getDefaultDueDate,
     updateDebt,

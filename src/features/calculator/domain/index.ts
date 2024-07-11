@@ -45,7 +45,7 @@ export type UpdateDebtUseCase = (
 
 export type DeleteDebtUseCase = (debtPeriod: BillingPeriod) => void
 
-export type ClearDebtsUseCase = (calculator: Calculator) => void
+export type ClearDebtsUseCase = () => void
 
 export type GetCalculatorPaymentUseCase = (id: PaymentId) => Payment | undefined
 

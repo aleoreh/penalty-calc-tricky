@@ -111,7 +111,7 @@ describe("Приложение", () => {
 
     it("позволяет очистить список долгов", () => {
         const prev = calculatorStoreRepo.getCalculator()
-        useCases.clearCalculatorDebts(prev)
+        useCases.clearCalculatorDebts()
         const next = calculatorStoreRepo.getCalculator()
 
         expect(

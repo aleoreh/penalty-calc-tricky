@@ -10,7 +10,7 @@ import { CalculatorStoreRepo } from "../domain"
 import { Calculator } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
 import userSettingsShed from "../domain/userSettings"
-import { createCalculatorStoreSimpleRepo } from "../infrastructure/calculatorStoreSimpeRepo"
+import { createCalculatorStoreReduxRepo } from "../infrastructure/calculatorStoreReduxRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
 
 const billingPeriodArb = date({
@@ -34,7 +34,7 @@ beforeAll(async () => {
     calculator = await theStateConstantsStaticRepo
         .getTheStateConstants()
         .then(createInitialiseCalculatorUseCase())
-    calculatorStoreRepo = createCalculatorStoreSimpleRepo(calculator)
+    calculatorStoreRepo = createCalculatorStoreReduxRepo(calculator)
     useCases = createCalculatorUseCases(calculatorStoreRepo)
 })
 

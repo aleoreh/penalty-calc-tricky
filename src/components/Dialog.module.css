@@ -1,0 +1,9 @@
+.dialog {
+    position: relative;
+}
+
+.closeButton {
+    position: absolute;
+    right: var(--length-unit);
+    top: var(--length-unit);
+}

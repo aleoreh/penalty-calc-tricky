@@ -4,7 +4,14 @@ import { createInitialiseCalculatorUseCase } from "./features/calculator/applica
 import { Calculator } from "./features/calculator/domain/calculator"
 import { createCalculatorStoreSimpleRepo } from "./features/calculator/infrastructure/calculatorStoreSimpeRepo"
 import { theStateConstantsStaticRepo as theStateConstantsRepo } from "./features/calculator/infrastructure/theStateConstantsStaticRepo"
-import { Home } from "./widgets/Home"
+import { Home } from "./pages/Home"
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Home />,
+        errorElement: <ErrorPage />,
+    },
+])
 
 function createDependencies(calculator: Calculator) {
     return {
@@ -27,7 +34,9 @@ function App() {
     return (
         calculator && (
             <ApplicationProvider dependencies={createDependencies(calculator)}>
-                <Home />
+                <div className={styles.app}>
+                    <RouterProvider router={router} />
+                </div>
             </ApplicationProvider>
         )
     )

@@ -33,6 +33,7 @@ export function Home() {
     return (
         <>
             <h1>Калькулятор пеней ЖКХ</h1>
+            <button>Нажми меня!</button>
             <div onClick={clickHandler}>
                 <pre>{JSON.stringify(calculator, undefined, 4)}</pre>
             </div>

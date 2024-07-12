@@ -3,6 +3,7 @@ import { useRef } from "react"
 import { useEscape } from "../hooks/useEscape"
 import { useModalClose } from "../hooks/useModalClose"
 import styles from "./Dialog.module.css"
+import clsx from "clsx"
 
 type DialogProps = {
     isOpened: boolean
@@ -22,18 +23,30 @@ export function Dialog({ isOpened, close, children }: DialogProps) {
     })
 
     return (
-        <dialog ref={containerRef} className={styles.dialog} open={isOpened}>
-            <button
-                className={styles.closeButton}
-                type="button"
-                onClick={close}
+        <div
+            className={clsx(
+                styles.dialogContainer,
+                isOpened && styles.dialogContainerOpened,
+                styles.dialogContainerAnimated,
+            )}
+        >
+            <dialog
+                ref={containerRef}
+                className={styles.dialog}
+                open={isOpened}
             >
-                <Icon
-                    className={styles.icon}
-                    icon="material-symbols-light:close"
-                />
-            </button>
-            <div>{children}</div>
-        </dialog>
+                <button
+                    className={styles.closeButton}
+                    type="button"
+                    onClick={close}
+                >
+                    <Icon
+                        className={styles.icon}
+                        icon="material-symbols-light:close"
+                    />
+                </button>
+                <div>{children}</div>
+            </dialog>
+        </div>
     )
 }

@@ -9,7 +9,7 @@
     z-index: 10;
 }
 
-.dialogContainer, .dialogContainerAnimated {
+.dialogContainer.dialogContainerAnimated {
     display: flex;
     visibility: hidden;
     opacity: 0;
@@ -18,7 +18,7 @@
     transition: visibility 0s 0.6s, opacity 0.6s;
 }
 
-.dialogContainer, .dialogContainerOpened {
+.dialogContainer.dialogContainerOpened {
     display: flex;
     visibility: visible;
     opacity: 1;

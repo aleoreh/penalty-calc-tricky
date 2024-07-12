@@ -9,7 +9,6 @@ body {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 2rem;
 }
 
 :root {
@@ -20,6 +19,7 @@ body {
     margin: 0 auto;
     max-inline-size: var(--max-width);
     inline-size: 100%;
+    padding-inline: 1rem;
 }
 
 @media screen and (max-width: 568px) {
@@ -28,3 +28,4 @@ body {
         --max-width: 568px;
     }
 }
+

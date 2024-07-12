@@ -30,3 +30,8 @@ body {
     }
 }
 
+button {
+    display: flex;
+    margin: 0;
+}
+

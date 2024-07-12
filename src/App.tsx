@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { ApplicationProvider } from "./contexts/applicationContext"
 import { createInitialiseCalculatorUseCase } from "./features/calculator/application/initialiseCalculatorUseCase"
 import { Calculator } from "./features/calculator/domain/calculator"
 import { createCalculatorStoreSimpleRepo } from "./features/calculator/infrastructure/calculatorStoreSimpeRepo"
 import { theStateConstantsStaticRepo as theStateConstantsRepo } from "./features/calculator/infrastructure/theStateConstantsStaticRepo"
+import { ErrorPage } from "./pages/ErrorPage"
 import { Home } from "./pages/Home"
+import { AppHeader } from "./widgets/AppHeader"
+import styles from "./App.module.css"
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -34,9 +39,12 @@ function App() {
     return (
         calculator && (
             <ApplicationProvider dependencies={createDependencies(calculator)}>
-                <div className={styles.app}>
-                    <RouterProvider router={router} />
-                </div>
+                <>
+                    <AppHeader />
+                    <main className={styles.app}>
+                        <RouterProvider router={router} />
+                    </main>
+                </>
             </ApplicationProvider>
         )
     )

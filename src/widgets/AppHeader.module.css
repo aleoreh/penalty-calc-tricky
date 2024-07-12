@@ -1,0 +1,9 @@
+.appHeader {
+    background-color: var(--accent-bg);
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

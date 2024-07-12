@@ -1,0 +1,34 @@
+* {
+    outline: 1px dotted green;
+}
+
+body {
+    display: flex;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+#root {
+    inline-size: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+:root {
+    --max-width: 1280px;
+}
+
+.container {
+    margin: 0 auto;
+    max-inline-size: var(--max-width);
+    inline-size: 100%;
+}
+
+@media screen and (max-width: 568px) {
+    :root {
+        --breakpoint: 568px;
+        --max-width: 568px;
+    }
+}

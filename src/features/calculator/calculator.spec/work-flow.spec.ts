@@ -10,7 +10,9 @@ import { CalculatorStoreRepo } from "../domain"
 import { Calculator, getKeyRate } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
 import { numberToPaymentId, Payment } from "../domain/payment"
-import userSettingsShed from "../domain/userSettings"
+import userSettingsShed, {
+    withCalculationKeyRate,
+} from "../domain/userSettings"
 import { createCalculatorStoreReduxRepo } from "../infrastructure/calculatorStoreReduxRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
 
@@ -76,14 +78,18 @@ describe("Приложение", () => {
         }
     )
 
-    it("позволяет устанавливать в калькулятор пользовательские настройки", () => {
-        const prev = calculatorStoreRepo.getCalculator()
-        const userSettings = userSettingsShed.init()
-        useCases.applyUserSettings(userSettings)
-        const result = calculatorStoreRepo.getCalculator()
+    it.prop([keyRateArb])(
+        "позволяет устанавливать в калькулятор пользовательские настройки",
+        (keyRate) => {
+            const userSettings = withCalculationKeyRate(keyRate)(
+                userSettingsShed.init()
+            )
+            useCases.applyUserSettings(userSettings)
+            const result = calculatorStoreRepo.getCalculator()
 
-        expect(result.userSettings).toEqual(prev.userSettings)
-    })
+            expect(result.userSettings).toEqual(userSettings)
+        }
+    )
 
     it.prop([dateArb])(
         "позволяет устанавливать дату расчёта",
@@ -101,9 +107,7 @@ describe("Приложение", () => {
             useCases.setCalculationKeyRate(keyRate)
             const next = calculatorStoreRepo.getCalculator()
 
-            expect(getKeyRate(next.config, next.calculationDate)).toEqual(
-                keyRate
-            )
+            expect(getKeyRate(next, next.calculationDate)).toEqual(keyRate)
         }
     )
 

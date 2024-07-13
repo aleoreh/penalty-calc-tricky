@@ -1,5 +1,6 @@
 import { DistributionMethod } from "./calculator"
 import { LegalEntity } from "./calculator-config"
+import { KeyRate } from "./types"
 
 const DEFAULT_USER_SETTINGS: UserSettings = {
     distributionMethod: "fifo",
@@ -9,6 +10,7 @@ const DEFAULT_USER_SETTINGS: UserSettings = {
 export type UserSettings = {
     distributionMethod: DistributionMethod
     legalEntity: LegalEntity
+    calculationKeyRate?: KeyRate
 }
 
 export function initUserSettings(
@@ -22,8 +24,18 @@ export function initUserSettings(
     }
 }
 
+export function withCalculationKeyRate(keyRate: KeyRate) {
+    return (userSettings: UserSettings): UserSettings => {
+        return {
+            ...userSettings,
+            calculationKeyRate: keyRate,
+        }
+    }
+}
+
 export const userSettingsShed = {
     init: initUserSettings,
+    withCalculationKeyRate
 }
 
 export default userSettingsShed

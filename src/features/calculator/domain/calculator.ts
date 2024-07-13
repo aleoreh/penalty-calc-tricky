@@ -2,7 +2,7 @@ import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
 import daysShed, { compareDays } from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { CalculationResult, CalculationResultItem } from "./calculation-result"
-import calculatorConfigShed, {
+import {
     CalculatorConfig,
     doesMoratoriumActs,
     getKeyRatePart,
@@ -12,7 +12,7 @@ import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 import { KeyRate } from "./types"
-import { UserSettings } from "./userSettings"
+import userSettingsShed, { UserSettings } from "./userSettings"
 
 export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -175,9 +175,11 @@ function calculateDailyAmount(
 
 function calculatePenalty(
     debt: Debt,
-    config: CalculatorConfig,
+    calculator: Calculator,
     calculationDate: Date
 ): Penalty {
+    const config = calculator.config
+
     // -------- helpers ------- //
 
     const makeRow = (debtAmount: Kopek, date: Date): PenaltyItem => {
@@ -194,7 +196,7 @@ function calculatePenalty(
                 deferredDaysCount: config.deferredDaysCount,
                 doesMoratoriumActs: doesMoratoriumActs(config, date),
                 dueDate: debt.dueDate,
-                keyRate: getKeyRate(config, calculationDate),
+                keyRate: getKeyRate(calculator, calculationDate),
                 keyRatePart: ratePart,
             },
             debtAmount,
@@ -208,7 +210,7 @@ function calculatePenalty(
             doesDefermentActs: hasDeferment,
             doesMoratoriumActs: hasMoratorium,
             penaltyAmount,
-            rate: getKeyRate(config, calculationDate),
+            rate: getKeyRate(calculator, calculationDate),
             ratePart,
         }
     }
@@ -454,14 +456,17 @@ export function withCalculatorPayments(payments: Payment[]) {
 
 export function calculate(calculator: Calculator): CalculationResult[] {
     const penalties = calculator.debts.map((debt) =>
-        calculatePenalty(debt, calculator.config, calculator.calculationDate)
+        calculatePenalty(debt, calculator, calculator.calculationDate)
     )
     return penalties.map(penaltyToResult)
 }
 
 export function withCalculatorUserSettings(userSettings: UserSettings) {
     return (calculator: Calculator): Calculator => {
-        return distributePayments({ ...calculator, userSettings })
+        return distributePayments({
+            ...calculator,
+            userSettings: { ...calculator.userSettings, ...userSettings },
+        })
     }
 }
 
@@ -473,24 +478,21 @@ export function calculatorTotalDebtAmount(calculator: Calculator): Kopek {
 
 export function withCalculationKeyRate(keyRate: KeyRate) {
     return (calculator: Calculator): Calculator => {
-        const newConfig = calculatorConfigShed.withCalculationKeyRate(keyRate)(
-            calculator.config
-        )
+        const newUserSettings = userSettingsShed.withCalculationKeyRate(
+            keyRate
+        )(calculator.userSettings)
         return distributePayments({
             ...calculator,
-            config: newConfig,
+            userSettings: newUserSettings,
         })
     }
 }
 
-export function getKeyRate(
-    calculatorConfig: CalculatorConfig,
-    date: Date
-): number {
-    if (calculatorConfig.calculationKeyRate !== undefined)
-        return calculatorConfig.calculationKeyRate
+export function getKeyRate(calculator: Calculator, date: Date): number {
+    if (calculator.userSettings.calculationKeyRate !== undefined)
+        return calculator.userSettings.calculationKeyRate
 
-    const keyRatesData = calculatorConfig.theStateConstants.keyRates
+    const keyRatesData = calculator.config.theStateConstants.keyRates
     return keyRatesData.filter(([startDate]) => {
         const res = compareDays(date, new Date(startDate))
         return res === "EQ" || res === "GT"

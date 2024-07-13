@@ -1,6 +1,6 @@
 import daysShed from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
-import { KeyRate, TheStateConstants } from "./types"
+import { TheStateConstants } from "./types"
 
 export type Moratorium = [Date, Date]
 
@@ -13,7 +13,6 @@ export type CalculatorConfig = {
     deferredDaysCount: number
     moratoriums: Moratorium[]
     fractionChangeDay: number
-    calculationKeyRate?: KeyRate
 }
 
 export function getKeyRatePart(
@@ -69,20 +68,10 @@ export function fromTheStateConstants(
     }
 }
 
-export function withCalculationKeyRate(keyRate: KeyRate) {
-    return (calculatorConfig: CalculatorConfig): CalculatorConfig => {
-        return {
-            ...calculatorConfig,
-            calculationKeyRate: keyRate,
-        }
-    }
-}
-
 export const calculatorConfigShed = {
     fromTheStateConstants,
     getKeyRatePart,
     doesMoratoriumActs,
-    withCalculationKeyRate,
 }
 
 export default calculatorConfigShed

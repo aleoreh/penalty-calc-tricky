@@ -1,19 +1,18 @@
 import billingPeriodShed, { BillingPeriod } from "@/lib/billing-period"
-import daysShed from "@/lib/days"
+import daysShed, { compareDays } from "@/lib/days"
 import kopekShed, { Kopek } from "@/lib/kopek"
 import { CalculationResult, CalculationResultItem } from "./calculation-result"
 import calculatorConfigShed, {
     CalculatorConfig,
     doesMoratoriumActs,
-    getKeyRate,
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
 import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
-import { UserSettings } from "./userSettings"
 import { KeyRate } from "./types"
+import { UserSettings } from "./userSettings"
 
 export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
@@ -484,6 +483,20 @@ export function withCalculationKeyRate(keyRate: KeyRate) {
     }
 }
 
+export function getKeyRate(
+    calculatorConfig: CalculatorConfig,
+    date: Date
+): number {
+    if (calculatorConfig.calculationKeyRate !== undefined)
+        return calculatorConfig.calculationKeyRate
+
+    const keyRatesData = calculatorConfig.theStateConstants.keyRates
+    return keyRatesData.filter(([startDate]) => {
+        const res = compareDays(date, new Date(startDate))
+        return res === "EQ" || res === "GT"
+    })[keyRatesData.length - 1][1]
+}
+
 export const calculatorShed = {
     init: initCalculator,
     withConfig: withCalculatorConfig,
@@ -502,6 +515,7 @@ export const calculatorShed = {
     withPayments: withCalculatorPayments,
     withUserSettings: withCalculatorUserSettings,
     totalDebtAmount: calculatorTotalDebtAmount,
+    getKeyRate,
     calculate,
 }
 

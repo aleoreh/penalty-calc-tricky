@@ -7,13 +7,12 @@ import { kopekAsNumber, numberAsKopek } from "../../../lib/kopek"
 import { createCalculatorUseCases } from "../application"
 import { createInitialiseCalculatorUseCase } from "../application/initialiseCalculatorUseCase"
 import { CalculatorStoreRepo } from "../domain"
-import { Calculator } from "../domain/calculator"
+import { Calculator, getKeyRate } from "../domain/calculator"
 import { getDefaultDueDate } from "../domain/debt"
 import { numberToPaymentId, Payment } from "../domain/payment"
 import userSettingsShed from "../domain/userSettings"
 import { createCalculatorStoreReduxRepo } from "../infrastructure/calculatorStoreReduxRepo"
 import theStateConstantsStaticRepo from "../infrastructure/theStateConstantsStaticRepo"
-import { getKeyRate } from "../domain/calculator-config"
 
 const billingPeriodArb = date({
     min: new Date("1970-01-01"),

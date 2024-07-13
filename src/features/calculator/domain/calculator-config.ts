@@ -1,22 +1,8 @@
-import daysShed, { compareDays } from "@/lib/days"
+import daysShed from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
 import { KeyRate, TheStateConstants } from "./types"
 
 export type Moratorium = [Date, Date]
-
-export function getKeyRate(
-    calculatorConfig: CalculatorConfig,
-    date: Date
-): number {
-    if (calculatorConfig.calculationKeyRate !== undefined)
-        return calculatorConfig.calculationKeyRate
-
-    const keyRatesData = calculatorConfig.theStateConstants.keyRates
-    return keyRatesData.filter(([startDate]) => {
-        const res = compareDays(date, new Date(startDate))
-        return res === "EQ" || res === "GT"
-    })[keyRatesData.length - 1][1]
-}
 
 export type LegalEntity = "natural" | "artificial"
 
@@ -95,7 +81,6 @@ export function withCalculationKeyRate(keyRate: KeyRate) {
 export const calculatorConfigShed = {
     fromTheStateConstants,
     getKeyRatePart,
-    getKeyRate,
     doesMoratoriumActs,
     withCalculationKeyRate,
 }

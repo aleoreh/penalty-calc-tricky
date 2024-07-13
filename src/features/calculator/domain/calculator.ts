@@ -462,7 +462,7 @@ export function calculate(calculator: Calculator): CalculationResult[] {
 
 export function withCalculatorUserSettings(userSettings: UserSettings) {
     return (calculator: Calculator): Calculator => {
-        return distributePayments({ ...calculator, ...userSettings })
+        return distributePayments({ ...calculator, userSettings })
     }
 }
 

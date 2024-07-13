@@ -11,20 +11,22 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
     "@mobily/ts-belt": "^3.13.1",
+    "@mui/icons-material": "^5.16.1",
+    "@mui/material": "^5.16.1",
     "@reduxjs/toolkit": "^2.2.6",
     "dayjs": "^1.11.11",
     "decoders": "^2.4.2",
-    "normalize.css": "^8.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
-    "simpledotcss": "^2.3.1",
     "ts-opaque": "^3.0.1"
   },
   "devDependencies": {
     "@fast-check/vitest": "^0.1.1",
-    "@iconify/react": "^5.0.1",
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

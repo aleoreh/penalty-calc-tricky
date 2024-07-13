@@ -1,27 +1,28 @@
-import { Icon } from "@iconify/react"
-import { clsx } from "clsx"
-import { Dialog } from "../components/Dialog"
-import styles from "./AppHeader.module.css"
-import { useState } from "react"
+import AppBar from "@mui/material/AppBar"
+import Box from "@mui/material/Box"
+import Container from "@mui/material/Container"
+import Toolbar from "@mui/material/Toolbar"
+import Typography from "@mui/material/Typography"
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function AppHeader() {
-    const [isOpened, setIsOpened] = useState(false)
-
-    const handleClick = () => {
-        setIsOpened(true)
-    }
-
     return (
-        <div className={styles.appHeader}>
-            <div className={clsx("container", styles.container)}>
-                <h1>Калькулятор пеней ЖКХ</h1>
-                <button title="Настройки" onClick={handleClick}>
-                    <Icon icon="mdi-light:settings" />
-                </button>
-            </div>
-            <Dialog isOpened={isOpened} close={() => setIsOpened(false)}>
-                <h3>Children</h3>
-            </Dialog>
-        </div>
+        <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+                <Container>
+                    <Toolbar>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            Калькулятор пеней ЖКХ
+                        </Typography>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </Box>
     )
 }
+

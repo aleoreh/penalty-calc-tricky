@@ -5,9 +5,15 @@ import Typography from "@mui/material/Typography"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
+import { AppDialog } from "../components/AppDialog"
+import { useAppDialog } from "../components/useAppDialog"
 import { useRegularText } from "../components/useRegularText"
-import { useUserSettings } from "../hooks/useUserSettings"
 import { useSectionTitle } from "../components/useSectionTitle"
+import { useUserSettings } from "../hooks/useUserSettings"
+import { useInput, useValidatedForm } from "../components/useValidatedForm"
+import { string } from "decoders"
+import TextField from "@mui/material/TextField"
+import { ValidatedForm } from "../components/ValidatedForm"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -15,6 +21,11 @@ export function UserSettings() {
     const userSettingsInfo = useRegularText()
     const userSettingsTitle = useSectionTitle()
     const { view } = useUserSettings()
+    const field = useInput(string)
+    const form = useValidatedForm([field])
+    const editDialog = useAppDialog({
+        reset: form.reset,
+    })
 
     return (
         <>
@@ -31,10 +42,16 @@ export function UserSettings() {
                         view.keyRate,
                     ].join("; ")}`}
                 </Typography>
-                <IconButton>
+                <IconButton onClick={editDialog.open}>
                     <Edit />
                 </IconButton>
             </Stack>
+            <AppDialog {...editDialog} title="Диалог">
+                <ValidatedForm {...form}>
+                    <TextField {...field.input} />
+                    <Typography>{field.validatedValue}</Typography>
+                </ValidatedForm>
+            </AppDialog>
         </>
     )
 }

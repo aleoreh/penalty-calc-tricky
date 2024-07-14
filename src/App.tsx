@@ -1,10 +1,9 @@
-import { CssBaseline } from "@mui/material"
+import { Box, CssBaseline } from "@mui/material"
 import { useEffect, useState } from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import styles from "./App.module.css"
 import { ApplicationProvider } from "./contexts/applicationContext"
 import { createInitialiseCalculatorUseCase } from "./features/calculator/application/initialiseCalculatorUseCase"
 import { Calculator } from "./features/calculator/domain/calculator"
@@ -48,9 +47,9 @@ function App() {
                 <>
                     <CssBaseline />
                     <AppHeader />
-                    <main className={styles.app}>
+                    <Box component="main">
                         <RouterProvider router={router} />
-                    </main>
+                    </Box>
                 </>
             </ApplicationProvider>
         )

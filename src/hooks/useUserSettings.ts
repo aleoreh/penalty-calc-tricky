@@ -26,6 +26,7 @@ export function useUserSettings() {
 
     const viewKeyRate = new Intl.NumberFormat("ru-RU", {
         style: "percent",
+        minimumFractionDigits: 2,
     }).format(keyRate)
 
     return {

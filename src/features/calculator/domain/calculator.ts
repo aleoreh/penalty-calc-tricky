@@ -12,7 +12,7 @@ import { DistributionMethod } from "./distributionMethod"
 import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
-import { KeyRate } from "./types"
+import { KeyRate, TheStateConstants } from "./types"
 import userSettingsShed, { UserSettings } from "./userSettings"
 
 type PenaltyItem = {
@@ -328,6 +328,11 @@ export function initCalculator(
     const userSettings: UserSettings = {
         distributionMethod,
         legalEntity: config.legalEntity,
+        calculationKeyRate: getKeyRateRaw(
+            calculationDate,
+            config.theStateConstants,
+            undefined
+        ),
     }
     return {
         calculationDate,
@@ -487,15 +492,26 @@ export function withCalculationKeyRate(keyRate: KeyRate) {
     }
 }
 
-export function getKeyRate(calculator: Calculator, date: Date): number {
-    if (calculator.userSettings.calculationKeyRate !== undefined)
-        return calculator.userSettings.calculationKeyRate
+function getKeyRateRaw(
+    date: Date,
+    theStateConstants: TheStateConstants,
+    userKeyRate: KeyRate | undefined
+) {
+    if (userKeyRate !== undefined) return userKeyRate
 
-    const keyRatesData = calculator.config.theStateConstants.keyRates
+    const keyRatesData = theStateConstants.keyRates
     return keyRatesData.filter(([startDate]) => {
         const res = compareDays(date, new Date(startDate))
         return res === "EQ" || res === "GT"
     })[keyRatesData.length - 1][1]
+}
+
+export function getKeyRate(calculator: Calculator, date: Date): number {
+    return getKeyRateRaw(
+        date,
+        calculator.config.theStateConstants,
+        calculator.userSettings.calculationKeyRate
+    )
 }
 
 export const calculatorShed = {

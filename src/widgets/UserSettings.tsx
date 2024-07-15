@@ -135,7 +135,7 @@ export function UserSettings() {
                     </FormControl>
                     <TextField
                         {...keyRateInput.input}
-                        title="Значение"
+                        label="Ключевая ставка, %"
                         required
                     />
                 </Stack>

@@ -1,7 +1,9 @@
-import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
+import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
+import CardHeader from "@mui/material/CardHeader"
 import Dialog from "@mui/material/Dialog"
-import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import { ReactNode, useRef } from "react"
 
@@ -37,7 +39,7 @@ export function ModalForm({
     submit,
     children,
 }: ModalFormProps) {
-    const formRef = useRef<HTMLFormElement | undefined>(undefined)
+    const formRef = useRef<HTMLFormElement | null>(null)
 
     const resetForm = () => {
         reset?.()
@@ -57,21 +59,27 @@ export function ModalForm({
 
     return (
         <Dialog open={isOpened} onClose={closeForm}>
-            <Box ref={formRef} onReset={resetForm} component="form">
+            <Card ref={formRef} onReset={resetForm} component="form">
                 <Stack direction="column">
-                    <Stack direction="row">
-                        <DialogTitle>{title}</DialogTitle>
-                        <Stack direction="row">
-                            {reset && <Button type="reset">сброс</Button>}
-                            {cancel && (
-                                <Button type="button" onClick={cancel}>
-                                    отмена
-                                </Button>
-                            )}
-                        </Stack>
-                    </Stack>
-                    {children}
-                    <Stack direction="row">
+                    <CardHeader
+                        title={title}
+                        action={
+                            <Stack direction="row">
+                                <Stack direction="row">
+                                    {reset && (
+                                        <Button type="reset">сброс</Button>
+                                    )}
+                                    {cancel && (
+                                        <Button type="button" onClick={cancel}>
+                                            отмена
+                                        </Button>
+                                    )}
+                                </Stack>
+                            </Stack>
+                        }
+                    />
+                    <CardContent>{children}</CardContent>
+                    <CardActions sx={{ justifyContent: "flex-end" }}>
                         {submitAndContinue && (
                             <Button
                                 type="button"
@@ -90,9 +98,9 @@ export function ModalForm({
                                 Применить
                             </Button>
                         )}
-                    </Stack>
+                    </CardActions>
                 </Stack>
-            </Box>
+            </Card>
         </Dialog>
     )
 }

@@ -5,6 +5,8 @@ import DialogTitle from "@mui/material/DialogTitle"
 import Stack from "@mui/material/Stack"
 import { ReactNode, useRef } from "react"
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 type ModalFormProps = {
     title: ReactNode
     isOpened: boolean
@@ -13,8 +15,8 @@ type ModalFormProps = {
     close: () => void
     reset?: () => void
     cancel?: () => void
-    submitAndContinue?: <T>(value: T) => void
-    submit?: <T>(value: T) => void
+    submitAndContinue?: () => void
+    submit?: () => void
     children: ReactNode
 }
 
@@ -50,6 +52,8 @@ export function ModalForm({
         evt.preventDefault()
         close()
         reset?.()
+        formRef.current?.reset()
+        submitAndContinue ? submitAndContinue() : submit?.()
     }
 
     return (
@@ -74,20 +78,12 @@ export function ModalForm({
                 {children}
                 <Stack direction="row">
                     {submitAndContinue && (
-                        <Button
-                            type="submit"
-                            onClick={submitAndContinue}
-                            disabled={isInitial || !isValid}
-                        >
+                        <Button type="submit" disabled={isInitial || !isValid}>
                             Применить и продолжить
                         </Button>
                     )}
                     {submit && (
-                        <Button
-                            type="submit"
-                            onClick={submit}
-                            disabled={isInitial || !isValid}
-                        >
+                        <Button type="submit" disabled={isInitial || !isValid}>
                             Применить
                         </Button>
                     )}

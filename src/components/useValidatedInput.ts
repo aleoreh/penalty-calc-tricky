@@ -2,6 +2,8 @@ import { TextFieldProps } from "@mui/material/TextField"
 import { Decoder } from "decoders"
 import { useState } from "react"
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 type ValidatedInput<T> = {
     input: TextFieldProps
     validatedValue: T | undefined

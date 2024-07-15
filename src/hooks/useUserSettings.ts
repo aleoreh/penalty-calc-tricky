@@ -4,8 +4,14 @@ import { useState } from "react"
 
 import { useApplication } from "../contexts/applicationContextHook"
 import { getKeyRate } from "../features/calculator/domain/calculator"
-import { isLegalEntity } from "../features/calculator/domain/legalEntity"
-import { isDistributionMethod } from "../features/calculator/domain/distributionMethod"
+import {
+    isLegalEntity,
+    LegalEntity,
+} from "../features/calculator/domain/legalEntity"
+import {
+    DistributionMethod,
+    isDistributionMethod,
+} from "../features/calculator/domain/distributionMethod"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -14,15 +20,13 @@ export function useUserSettings() {
     type Params = Parameters<typeof useCases.applyUserSettings>
     const [calculator, setCalculator] = useState(useCases.getCalculator())
 
-    const viewDistributionMethod =
-        calculator.userSettings.distributionMethod === "fifo"
-            ? "FIFO"
+    const viewDistributionMethod = (distributionMethod: DistributionMethod) =>
+        distributionMethod === "fifo"
+            ? "Первым - ранее возникший"
             : "Первым - период оплаты"
 
-    const viewLegalEntity =
-        calculator.userSettings.legalEntity === "natural"
-            ? "Физические лица"
-            : "Юридические лица"
+    const viewLegalEntity = (legalEntity: LegalEntity) =>
+        legalEntity === "natural" ? "Физические лица" : "Юридические лица"
 
     const keyRate = getKeyRate(calculator, calculator.calculationDate)
 

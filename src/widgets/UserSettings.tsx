@@ -64,13 +64,11 @@ export function UserSettings() {
     }
 
     const submit = () => {
-        setSettings([
-            {
-                legalEntity,
-                distributionMethod,
-                calculationKeyRate: keyRateInput.validatedValue,
-            },
-        ])
+        setSettings({
+            legalEntity,
+            distributionMethod,
+            calculationKeyRate: keyRateInput.validatedValue,
+        })
     }
 
     return (
@@ -111,7 +109,9 @@ export function UserSettings() {
                             onChange={handleLegalEntityChange}
                         >
                             <MenuItem value="natural">Физические лица</MenuItem>
-                            <MenuItem value="artificial">Юридические лица</MenuItem>
+                            <MenuItem value="artificial">
+                                Юридические лица
+                            </MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl>
@@ -133,7 +133,11 @@ export function UserSettings() {
                             </MenuItem>
                         </Select>
                     </FormControl>
-                    <TextField {...keyRateInput.input} title="Значение" required />
+                    <TextField
+                        {...keyRateInput.input}
+                        title="Значение"
+                        required
+                    />
                 </Stack>
             </ModalForm>
         </>

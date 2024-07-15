@@ -20,6 +20,11 @@ export function useUserSettings() {
     type Params = Parameters<typeof useCases.applyUserSettings>
     const [calculator, setCalculator] = useState(useCases.getCalculator())
 
+    const setSettings = ([settings]: Params) => {
+        useCases.applyUserSettings(settings)
+        setCalculator(useCases.getCalculator())
+    }
+
     const viewDistributionMethod = (distributionMethod: DistributionMethod) =>
         distributionMethod === "fifo"
             ? "Первым - ранее возникший"
@@ -45,10 +50,7 @@ export function useUserSettings() {
             legalEntity: viewLegalEntity,
             keyRate: viewKeyRate,
         },
-        setSettings: ([settings]: Params) => {
-            useCases.applyUserSettings(settings)
-            setCalculator(useCases.getCalculator())
-        },
+        setSettings,
         isLegalEntity,
         isDistributionMethod,
     }

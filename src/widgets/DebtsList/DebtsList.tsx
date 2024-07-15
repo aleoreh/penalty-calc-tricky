@@ -103,9 +103,11 @@ export function DebtsList() {
                     <Typography {...title}>Долги</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    {debts.map((x, i) => (
-                        <DebtItem key={i} debt={x} />
-                    ))}
+                    <Stack>
+                        {debts.map((x, i) => (
+                            <DebtItem key={i} debt={x} />
+                        ))}
+                    </Stack>
                 </AccordionDetails>
                 <AccordionActions>
                     <Button type="button" onClick={modalForm.open}>

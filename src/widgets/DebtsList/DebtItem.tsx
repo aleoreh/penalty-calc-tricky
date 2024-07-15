@@ -8,9 +8,33 @@ import Typography from "@mui/material/Typography"
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { useRegularText } from "../../components/useRegularText"
-import { Debt, useDebtItemFormat } from "../../hooks/useDebtFormat"
+import {
+    Debt,
+    Payoff,
+    useDebtItemFormat,
+    usePayoffItemFormat,
+} from "../../hooks/useDebtFormat"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+type PayoffItemProps = {
+    payoff: Payoff
+}
+
+function PayoffItem({ payoff }: PayoffItemProps) {
+    const payoffItemFormat = usePayoffItemFormat(payoff)
+    const regularText = useRegularText()
+    return (
+        <Stack direction="row" justifyContent="flex-end">
+            <Typography {...regularText}>
+                {payoffItemFormat.paymentDate}
+            </Typography>
+            <Typography {...regularText}>
+                {payoffItemFormat.repaymentAmount}
+            </Typography>
+        </Stack>
+    )
+}
 
 type DebtItemProps = {
     debt: Debt
@@ -30,6 +54,9 @@ export function DebtItem({ debt }: DebtItemProps) {
                 <Typography {...text} align="right">
                     {debtItemView.dueDate}
                 </Typography>
+                {debt.payoffs.map((payoff, i) => (
+                    <PayoffItem key={i} payoff={payoff} />
+                ))}
                 <Divider />
                 <Typography {...text} align="right">
                     {debtItemView.remainder}
@@ -39,3 +66,4 @@ export function DebtItem({ debt }: DebtItemProps) {
         </Card>
     )
 }
+

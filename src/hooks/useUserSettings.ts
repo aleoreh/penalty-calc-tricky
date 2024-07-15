@@ -4,6 +4,8 @@ import { useState } from "react"
 
 import { useApplication } from "../contexts/applicationContextHook"
 import { getKeyRate } from "../features/calculator/domain/calculator"
+import { isLegalEntity } from "../features/calculator/domain/legalEntity"
+import { isDistributionMethod } from "../features/calculator/domain/distributionMethod"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -43,5 +45,8 @@ export function useUserSettings() {
             useCases.applyUserSettings(settings)
             setCalculator(useCases.getCalculator())
         },
+        isLegalEntity,
+        isDistributionMethod,
     }
 }
+

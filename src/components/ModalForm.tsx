@@ -58,37 +58,39 @@ export function ModalForm({
     return (
         <Dialog open={isOpened} onClose={closeForm}>
             <Box ref={formRef} onReset={resetForm} component="form">
-                <Stack direction="row">
-                    <DialogTitle>{title}</DialogTitle>
+                <Stack direction="column">
                     <Stack direction="row">
-                        {reset && <Button type="reset">сброс</Button>}
-                        {cancel && (
-                            <Button type="button" onClick={cancel}>
-                                отмена
+                        <DialogTitle>{title}</DialogTitle>
+                        <Stack direction="row">
+                            {reset && <Button type="reset">сброс</Button>}
+                            {cancel && (
+                                <Button type="button" onClick={cancel}>
+                                    отмена
+                                </Button>
+                            )}
+                        </Stack>
+                    </Stack>
+                    {children}
+                    <Stack direction="row">
+                        {submitAndContinue && (
+                            <Button
+                                type="button"
+                                disabled={isInitial || !isValid}
+                                onClick={sumbitForm(true)}
+                            >
+                                Применить и продолжить
+                            </Button>
+                        )}
+                        {submit && (
+                            <Button
+                                type="button"
+                                disabled={isInitial || !isValid}
+                                onClick={sumbitForm(false)}
+                            >
+                                Применить
                             </Button>
                         )}
                     </Stack>
-                </Stack>
-                {children}
-                <Stack direction="row">
-                    {submitAndContinue && (
-                        <Button
-                            type="button"
-                            disabled={isInitial || !isValid}
-                            onClick={sumbitForm(true)}
-                        >
-                            Применить и продолжить
-                        </Button>
-                    )}
-                    {submit && (
-                        <Button
-                            type="button"
-                            disabled={isInitial || !isValid}
-                            onClick={sumbitForm(false)}
-                        >
-                            Применить
-                        </Button>
-                    )}
                 </Stack>
             </Box>
         </Dialog>

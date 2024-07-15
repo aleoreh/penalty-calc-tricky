@@ -1,6 +1,6 @@
 import { ReactNode, createContext } from "react"
-import { createCalculatorUseCases } from "../features/calculator/application"
-import { CalculatorStoreRepo } from "../features/calculator/domain"
+import { createCalculatorUseCases } from "../../features/calculator/application"
+import { CalculatorStoreRepo } from "../../features/calculator/domain"
 
 type ApplicationContextType = {
     useCases: ReturnType<typeof createCalculatorUseCases>

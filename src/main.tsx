@@ -10,7 +10,7 @@ import "@fontsource/roboto/700.css"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import App from "./App"
+import App from "./ui/App"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 

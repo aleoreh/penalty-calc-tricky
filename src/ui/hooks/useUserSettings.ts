@@ -1,14 +1,14 @@
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { getKeyRate } from "../features/calculator/domain/calculator"
+import { getKeyRate } from "../../features/calculator/domain/calculator"
 import {
     DistributionMethod,
     isDistributionMethod,
-} from "../features/calculator/domain/distributionMethod"
+} from "../../features/calculator/domain/distributionMethod"
 import {
     isLegalEntity,
     LegalEntity,
-} from "../features/calculator/domain/legalEntity"
+} from "../../features/calculator/domain/legalEntity"
 import { useCalculator } from "./useCalculator"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //

@@ -3,9 +3,9 @@ import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import Typography from "@mui/material/Typography"
+import { useRegularText } from "../components/useRegularText"
 import { useSectionTitle } from "../components/useSectionTitle"
 import { useCalculatorConfig } from "../hooks/useCalculatorConfig"
-import { useRegularText } from "../components/useRegularText"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 

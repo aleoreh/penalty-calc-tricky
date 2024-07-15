@@ -16,10 +16,10 @@ dayjs.extend(localizedFormat)
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { ApplicationProvider } from "./contexts/applicationContext"
-import { createInitialiseCalculatorUseCase } from "./features/calculator/application/initialiseCalculatorUseCase"
-import { Calculator } from "./features/calculator/domain/calculator"
-import { createCalculatorStoreSimpleRepo } from "./features/calculator/infrastructure/calculatorStoreSimpeRepo"
-import { theStateConstantsStaticRepo as theStateConstantsRepo } from "./features/calculator/infrastructure/theStateConstantsStaticRepo"
+import { createInitialiseCalculatorUseCase } from "../features/calculator/application/initialiseCalculatorUseCase"
+import { Calculator } from "../features/calculator/domain/calculator"
+import { createCalculatorStoreSimpleRepo } from "../features/calculator/infrastructure/calculatorStoreSimpeRepo"
+import { theStateConstantsStaticRepo as theStateConstantsRepo } from "../features/calculator/infrastructure/theStateConstantsStaticRepo"
 import { ErrorPage } from "./pages/ErrorPage"
 import { Home } from "./pages/Home"
 import { AppHeader } from "./widgets/AppHeader"

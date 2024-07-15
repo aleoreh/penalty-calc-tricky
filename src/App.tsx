@@ -2,9 +2,16 @@ import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { ruRU } from "@mui/x-date-pickers/locales"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import dayjs from "dayjs"
 import "dayjs/locale/ru"
+import isBetween from "dayjs/plugin/isBetween"
+import localizedFormat from "dayjs/plugin/localizedFormat"
 import { useEffect, useState } from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+
+dayjs.locale("ru")
+dayjs.extend(isBetween)
+dayjs.extend(localizedFormat)
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 

@@ -2,6 +2,7 @@ import dayjs from "dayjs"
 import { date, nonEmptyString, regex, string } from "decoders"
 
 export const validationDecoders = {
+    nonEmptyString,
     decimal: nonEmptyString
         .describe("Значение не может быть пустым")
         .transform((x) => x.replaceAll(",", "."))

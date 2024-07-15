@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack"
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { CalculationConfig } from "../widgets/CalculationConfig"
+import { DebtsList } from "../widgets/DebtsList"
 import { InputCalculationDate } from "../widgets/InputCalculationDate"
 import { UserSettings } from "../widgets/UserSettings"
 
@@ -18,6 +19,7 @@ export function Home() {
                     <UserSettings />
                     <CalculationConfig />
                     <InputCalculationDate />
+                    <DebtsList />
                 </Stack>
             </Container>
         </Box>

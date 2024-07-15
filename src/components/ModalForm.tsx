@@ -48,22 +48,16 @@ export function ModalForm({
         close()
     }
 
-    const onSumbit = (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault()
+    const sumbitForm = (withContinue: boolean) => () => {
         close()
         reset?.()
         formRef.current?.reset()
-        submitAndContinue ? submitAndContinue() : submit?.()
+        withContinue ? submitAndContinue?.() : submit?.()
     }
 
     return (
         <Dialog open={isOpened} onClose={closeForm}>
-            <Box
-                ref={formRef}
-                onReset={resetForm}
-                onSubmit={onSumbit}
-                component="form"
-            >
+            <Box ref={formRef} onReset={resetForm} component="form">
                 <Stack direction="row">
                     <DialogTitle>{title}</DialogTitle>
                     <Stack direction="row">
@@ -78,12 +72,20 @@ export function ModalForm({
                 {children}
                 <Stack direction="row">
                     {submitAndContinue && (
-                        <Button type="submit" disabled={isInitial || !isValid}>
+                        <Button
+                            type="button"
+                            disabled={isInitial || !isValid}
+                            onClick={sumbitForm(true)}
+                        >
                             Применить и продолжить
                         </Button>
                     )}
                     {submit && (
-                        <Button type="submit" disabled={isInitial || !isValid}>
+                        <Button
+                            type="button"
+                            disabled={isInitial || !isValid}
+                            onClick={sumbitForm(false)}
+                        >
                             Применить
                         </Button>
                     )}

@@ -7,41 +7,94 @@ import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { DateValidationError } from "@mui/x-date-pickers"
+import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import dayjs, { Dayjs } from "dayjs"
+import { useMemo, useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { billingPeriodFromDate } from "@/lib/billing-period"
-import kopekShed from "@/lib/kopek"
+import { BillingPeriod, billingPeriodFromDate } from "@/lib/billing-period"
 import { ModalForm } from "../../components/ModalForm"
 import { useModalForm } from "../../components/useModalForm"
 import { useSectionTitle } from "../../components/useSectionTitle"
 import { useValidatedForm } from "../../components/useValidatedForm"
 import { useValidatedInput } from "../../components/useValidatedInput"
 import { useDebts } from "../../hooks/useDebts"
+import { kopekFromRuble } from "../../lib/kopek"
 import { validationDecoders } from "../../validation/validationDecoders"
 import { DebtItem } from "./DebtItem"
+import { useDebt } from "../../hooks/useDebt"
+import { useCalculatorConfig } from "../../hooks/useCalculatorConfig"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-export function DebtsList() {
-    // const { debts } = useDebts()
-    const debts: ReturnType<typeof useDebts>["debts"] = [
-        {
-            amount: kopekShed.asKopek(100000),
-            dueDate: new Date(),
-            payoffs: [],
-            period: billingPeriodFromDate(new Date()),
-        },
-    ]
-    const title = useSectionTitle()
+function periodIsIn(periods: BillingPeriod[]) {
+    return (period: Dayjs) =>
+        periods.includes(billingPeriodFromDate(period.toDate()))
+}
 
-    const debtAmountInput = useValidatedInput(
-        undefined,
-        validationDecoders.decimal
-    )
+export function DebtsList() {
+    const { debts, addDebt } = useDebts()
+    const { getDefaultDueDate } = useDebt()
+    const { config } = useCalculatorConfig()
+
+    const [inputDebtPeriod, setInputDebtPeriod] = useState<Dayjs | null>(null)
+    const [inputDebtPeriodError, setInputDebtPeriodError] =
+        useState<DateValidationError | null>(null)
+    const [inputDueDate, setInputDueDate] = useState<Dayjs | null>(null)
+
+    const debtAmountInput = useValidatedInput("", validationDecoders.decimal)
 
     const modalForm = useModalForm()
     const validatedForm = useValidatedForm([debtAmountInput])
+
+    const periodErrorMessage = useMemo(() => {
+        switch (inputDebtPeriodError) {
+            case "shouldDisableMonth":
+                return "Такой период уже есть в списке"
+            default:
+                return ""
+        }
+    }, [inputDebtPeriodError])
+
+    const title = useSectionTitle()
+
+    const handleInputDebtPeriodChange = (value: Dayjs | null) => {
+        setInputDebtPeriod(value)
+        value &&
+            setInputDueDate(
+                dayjs(
+                    getDefaultDueDate(
+                        billingPeriodFromDate(value.toDate()),
+                        config.daysToPay
+                    )
+                )
+            )
+    }
+
+    const submitAddDebt = () => {
+        if (
+            inputDebtPeriod === null ||
+            inputDueDate === null ||
+            debtAmountInput.validatedValue === undefined
+        ) {
+            return
+        }
+
+        addDebt(
+            billingPeriodFromDate(inputDebtPeriod.toDate()),
+            inputDueDate.toDate(),
+            kopekFromRuble(debtAmountInput.validatedValue)
+        )
+    }
+
+    const submitAddDebtAndContinue = () => {
+        submitAddDebt()
+        modalForm.open()
+        handleInputDebtPeriodChange(inputDebtPeriod?.add(1, "month") || null)
+        // setInputDebtPeriod(inputDebtPeriod?.add(1, "month") || null)
+    }
 
     return (
         <>
@@ -61,8 +114,36 @@ export function DebtsList() {
                     <Button>Добавить несколько</Button>
                 </AccordionActions>
             </Accordion>
-            <ModalForm title="Добавить долг" {...modalForm} {...validatedForm}>
+            <ModalForm
+                title="Добавить долг"
+                {...modalForm}
+                {...validatedForm}
+                submit={submitAddDebt}
+                submitAndContinue={submitAddDebtAndContinue}
+            >
                 <Stack>
+                    <DatePicker
+                        label={"Период"}
+                        value={inputDebtPeriod}
+                        onChange={handleInputDebtPeriodChange}
+                        views={["year", "month"]}
+                        view="month"
+                        openTo="year"
+                        shouldDisableMonth={periodIsIn(
+                            debts.map((x) => x.period)
+                        )}
+                        onError={setInputDebtPeriodError}
+                        slotProps={{
+                            textField: {
+                                helperText: periodErrorMessage,
+                            },
+                        }}
+                    />
+                    <DatePicker
+                        label={"Начало просрочки"}
+                        value={inputDueDate}
+                        onChange={setInputDueDate}
+                    />
                     <TextField
                         {...debtAmountInput.input}
                         label="Сумма"
@@ -73,3 +154,4 @@ export function DebtsList() {
         </>
     )
 }
+

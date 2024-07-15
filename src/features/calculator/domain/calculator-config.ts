@@ -1,10 +1,9 @@
 import daysShed from "@/lib/days"
 import { KeyRatePart } from "./keyrate-part"
+import { LegalEntity } from "./legalEntity"
 import { TheStateConstants } from "./types"
 
 export type Moratorium = [Date, Date]
-
-export type LegalEntity = "natural" | "artificial"
 
 export type CalculatorConfig = {
     legalEntity: LegalEntity

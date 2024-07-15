@@ -1,5 +1,5 @@
 import { DistributionMethod } from "./calculator"
-import { LegalEntity } from "./calculator-config"
+import { LegalEntity } from "./legalEntity"
 import { KeyRate } from "./types"
 
 const DEFAULT_USER_SETTINGS: UserSettings = {

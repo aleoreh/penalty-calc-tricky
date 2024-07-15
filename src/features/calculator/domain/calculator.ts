@@ -8,13 +8,12 @@ import {
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
+import { DistributionMethod } from "./distributionMethod"
 import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
 import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
 import { KeyRate } from "./types"
 import userSettingsShed, { UserSettings } from "./userSettings"
-
-export type DistributionMethod = "fifo" | "byPaymentPeriod"
 
 type PenaltyItem = {
     id: number

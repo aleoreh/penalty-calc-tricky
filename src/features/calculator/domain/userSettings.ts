@@ -1,4 +1,4 @@
-import { DistributionMethod } from "./calculator"
+import { DistributionMethod } from "./distributionMethod"
 import { LegalEntity } from "./legalEntity"
 import { KeyRate } from "./types"
 

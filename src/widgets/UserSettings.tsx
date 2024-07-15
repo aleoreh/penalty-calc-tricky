@@ -5,15 +5,15 @@ import Typography from "@mui/material/Typography"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { AppDialog } from "../components/AppDialog"
-import { useAppDialog } from "../components/useAppDialog"
+import TextField from "@mui/material/TextField"
+import { string } from "decoders"
+import { ModalForm } from "../components/ModalForm"
+import { useModalForm } from "../components/useModalForm"
 import { useRegularText } from "../components/useRegularText"
 import { useSectionTitle } from "../components/useSectionTitle"
+import { useValidatedForm } from "../components/useValidatedForm"
+import { useValidatedInput } from "../components/useValidatedInput"
 import { useUserSettings } from "../hooks/useUserSettings"
-import { useInput, useValidatedForm } from "../components/useValidatedForm"
-import { string } from "decoders"
-import TextField from "@mui/material/TextField"
-import { ValidatedForm } from "../components/ValidatedForm"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -21,11 +21,11 @@ export function UserSettings() {
     const userSettingsInfo = useRegularText()
     const userSettingsTitle = useSectionTitle()
     const { view } = useUserSettings()
-    const field = useInput(string)
-    const form = useValidatedForm([field])
-    const editDialog = useAppDialog({
-        reset: form.reset,
-    })
+    const field = useValidatedInput(
+        string.refine((x) => x === "hello", "Здесь должно быть слово hello")
+    )
+    const validatedForm = useValidatedForm([field])
+    const modalForm = useModalForm()
 
     return (
         <>
@@ -42,16 +42,23 @@ export function UserSettings() {
                         view.keyRate,
                     ].join("; ")}`}
                 </Typography>
-                <IconButton onClick={editDialog.open}>
+                <IconButton onClick={modalForm.open}>
                     <Edit />
                 </IconButton>
             </Stack>
-            <AppDialog {...editDialog} title="Диалог">
-                <ValidatedForm {...form}>
-                    <TextField {...field.input} />
-                    <Typography>{field.validatedValue}</Typography>
-                </ValidatedForm>
-            </AppDialog>
+            <ModalForm
+                title="Диалог"
+                {...modalForm}
+                {...validatedForm}
+                submit={() => {
+                    console.log(field.validatedValue)
+                }}
+                submitAndContinue={() => {}}
+            >
+                <TextField {...field.input} title="Значение" required/>
+                <Typography>{field.validatedValue}</Typography>
+            </ModalForm>
         </>
     )
 }
+

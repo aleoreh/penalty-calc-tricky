@@ -18,6 +18,11 @@ type ModalFormProps = {
     children: ReactNode
 }
 
+/**
+ * Удобнее использовать вместе с `useModalForm` hook
+ *
+ * Для добавления валидации возьмите хуки `useValidatedForm` и `useValidatedInput`
+ */
 export function ModalForm({
     title,
     isOpened,

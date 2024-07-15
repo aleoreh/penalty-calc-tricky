@@ -1,3 +1,6 @@
+/**
+ * Массив validatedInputs сформируйте через хук `useValidatedInput`
+ */
 export function useValidatedForm(
     validatedInputs: {
         hasError: boolean

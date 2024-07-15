@@ -98,41 +98,43 @@ export function UserSettings() {
                 {...validatedForm}
                 submit={submit}
             >
-                <FormControl>
-                    <InputLabel id="legal-entity-input-label">
-                        Порядок расчёта
-                    </InputLabel>
-                    <Select
-                        labelId="legal-entity-input-label"
-                        id="legal-entity-input"
-                        value={legalEntity}
-                        label="Порядок расчёта"
-                        onChange={handleLegalEntityChange}
-                    >
-                        <MenuItem value="natural">Физические лица</MenuItem>
-                        <MenuItem value="artificial">Юридические лица</MenuItem>
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <InputLabel id="distribution-method-input-label">
-                        Метод распределения
-                    </InputLabel>
-                    <Select
-                        labelId="distribution-method-input-label"
-                        id="distribution-method-input"
-                        value={distributionMethod}
-                        label="Метод распределения"
-                        onChange={handleDistributionMethodChange}
-                    >
-                        <MenuItem value="fifo">
-                            {view.distributionMethod("fifo")}
-                        </MenuItem>
-                        <MenuItem value="byPaymentPeriod">
-                            {view.distributionMethod("byPaymentPeriod")}
-                        </MenuItem>
-                    </Select>
-                </FormControl>
-                <TextField {...keyRateInput.input} title="Значение" required />
+                <Stack>
+                    <FormControl>
+                        <InputLabel id="legal-entity-input-label">
+                            Порядок расчёта
+                        </InputLabel>
+                        <Select
+                            labelId="legal-entity-input-label"
+                            id="legal-entity-input"
+                            value={legalEntity}
+                            label="Порядок расчёта"
+                            onChange={handleLegalEntityChange}
+                        >
+                            <MenuItem value="natural">Физические лица</MenuItem>
+                            <MenuItem value="artificial">Юридические лица</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel id="distribution-method-input-label">
+                            Метод распределения
+                        </InputLabel>
+                        <Select
+                            labelId="distribution-method-input-label"
+                            id="distribution-method-input"
+                            value={distributionMethod}
+                            label="Метод распределения"
+                            onChange={handleDistributionMethodChange}
+                        >
+                            <MenuItem value="fifo">
+                                {view.distributionMethod("fifo")}
+                            </MenuItem>
+                            <MenuItem value="byPaymentPeriod">
+                                {view.distributionMethod("byPaymentPeriod")}
+                            </MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TextField {...keyRateInput.input} title="Значение" required />
+                </Stack>
             </ModalForm>
         </>
     )

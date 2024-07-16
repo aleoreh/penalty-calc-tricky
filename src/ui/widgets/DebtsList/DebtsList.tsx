@@ -35,7 +35,8 @@ function periodIsIn(periods: BillingPeriod[]) {
 }
 
 export function DebtsList() {
-    const { debts, addDebt, deleteDebt } = useDebts()
+    const { debts, addDebt, deleteDebt, updateDebt } = useDebts()
+
     const { getDefaultDueDate } = useDebt()
     const { config } = useCalculatorConfig()
 
@@ -87,6 +88,10 @@ export function DebtsList() {
             inputDueDate.toDate(),
             kopekFromRuble(debtAmountInput.validatedValue)
         )
+
+        setInputDebtPeriod(null)
+        setInputDebtPeriodError(null)
+        setInputDueDate(null)
     }
 
     const submitAddDebtAndContinue = () => {
@@ -103,11 +108,20 @@ export function DebtsList() {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Stack>
-                        {debts.map((x, i) => (
+                        {debts.map((debt, i) => (
                             <DebtItem
                                 key={i}
-                                debt={x}
-                                deleteDebt={() => deleteDebt(x.period)}
+                                debt={debt}
+                                deleteDebt={() => deleteDebt(debt.period)}
+                                updateDebt={(dueDate, amountRub) =>
+                                    updateDebt(
+                                        {
+                                            dueDate,
+                                            amount: kopekFromRuble(amountRub),
+                                        },
+                                        debt
+                                    )
+                                }
                             />
                         ))}
                     </Stack>

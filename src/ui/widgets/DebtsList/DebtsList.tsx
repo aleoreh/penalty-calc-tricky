@@ -129,7 +129,6 @@ export function DebtsList() {
                         value={inputDebtPeriod}
                         onChange={handleInputDebtPeriodChange}
                         views={["year", "month"]}
-                        view="month"
                         openTo="year"
                         shouldDisableMonth={periodIsIn(
                             debts.map((x) => x.period)

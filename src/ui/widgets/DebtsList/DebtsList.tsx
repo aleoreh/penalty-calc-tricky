@@ -54,7 +54,10 @@ export function DebtsList() {
     const debtAmountInput = useValidatedInput("", validationDecoders.decimal)
 
     const modalForm = useModalForm()
-    const validatedForm = useValidatedForm([debtAmountInput])
+    const validatedForm = useValidatedForm(
+        [debtAmountInput],
+        inputDebtPeriodError !== null
+    )
 
     const periodErrorMessage = useMemo(() => {
         switch (inputDebtPeriodError) {

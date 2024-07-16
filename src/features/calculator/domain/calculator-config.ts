@@ -62,7 +62,7 @@ export function fromTheStateConstants(
             return {
                 ...naturalConfig,
                 deferredDaysCount: 0,
-                fractionChangeDay: -Infinity,
+                fractionChangeDay: -36500,
             }
     }
 }

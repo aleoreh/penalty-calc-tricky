@@ -76,7 +76,7 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
     const editModalForm = useModalForm()
 
     const handleEditSubmit = () => {
-        if (!inputDueDate || !debtAmountInput.validatedValue) return
+        if (!inputDueDate || debtAmountInput.validatedValue === undefined) return
 
         updateDebt(inputDueDate.toDate(), debtAmountInput.validatedValue)
     }

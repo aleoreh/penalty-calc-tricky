@@ -3,12 +3,12 @@ import dayjs, { Dayjs } from "dayjs"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { useCalculator } from "../hooks/useCalculator"
+import { useApplication } from "../hooks/useApplication"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function InputCalculationDate() {
-    const { calculator, setCalculationDate } = useCalculator()
+    const { calculator, setCalculationDate } = useApplication()
 
     const calculationDate = dayjs(calculator.calculationDate)
 

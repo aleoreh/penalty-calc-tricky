@@ -1,4 +1,4 @@
-import { useCalculator } from "./useCalculator"
+import { useApplication } from "./useApplication"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -10,7 +10,7 @@ export function useDebts() {
         getCalculatorDebt,
         addCalculatorDebt,
         deleteCalculatorDebt,
-    } = useCalculator()
+    } = useApplication()
 
     const addDebt = (...params: Parameters<typeof addCalculatorDebt>) => {
         dispatch(() => addCalculatorDebt(...params))

@@ -1,9 +1,9 @@
-import { useCalculator } from "./useCalculator"
+import { useApplication } from "./useApplication"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function useCalculatorConfig() {
-    const { calculator } = useCalculator()
+    const { calculator } = useApplication()
 
     const daysToPay = `Дней на оплату: ${calculator.config.daysToPay}`
 

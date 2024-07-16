@@ -9,12 +9,12 @@ import {
     isLegalEntity,
     LegalEntity,
 } from "../../features/calculator/domain/legalEntity"
-import { useCalculator } from "./useCalculator"
+import { useApplication } from "./useApplication"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function useUserSettings() {
-    const { calculator, dispatch, applyUserSettings } = useCalculator()
+    const { calculator, dispatch, applyUserSettings } = useApplication()
 
     const viewDistributionMethod = (distributionMethod: DistributionMethod) =>
         distributionMethod === "fifo"

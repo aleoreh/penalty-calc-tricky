@@ -6,7 +6,7 @@ import { ApplicationContext } from "../contexts/applicationContext"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-export function useCalculator() {
+export function useApplication() {
     const { useCases, calculator, setCalculator } =
         useContext(ApplicationContext)
 

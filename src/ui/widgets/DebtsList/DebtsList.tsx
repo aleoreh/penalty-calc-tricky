@@ -15,17 +15,17 @@ import { useMemo, useState } from "react"
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { BillingPeriod, billingPeriodFromDate } from "@/lib/billing-period"
-import { ModalForm } from "../../components/ModalForm"
-import { useModalForm } from "../../components/useModalForm"
-import { useSectionTitle } from "../../components/useSectionTitle"
-import { useValidatedForm } from "../../components/useValidatedForm"
-import { useValidatedInput } from "../../components/useValidatedInput"
-import { useDebts } from "../../hooks/useDebts"
-import { kopekFromRuble } from "../../../lib/kopek"
-import { validationDecoders } from "../../validation/validationDecoders"
+import { kopekFromRuble } from "@/lib/kopek"
+import { ModalForm } from "@/ui/components/ModalForm"
+import { useModalForm } from "@/ui/components/useModalForm"
+import { useSectionTitle } from "@/ui/components/useSectionTitle"
+import { useValidatedForm } from "@/ui/components/useValidatedForm"
+import { useValidatedInput } from "@/ui/components/useValidatedInput"
+import { useCalculatorConfig } from "@/ui/hooks/useCalculatorConfig"
+import { useDebt } from "@/ui/hooks/useDebt"
+import { useDebts } from "@/ui/hooks/useDebts"
+import { validationDecoders } from "@/ui/validation/validationDecoders"
 import { DebtItem } from "./DebtItem"
-import { useDebt } from "../../hooks/useDebt"
-import { useCalculatorConfig } from "../../hooks/useCalculatorConfig"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 

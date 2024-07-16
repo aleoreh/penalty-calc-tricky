@@ -13,7 +13,9 @@ import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
+import { updatePayment } from "@/features/calculator/domain/payment"
 import { billingPeriodFromDate } from "@/lib/billing-period"
+import { kopekFromRuble } from "@/lib/kopek"
 import { ModalForm } from "@/ui/components/ModalForm"
 import { useModalForm } from "@/ui/components/useModalForm"
 import { useSectionTitle } from "@/ui/components/useSectionTitle"
@@ -21,7 +23,6 @@ import { useValidatedForm } from "@/ui/components/useValidatedForm"
 import { useValidatedInput } from "@/ui/components/useValidatedInput"
 import { usePayments } from "@/ui/hooks/usePayments"
 import { validationDecoders } from "@/ui/validation/validationDecoders"
-import { kopekFromRuble } from "../../../lib/kopek"
 import { PaymentItem } from "./PaymentItem"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -61,7 +62,9 @@ export function PaymentsList() {
         setInputPaymentPeriod(null)
     }
 
-    const handleInputPaymentPeriodChange = () => {}
+    const handleInputPaymentPeriodChange = () => {
+        throw new Error("handleInputPaymentChange not implemented")
+    }
 
     return (
         <>
@@ -76,6 +79,9 @@ export function PaymentsList() {
                                 key={payment.id}
                                 payment={payment}
                                 deletePayment={() => deletePayment(payment.id)}
+                                updatePayment={(params) => {
+                                    updatePayment(params)(payment)
+                                }}
                             />
                         ))}
                     </Stack>

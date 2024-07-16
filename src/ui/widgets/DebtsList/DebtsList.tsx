@@ -35,7 +35,7 @@ function periodIsIn(periods: BillingPeriod[]) {
 }
 
 export function DebtsList() {
-    const { debts, addDebt } = useDebts()
+    const { debts, addDebt, deleteDebt } = useDebts()
     const { getDefaultDueDate } = useDebt()
     const { config } = useCalculatorConfig()
 
@@ -93,7 +93,6 @@ export function DebtsList() {
         submitAddDebt()
         modalForm.open()
         handleInputDebtPeriodChange(inputDebtPeriod?.add(1, "month") || null)
-        // setInputDebtPeriod(inputDebtPeriod?.add(1, "month") || null)
     }
 
     return (
@@ -105,7 +104,11 @@ export function DebtsList() {
                 <AccordionDetails>
                     <Stack>
                         {debts.map((x, i) => (
-                            <DebtItem key={i} debt={x} />
+                            <DebtItem
+                                key={i}
+                                debt={x}
+                                deleteDebt={() => deleteDebt(x.period)}
+                            />
                         ))}
                     </Stack>
                 </AccordionDetails>

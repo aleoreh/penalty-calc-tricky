@@ -9,6 +9,7 @@ export function useDebts() {
         updateCalculatorDebt,
         getCalculatorDebt,
         addCalculatorDebt,
+        deleteCalculatorDebt,
     } = useCalculator()
 
     const addDebt = (...params: Parameters<typeof addCalculatorDebt>) => {
@@ -19,11 +20,16 @@ export function useDebts() {
         dispatch(() => updateCalculatorDebt(...params))
     }
 
+    const deleteDebt = (...params: Parameters<typeof deleteCalculatorDebt>) => {
+        dispatch(() => deleteCalculatorDebt(...params))
+    }
+
     return {
         debts: calculator.debts,
         getDebt: getCalculatorDebt,
         addDebt,
         updateDebt,
+        deleteDebt,
     }
 }
 

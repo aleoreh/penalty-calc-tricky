@@ -72,7 +72,7 @@ export function PaymentsList() {
                 <AccordionDetails>
                     <Stack>
                         {payments.map((payment) => (
-                            <PaymentItem payment={payment} />
+                            <PaymentItem key={payment.id} payment={payment} />
                         ))}
                     </Stack>
                 </AccordionDetails>

@@ -15,11 +15,11 @@ dayjs.extend(localizedFormat)
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { ApplicationProvider } from "./contexts/applicationContext"
 import { createInitialiseCalculatorUseCase } from "../features/calculator/application/initialiseCalculatorUseCase"
 import { Calculator } from "../features/calculator/domain/calculator"
-import { createCalculatorStoreSimpleRepo } from "../features/calculator/infrastructure/calculatorStoreSimpeRepo"
-import { theStateConstantsStaticRepo as theStateConstantsRepo } from "../features/calculator/infrastructure/theStateConstantsStaticRepo"
+import createCalculatorStoreRepo from "../features/calculator/infrastructure/calculatorStoreReduxRepo"
+import theStateConstantsRepo from "../features/calculator/infrastructure/theStateConstantsStaticRepo"
+import { ApplicationProvider } from "./contexts/applicationContext"
 import { ErrorPage } from "./pages/ErrorPage"
 import { Home } from "./pages/Home"
 import { AppHeader } from "./widgets/AppHeader"
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
 
 function createDependencies(calculator: Calculator) {
     return {
-        calculatorStoreRepo: createCalculatorStoreSimpleRepo(calculator),
+        calculatorStoreRepo: createCalculatorStoreRepo(calculator),
     }
 }
 

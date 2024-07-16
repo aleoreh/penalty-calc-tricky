@@ -13,13 +13,11 @@ import {
     tuple,
 } from "decoders"
 import { CalculatorStoreRepo } from "../domain"
-import { Calculator, DistributionMethod } from "../domain/calculator"
-import {
-    CalculatorConfig,
-    LegalEntity,
-    Moratorium,
-} from "../domain/calculator-config"
+import { Calculator } from "../domain/calculator"
+import { CalculatorConfig, Moratorium } from "../domain/calculator-config"
 import { Debt, Payoff } from "../domain/debt"
+import { DistributionMethod } from "../domain/distributionMethod"
+import { LegalEntity } from "../domain/legalEntity"
 import {
     numberToPaymentId,
     Payment,
@@ -218,3 +216,6 @@ export function createCalculatorStoreReduxRepo(
             ),
     }
 }
+
+export default createCalculatorStoreReduxRepo
+

@@ -5,6 +5,7 @@ import { CalculationResult, CalculationResultItem } from "./calculation-result"
 import {
     CalculatorConfig,
     doesMoratoriumActs,
+    fromTheStateConstants,
     getKeyRatePart,
 } from "./calculator-config"
 import debtShed, { Debt } from "./debt"
@@ -469,6 +470,10 @@ export function withCalculatorUserSettings(userSettings: UserSettings) {
     return (calculator: Calculator): Calculator => {
         return distributePayments({
             ...calculator,
+            config: fromTheStateConstants(
+                userSettings.legalEntity,
+                calculator.config.theStateConstants
+            ),
             userSettings: { ...calculator.userSettings, ...userSettings },
         })
     }

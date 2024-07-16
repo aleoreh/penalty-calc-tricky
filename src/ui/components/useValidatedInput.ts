@@ -20,7 +20,7 @@ export function useValidatedInput<T>(
         initialValue === undefined ? true : false
     )
     const [validatedValue, setValidatedValue] = useState<T | undefined>(
-        undefined
+        decoder.decode(initialValue).value ?? undefined
     )
     const [helperText, setHelperText] = useState<string | undefined>(undefined)
     const [error, setError] = useState(false)
@@ -63,3 +63,4 @@ export function useValidatedInput<T>(
         },
     }
 }
+

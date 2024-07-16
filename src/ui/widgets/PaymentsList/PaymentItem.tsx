@@ -7,13 +7,13 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { Dayjs } from "dayjs"
+import dayjs, { Dayjs } from "dayjs"
 import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { billingPeriodFromDate } from "@/lib/billing-period"
-import { kopekFromRuble } from "@/lib/kopek"
+import { kopekFromRuble, kopekToRuble } from "@/lib/kopek"
 import { ModalConfirmDialog } from "@/ui/components/ConfirmDialog"
 import { ModalForm } from "@/ui/components/ModalForm"
 import { useConfirmDialog } from "@/ui/components/useConfirmDialog"
@@ -37,9 +37,11 @@ export function PaymentItem({
     deletePayment,
     updatePayment,
 }: PaymentItemProps) {
-    const [inputPaymentDate, setInputPaymentDate] = useState<Dayjs | null>(null)
+    const [inputPaymentDate, setInputPaymentDate] = useState<Dayjs | null>(
+        dayjs(payment.date)
+    )
     const [inputPaymentPeriod, setInputPaymentPeriod] = useState<Dayjs | null>(
-        null
+        dayjs(payment.period)
     )
 
     const paymentItemFormat = usePaymentFormat(payment)
@@ -50,7 +52,10 @@ export function PaymentItem({
 
     const editModalForm = useModalForm()
 
-    const paymentAmountInput = useValidatedInput("", validationDecoders.decimal)
+    const paymentAmountInput = useValidatedInput(
+        String(kopekToRuble(payment.amount)),
+        validationDecoders.decimal
+    )
     const editPaymentValidatedForm = useValidatedForm([paymentAmountInput])
 
     const submitEditPayment = () => {
@@ -69,8 +74,8 @@ export function PaymentItem({
                 : undefined,
         })
 
-        setInputPaymentDate(null)
-        setInputPaymentPeriod(null)
+        setInputPaymentDate(dayjs(payment.date))
+        setInputPaymentPeriod(dayjs(payment.period))
     }
 
     const handleInputPaymentPeriodChange = () => {
@@ -139,3 +144,4 @@ export function PaymentItem({
         </>
     )
 }
+

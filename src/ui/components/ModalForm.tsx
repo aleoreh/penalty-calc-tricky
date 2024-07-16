@@ -60,47 +60,44 @@ export function ModalForm({
     return (
         <Dialog open={isOpened} onClose={closeForm}>
             <Card ref={formRef} onReset={resetForm} component="form">
-                <Stack direction="column">
-                    <CardHeader
-                        title={title}
-                        action={
+                <CardHeader
+                    title={title}
+                    action={
+                        <Stack direction="row">
                             <Stack direction="row">
-                                <Stack direction="row">
-                                    {reset && (
-                                        <Button type="reset">сброс</Button>
-                                    )}
-                                    {cancel && (
-                                        <Button type="button" onClick={cancel}>
-                                            отмена
-                                        </Button>
-                                    )}
-                                </Stack>
+                                {reset && <Button type="reset">сброс</Button>}
+                                {cancel && (
+                                    <Button type="button" onClick={cancel}>
+                                        отмена
+                                    </Button>
+                                )}
                             </Stack>
-                        }
-                    />
-                    <CardContent>{children}</CardContent>
-                    <CardActions sx={{ justifyContent: "flex-end" }}>
-                        {submitAndContinue && (
-                            <Button
-                                type="button"
-                                disabled={isInitial || !isValid}
-                                onClick={sumbitForm(true)}
-                            >
-                                Применить и продолжить
-                            </Button>
-                        )}
-                        {submit && (
-                            <Button
-                                type="button"
-                                disabled={isInitial || !isValid}
-                                onClick={sumbitForm(false)}
-                            >
-                                Применить
-                            </Button>
-                        )}
-                    </CardActions>
-                </Stack>
+                        </Stack>
+                    }
+                />
+                <CardContent>{children}</CardContent>
+                <CardActions sx={{ justifyContent: "flex-end" }}>
+                    {submitAndContinue && (
+                        <Button
+                            type="button"
+                            disabled={isInitial || !isValid}
+                            onClick={sumbitForm(true)}
+                        >
+                            Применить и продолжить
+                        </Button>
+                    )}
+                    {submit && (
+                        <Button
+                            type="button"
+                            disabled={isInitial || !isValid}
+                            onClick={sumbitForm(false)}
+                        >
+                            Применить
+                        </Button>
+                    )}
+                </CardActions>
             </Card>
         </Dialog>
     )
 }
+

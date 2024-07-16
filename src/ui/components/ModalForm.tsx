@@ -43,6 +43,7 @@ export function ModalForm({
 
     const resetForm = () => {
         reset?.()
+        formRef.current?.reset()
     }
 
     const closeForm = () => {
@@ -52,8 +53,7 @@ export function ModalForm({
 
     const sumbitForm = (withContinue: boolean) => () => {
         close()
-        reset?.()
-        formRef.current?.reset()
+        resetForm()
         withContinue ? submitAndContinue?.() : submit?.()
     }
 

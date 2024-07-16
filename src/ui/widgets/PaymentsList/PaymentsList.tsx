@@ -32,7 +32,7 @@ export function PaymentsList() {
         null
     )
 
-    const { payments, addPayment } = usePayments()
+    const { payments, addPayment, deletePayment } = usePayments()
 
     const sectionTitle = useSectionTitle()
 
@@ -72,7 +72,11 @@ export function PaymentsList() {
                 <AccordionDetails>
                     <Stack>
                         {payments.map((payment) => (
-                            <PaymentItem key={payment.id} payment={payment} />
+                            <PaymentItem
+                                key={payment.id}
+                                payment={payment}
+                                deletePayment={() => deletePayment(payment.id)}
+                            />
                         ))}
                     </Stack>
                 </AccordionDetails>

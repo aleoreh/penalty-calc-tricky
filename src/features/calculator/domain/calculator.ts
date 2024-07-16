@@ -12,7 +12,13 @@ import debtShed, { Debt } from "./debt"
 import { DistributionMethod } from "./distributionMethod"
 import formulaShed from "./formula"
 import keyRatePartShed, { KeyRatePart } from "./keyrate-part"
-import paymentShed, { Payment, PaymentBody, PaymentId } from "./payment"
+import paymentShed, {
+    numberToPaymentId,
+    Payment,
+    PaymentBody,
+    PaymentId,
+    paymentIdToNumber,
+} from "./payment"
 import { KeyRate, TheStateConstants } from "./types"
 import userSettingsShed, { UserSettings } from "./userSettings"
 
@@ -35,9 +41,12 @@ type Penalty = {
 function generateNextId(calculator: Calculator): PaymentId {
     if (calculator.payments.length === 0) return paymentShed.numberToId(1)
 
-    return [...calculator.payments].sort(
-        (x, y) => paymentShed.idToNumber(y.id) - paymentShed.idToNumber(x.id)
+    const lastId = [...calculator.payments].sort(
+        (x, y) => paymentShed.idToNumber(x.id) - paymentShed.idToNumber(y.id)
     )[0].id
+    const res = paymentIdToNumber(lastId) + 1
+
+    return numberToPaymentId(res)
 }
 
 function distributePayment(
@@ -424,19 +433,25 @@ export function getCalculatorPayment(
     return calculator.payments.find((x) => x.id === id)
 }
 
+export function addCalculatorPayment(payment: PaymentBody) {
+    return (calculator: Calculator): Calculator => {
+        return {
+            ...calculator,
+            payments: [
+                ...calculator.payments,
+                { ...payment, id: generateNextId(calculator) },
+            ],
+        }
+    }
+}
+
 export function addCalculatorPayments(payments: PaymentBody[]) {
     return (calculator: Calculator): Calculator => {
-        const newPayments = payments.reduce((acc, paymentBody) => {
-            const newPayment: Payment = {
-                ...paymentBody,
-                id: generateNextId(calculator),
-            }
-            return [...acc, newPayment]
-        }, calculator.payments)
-        return distributePayments({
-            ...calculator,
-            payments: newPayments,
-        })
+        const newCalculator = payments.reduce((acc, paymentBody) => {
+            return addCalculatorPayment(paymentBody)(acc)
+        }, calculator)
+
+        return distributePayments(newCalculator)
     }
 }
 
@@ -531,6 +546,7 @@ export const calculatorShed = {
     withDebts: withCalculatorDebts,
     updateDebt: updateCalculatorDebt,
     getPayment: getCalculatorPayment,
+    addPayment: addCalculatorPayment,
     addPayments: addCalculatorPayments,
     deletePayment: deleteCalculatorPayment,
     clearPayments: clearCalculatorPayments,

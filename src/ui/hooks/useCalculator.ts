@@ -1,12 +1,14 @@
-import { useState } from "react"
+import { useContext } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { useApplication } from "../contexts/applicationContextHook"
+import { ApplicationContext } from "../contexts/applicationContext"
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function useCalculator() {
-    const { useCases } = useApplication()
-    const [calculator, setCalculator] = useState(useCases.getCalculator())
+    const { useCases, calculator, setCalculator } =
+        useContext(ApplicationContext)
 
     const dispatch = (callback: () => void) => {
         callback()
@@ -19,3 +21,4 @@ export function useCalculator() {
         ...useCases,
     }
 }
+

@@ -83,7 +83,11 @@ function App() {
 
     return (
         calculator && (
-            <ApplicationProvider dependencies={createDependencies(calculator)}>
+            <ApplicationProvider
+                dependencies={createDependencies(calculator)}
+                calculator={calculator}
+                setCalculator={setCalculator}
+            >
                 <ThemeProvider theme={theme}>
                     <LocalizationProvider
                         dateAdapter={AdapterDayjs}

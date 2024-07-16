@@ -1,14 +1,9 @@
-import { useState } from "react"
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-import { useApplication } from "../contexts/applicationContextHook"
+import { useCalculator } from "./useCalculator"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function useCalculatorConfig() {
-    const { useCases } = useApplication()
-    const [calculator] = useState(useCases.getCalculator())
+    const { calculator } = useCalculator()
 
     const daysToPay = `Дней на оплату: ${calculator.config.daysToPay}`
 
@@ -32,3 +27,4 @@ export function useCalculatorConfig() {
         },
     }
 }
+

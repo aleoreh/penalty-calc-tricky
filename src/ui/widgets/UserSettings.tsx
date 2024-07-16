@@ -17,7 +17,8 @@ import { useRegularText } from "../components/useRegularText"
 import { useSectionTitle } from "../components/useSectionTitle"
 import { useValidatedForm } from "../components/useValidatedForm"
 import { useValidatedInput } from "../components/useValidatedInput"
-import { useUserSettings } from "../hooks/useUserSettings"
+import { useCalculationSettings } from "../hooks/useCalculationSettings"
+import { useCalculationSettingsFormat } from "../hooks/useCalculationSettingsFormat"
 import { validationDecoders } from "../validation/validationDecoders"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -25,11 +26,16 @@ import { validationDecoders } from "../validation/validationDecoders"
 export function UserSettings() {
     const userSettingsInfo = useRegularText()
     const userSettingsTitle = useSectionTitle()
-    const { view, settings, isLegalEntity, isDistributionMethod, setSettings } =
-        useUserSettings()
 
-    const [legalEntity, setLegalEntity] = useState(settings.legalEntity)
-    const [distributionMethod, setDistributionMethod] = useState(
+    const settings = useCalculationSettings()
+    const { isLegalEntity, isDistributionMethod, setUserSettings } = settings
+
+    const view = useCalculationSettingsFormat(settings)
+
+    const [inputLegalEntity, setInputLegalEntity] = useState(
+        settings.legalEntity
+    )
+    const [inputDistributionMethod, setInputDistributionMethod] = useState(
         settings.distributionMethod
     )
 
@@ -44,7 +50,7 @@ export function UserSettings() {
     const keyRateInput = useValidatedInput(
         settings.calculationKeyRate === undefined
             ? undefined
-            : settings.calculationKeyRate * 100,
+            : String(settings.calculationKeyRate * 100),
         validationDecoders.decimal.transform((x) => x / 100)
     )
     const validatedForm = useValidatedForm([
@@ -55,18 +61,19 @@ export function UserSettings() {
     const modalForm = useModalForm()
 
     const handleLegalEntityChange = (event: SelectChangeEvent) => {
-        isLegalEntity(event.target.value) && setLegalEntity(event.target.value)
+        isLegalEntity(event.target.value) &&
+            setInputLegalEntity(event.target.value)
     }
 
     const handleDistributionMethodChange = (event: SelectChangeEvent) => {
         isDistributionMethod(event.target.value) &&
-            setDistributionMethod(event.target.value)
+            setInputDistributionMethod(event.target.value)
     }
 
     const submit = () => {
-        setSettings({
-            legalEntity,
-            distributionMethod,
+        setUserSettings({
+            legalEntity: inputLegalEntity,
+            distributionMethod: inputDistributionMethod,
             calculationKeyRate: keyRateInput.validatedValue,
         })
     }
@@ -81,8 +88,8 @@ export function UserSettings() {
             >
                 <Typography {...userSettingsInfo}>
                     {`${[
-                        view.legalEntity(settings.legalEntity),
-                        view.distributionMethod(settings.distributionMethod),
+                        view.legalEntity,
+                        view.distributionMethod,
                         view.keyRate,
                     ].join("; ")}`}
                 </Typography>
@@ -104,7 +111,7 @@ export function UserSettings() {
                         <Select
                             labelId="legal-entity-input-label"
                             id="legal-entity-input"
-                            value={legalEntity}
+                            value={inputLegalEntity}
                             label="Порядок расчёта"
                             onChange={handleLegalEntityChange}
                         >
@@ -121,15 +128,15 @@ export function UserSettings() {
                         <Select
                             labelId="distribution-method-input-label"
                             id="distribution-method-input"
-                            value={distributionMethod}
+                            value={inputDistributionMethod}
                             label="Метод распределения"
                             onChange={handleDistributionMethodChange}
                         >
                             <MenuItem value="fifo">
-                                {view.distributionMethod("fifo")}
+                                {view.distributionMethods["fifo"]}
                             </MenuItem>
                             <MenuItem value="byPaymentPeriod">
-                                {view.distributionMethod("byPaymentPeriod")}
+                                {view.distributionMethods["byPaymentPeriod"]}
                             </MenuItem>
                         </Select>
                     </FormControl>

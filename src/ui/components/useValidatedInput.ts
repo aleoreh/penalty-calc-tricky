@@ -24,7 +24,7 @@ export function useValidatedInput<T>(
     )
     const [helperText, setHelperText] = useState<string | undefined>(undefined)
     const [error, setError] = useState(false)
-    const [value, setValue] = useState(initialValue)
+    const [value, setValue] = useState(initialValue ?? "")
 
     return {
         input: {

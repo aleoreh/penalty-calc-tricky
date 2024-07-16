@@ -16,11 +16,13 @@ export function useValidatedInput<T>(
     initialValue: string | number | undefined,
     decoder: Decoder<T>
 ): ValidatedInput<T> {
+    const validatedInitial = decoder.decode(initialValue).value ?? undefined
+
     const [isInitial, setIsInitial] = useState(
         initialValue === undefined ? true : false
     )
     const [validatedValue, setValidatedValue] = useState<T | undefined>(
-        decoder.decode(initialValue).value ?? undefined
+        validatedInitial
     )
     const [helperText, setHelperText] = useState<string | undefined>(undefined)
     const [error, setError] = useState(false)
@@ -55,7 +57,7 @@ export function useValidatedInput<T>(
         hasError: error,
         isInitial,
         reset: () => {
-            setValidatedValue(undefined)
+            setValidatedValue(validatedInitial)
             setHelperText(undefined)
             setError(false)
             setIsInitial(initialValue === undefined ? true : false)

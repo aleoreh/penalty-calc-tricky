@@ -14,7 +14,11 @@ import { useMemo, useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { BillingPeriod, billingPeriodFromDate } from "@/lib/billing-period"
+import {
+    BillingPeriod,
+    billingPeriodFromDate,
+    billingPeriodsEqual,
+} from "@/lib/billing-period"
 import { kopekFromRuble } from "@/lib/kopek"
 import { ModalForm } from "@/ui/components/ModalForm"
 import { useModalForm } from "@/ui/components/useModalForm"
@@ -31,7 +35,9 @@ import { DebtItem } from "./DebtItem"
 
 function periodIsIn(periods: BillingPeriod[]) {
     return (period: Dayjs) =>
-        periods.includes(billingPeriodFromDate(period.toDate()))
+        periods.filter((x) =>
+            billingPeriodsEqual(x, billingPeriodFromDate(period.toDate()))
+        ).length > 0
 }
 
 export function DebtsList() {

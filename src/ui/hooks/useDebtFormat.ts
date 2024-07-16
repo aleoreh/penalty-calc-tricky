@@ -2,16 +2,16 @@ import dayjs from "dayjs"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { kopekToRuble } from "@/lib/kopek"
 import {
     Debt,
     getDebtRemainingBalance,
     Payoff,
-} from "../../features/calculator/domain/debt"
+} from "@/features/calculator/domain/debt"
+import { kopekToRuble } from "@/lib/kopek"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-export { type Debt, type Payoff } from "../../features/calculator/domain/debt"
+export { type Debt, type Payoff } from "@/features/calculator/domain/debt"
 
 export function useDebtItemFormat(item: Debt) {
     return {

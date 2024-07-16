@@ -10,7 +10,7 @@ import {
     oneOf,
     optional,
     string,
-    tuple,
+    tuple
 } from "decoders"
 import { CalculatorStoreRepo } from "../domain"
 import { Calculator } from "../domain/calculator"
@@ -52,8 +52,11 @@ const theStateConstantsDecoder: Decoder<TheStateConstants> = object({
 })
 
 const theStateConstantsEncode = (value: TheStateConstants) => ({
-    ...value,
+    daysToPay: value.daysToPay,
+    deferredDaysCount: value.deferredDaysCount,
+    fractionChangeDay: value.fractionChangeDay,
     keyRates: keyRatesEncode(value.keyRates),
+    moratoriums: value.moratoriums,
 })
 
 const legalEntityDecoder: Decoder<LegalEntity> = oneOf([
@@ -78,10 +81,12 @@ const calculatorConfigDecoder: Decoder<CalculatorConfig> = object({
 })
 
 const calculatorConfigEncode = (value: CalculatorConfig) => ({
-    ...value,
     legalEntity: legalEntityEncode(value.legalEntity),
     theStateConstants: theStateConstantsEncode(value.theStateConstants),
+    daysToPay: value.daysToPay,
+    deferredDaysCount: value.deferredDaysCount,
     moratoriums: value.moratoriums.map(moratoriumEncode),
+    fractionChangeDay: value.fractionChangeDay,
 })
 
 const distributionMethodDecoder: Decoder<DistributionMethod> = oneOf([
@@ -112,7 +117,6 @@ const payoffDecoder: Decoder<Payoff> = object({
 })
 
 const payoffEncode = (value: Payoff) => ({
-    ...value,
     paymentId: paymentIdEncode(value.paymentId),
     paymentDate: dateEncode(value.paymentDate),
     repaymentAmount: kopekAsNumber(value.repaymentAmount),
@@ -133,7 +137,6 @@ const debtDecoder: Decoder<Debt> = object({
 })
 
 const debtEncode = (value: Debt) => ({
-    ...value,
     period: billingPeriodEncode(value.period),
     amount: kopekEncode(value.amount),
     dueDate: dateEncode(value.dueDate),
@@ -148,7 +151,6 @@ const paymentDecoder: Decoder<Payment> = object({
 })
 
 const paymentEncode = (value: Payment) => ({
-    ...value,
     id: paymentIdEncode(value.id),
     date: dateEncode(value.date),
     amount: kopekEncode(value.amount),
@@ -165,7 +167,6 @@ const calculatorDecoder: Decoder<Calculator> = object({
 })
 
 const calculatorEncode = (value: Calculator) => ({
-    ...value,
     calculationDate: dateEncode(value.calculationDate),
     config: calculatorConfigEncode(value.config),
     userSettings: userSettingsEncode(value.userSettings),

@@ -63,16 +63,13 @@ const router = createBrowserRouter([
     },
 ])
 
-function createDependencies(calculator: Calculator) {
-    return {
-        calculatorStoreRepo: createCalculatorStoreRepo(calculator),
-    }
-}
-
 function App() {
     const [calculator, setCalculator] = useState<Calculator | undefined>(
         undefined
     )
+    const [dependencies, setDependencies] = useState<
+        ReturnType<typeof createDependencies> | undefined
+    >(undefined)
 
     useEffect(() => {
         theStateConstantsRepo
@@ -81,10 +78,23 @@ function App() {
             .then(setCalculator)
     }, [])
 
+    useEffect(() => {
+        if (dependencies !== undefined || calculator === undefined) return
+
+        setDependencies(createDependencies(calculator))
+    }, [calculator, dependencies])
+
+    const createDependencies = (calculator: Calculator) => {
+        return {
+            calculatorStoreRepo: createCalculatorStoreRepo(calculator),
+        }
+    }
+
     return (
-        calculator && (
+        calculator &&
+        dependencies && (
             <ApplicationProvider
-                dependencies={createDependencies(calculator)}
+                dependencies={dependencies}
                 calculator={calculator}
                 setCalculator={setCalculator}
             >

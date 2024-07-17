@@ -34,17 +34,17 @@ export function UserSettings() {
 
     // ~~~~~~~~~~~~~~ alt форма ~~~~~~~~~~~~~~ //
 
-    const legalEntityAltInput = useSimpleField({
+    const legalEntityInput = useSimpleField({
         name: "legal-entity",
         initialValue: settings.legalEntity,
     })
 
-    const distributionMethodAltInput = useSimpleField({
+    const distributionMethodInput = useSimpleField({
         name: "distribution-method",
         initialValue: settings.distributionMethod,
     })
 
-    const keyRateAltInput = useValidatedTextField({
+    const keyRateInput = useValidatedTextField({
         name: "key-rate",
         decoder: validationDecoders.decimal.transform((x) => x / 100),
         initialValue:
@@ -54,9 +54,9 @@ export function UserSettings() {
     })
 
     const userSettingsForm = useAppForm([
-        legalEntityAltInput,
-        distributionMethodAltInput,
-        keyRateAltInput,
+        legalEntityInput,
+        distributionMethodInput,
+        keyRateInput,
     ])
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -65,20 +65,20 @@ export function UserSettings() {
 
     const submit = () => {
         setUserSettings({
-            legalEntity: legalEntityAltInput.value,
-            distributionMethod: distributionMethodAltInput.value,
-            calculationKeyRate: keyRateAltInput.validatedValue,
+            legalEntity: legalEntityInput.value,
+            distributionMethod: distributionMethodInput.value,
+            calculationKeyRate: keyRateInput.validatedValue,
         })
     }
 
     const handleLegalEntityChange = (event: SelectChangeEvent) => {
         isLegalEntity(event.target.value) &&
-            legalEntityAltInput.setValue(event.target.value)
+            legalEntityInput.setValue(event.target.value)
     }
 
     const handleDistributionMethodChange = (event: SelectChangeEvent) => {
         isDistributionMethod(event.target.value) &&
-            distributionMethodAltInput.setValue(event.target.value)
+            distributionMethodInput.setValue(event.target.value)
     }
 
     return (
@@ -112,11 +112,11 @@ export function UserSettings() {
                             Порядок расчёта
                         </InputLabel>
                         <Select
-                            {...legalEntityAltInput.input}
+                            {...legalEntityInput.input}
                             labelId="legal-entity-input-label"
                             id="legal-entity-input"
                             label="Порядок расчёта"
-                            value={legalEntityAltInput.value}
+                            value={legalEntityInput.value}
                             onChange={handleLegalEntityChange}
                         >
                             <MenuItem value="natural">Физические лица</MenuItem>
@@ -130,11 +130,11 @@ export function UserSettings() {
                             Метод распределения
                         </InputLabel>
                         <Select
-                            {...distributionMethodAltInput.input}
+                            {...distributionMethodInput.input}
                             labelId="distribution-method-input-label"
                             id="distribution-method-input"
                             label="Метод распределения"
-                            value={distributionMethodAltInput.value}
+                            value={distributionMethodInput.value}
                             onChange={handleDistributionMethodChange}
                         >
                             <MenuItem value="fifo">
@@ -146,7 +146,7 @@ export function UserSettings() {
                         </Select>
                     </FormControl>
                     <TextField
-                        {...keyRateAltInput.input}
+                        {...keyRateInput.input}
                         label="Ключевая ставка, %"
                         required
                     />

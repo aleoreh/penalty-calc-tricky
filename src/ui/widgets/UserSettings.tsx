@@ -3,7 +3,7 @@ import FormControl from "@mui/material/FormControl"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
-import Select, { SelectChangeEvent } from "@mui/material/Select"
+import Select from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
@@ -11,14 +11,15 @@ import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
+import { nonEmptyString } from "decoders"
 import { ModalForm } from "../components/ModalForm"
 import { useModalForm } from "../components/useModalForm"
 import { useRegularText } from "../components/useRegularText"
 import { useSectionTitle } from "../components/useSectionTitle"
-import { useValidatedForm } from "../components/useValidatedForm"
-import { useValidatedInput } from "../components/useValidatedInput"
+import { useValidatedTextField } from "../components/useValidatedTextField"
 import { useCalculationSettings } from "../hooks/useCalculationSettings"
 import { useCalculationSettingsFormat } from "../hooks/useCalculationSettingsFormat"
+import { useAppForm } from "../validation/useAppForm"
 import { validationDecoders } from "../validation/validationDecoders"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -39,42 +40,72 @@ export function UserSettings() {
         settings.distributionMethod
     )
 
-    const legalEntityInput = useValidatedInput(
-        settings.legalEntity,
-        validationDecoders.nonEmptyString
-    )
-    const distributionMethodInput = useValidatedInput(
-        settings.distributionMethod,
-        validationDecoders.nonEmptyString
-    )
-    const keyRateInput = useValidatedInput(
-        settings.calculationKeyRate === undefined
-            ? undefined
-            : String(settings.calculationKeyRate * 100),
-        validationDecoders.decimal.transform((x) => x / 100)
-    )
-    const validatedForm = useValidatedForm([
-        legalEntityInput,
-        distributionMethodInput,
-        keyRateInput,
+    // ~~~~~~~~~~~~~~~~ форма ~~~~~~~~~~~~~~~~ //
+
+    // const legalEntityInput = useValidatedInput(
+    //     settings.legalEntity,
+    //     validationDecoders.nonEmptyString
+    // )
+    // const distributionMethodInput = useValidatedInput(
+    //     settings.distributionMethod,
+    //     validationDecoders.nonEmptyString
+    // )
+    // const keyRateInput = useValidatedInput(
+    //     settings.calculationKeyRate === undefined
+    //         ? undefined
+    //         : String(settings.calculationKeyRate * 100),
+    //     validationDecoders.decimal.transform((x) => x / 100)
+    // )
+    // const validatedForm = useValidatedForm([
+    //     legalEntityInput,
+    //     distributionMethodInput,
+    //     keyRateInput,
+    // ])
+
+    // ~~~~~~~~~~~~~~ alt форма ~~~~~~~~~~~~~~ //
+
+    const legalEntityAltInput = useValidatedTextField({
+        name: "legal-entity",
+        decoder: nonEmptyString.refine(
+            (value) => isLegalEntity(value),
+            `Недопустимое значение`
+        ),
+        initialValue: settings.legalEntity,
+    })
+
+    const distributionMethodAltInput = useValidatedTextField({
+        name: "distribution-method",
+        decoder: nonEmptyString.refine(
+            (value) => isDistributionMethod(value),
+            `Недопустимое значение`
+        ),
+        initialValue: settings.distributionMethod,
+    })
+
+    const keyRateAltInput = useValidatedTextField({
+        name: "key-rate",
+        decoder: validationDecoders.decimal.transform((x) => x / 100),
+        initialValue:
+            settings.calculationKeyRate === undefined
+                ? undefined
+                : String(settings.calculationKeyRate * 100),
+    })
+
+    const userSettingsForm = useAppForm([
+        legalEntityAltInput,
+        distributionMethodAltInput,
+        keyRateAltInput,
     ])
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
     const modalForm = useModalForm()
-
-    const handleLegalEntityChange = (event: SelectChangeEvent) => {
-        isLegalEntity(event.target.value) &&
-            setInputLegalEntity(event.target.value)
-    }
-
-    const handleDistributionMethodChange = (event: SelectChangeEvent) => {
-        isDistributionMethod(event.target.value) &&
-            setInputDistributionMethod(event.target.value)
-    }
 
     const submit = () => {
         setUserSettings({
-            legalEntity: inputLegalEntity,
-            distributionMethod: inputDistributionMethod,
-            calculationKeyRate: keyRateInput.validatedValue,
+            legalEntity: legalEntityAltInput.validatedValue,
+            distributionMethod: distributionMethodAltInput.validatedValue,
+            calculationKeyRate: keyRateAltInput.validatedValue,
         })
     }
 
@@ -100,7 +131,7 @@ export function UserSettings() {
             <ModalForm
                 title="Настройки"
                 {...modalForm}
-                {...validatedForm}
+                {...userSettingsForm}
                 submit={submit}
             >
                 <Stack>
@@ -109,11 +140,10 @@ export function UserSettings() {
                             Порядок расчёта
                         </InputLabel>
                         <Select
+                            {...legalEntityAltInput.input}
                             labelId="legal-entity-input-label"
                             id="legal-entity-input"
-                            value={inputLegalEntity}
                             label="Порядок расчёта"
-                            onChange={handleLegalEntityChange}
                         >
                             <MenuItem value="natural">Физические лица</MenuItem>
                             <MenuItem value="artificial">
@@ -126,11 +156,10 @@ export function UserSettings() {
                             Метод распределения
                         </InputLabel>
                         <Select
+                            {...distributionMethodAltInput.input}
                             labelId="distribution-method-input-label"
                             id="distribution-method-input"
-                            value={inputDistributionMethod}
                             label="Метод распределения"
-                            onChange={handleDistributionMethodChange}
                         >
                             <MenuItem value="fifo">
                                 {view.distributionMethods["fifo"]}
@@ -141,7 +170,7 @@ export function UserSettings() {
                         </Select>
                     </FormControl>
                     <TextField
-                        {...keyRateInput.input}
+                        {...keyRateAltInput.input}
                         label="Ключевая ставка, %"
                         required
                     />

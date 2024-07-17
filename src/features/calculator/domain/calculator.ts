@@ -122,6 +122,8 @@ function distributePayment(
 }
 
 function distributePayments(calculator: Calculator): Calculator {
+    const clearedPayoffs = calculator.debts.map(debtShed.clearPayoffs)
+
     const [debts, remainder] = calculator.payments.reduce(
         ([debts, remainder], payment) => {
             const { debts: newDebts, remainder: newRemainder } =
@@ -135,7 +137,7 @@ function distributePayments(calculator: Calculator): Calculator {
                 Kopek
             ]
         },
-        [calculator.debts, kopekShed.asKopek(0)] as [Debt[], Kopek]
+        [clearedPayoffs, kopekShed.asKopek(0)] as [Debt[], Kopek]
     )
     return {
         ...calculator,

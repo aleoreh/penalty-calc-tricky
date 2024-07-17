@@ -8,25 +8,25 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import dayjs, { Dayjs } from "dayjs"
-import { useState } from "react"
+import dayjs from "dayjs"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { kopekToRuble } from "@/lib/kopek"
 import { ModalConfirmDialog } from "@/ui/components/ConfirmDialog"
 import { ModalForm } from "@/ui/components/ModalForm"
+import { useAppDatePicker } from "@/ui/components/useAppDatePicker"
 import { useConfirmDialog } from "@/ui/components/useConfirmDialog"
 import { useModalForm } from "@/ui/components/useModalForm"
 import { useRegularText } from "@/ui/components/useRegularText"
-import { useValidatedForm } from "@/ui/components/useValidatedForm"
-import { useValidatedInput } from "@/ui/components/useValidatedInput"
+import { useValidatedTextField } from "@/ui/components/useValidatedTextField"
 import {
     Debt,
     Payoff,
     useDebtItemFormat,
     usePayoffItemFormat,
 } from "@/ui/hooks/useDebtFormat"
+import { useAppForm } from "@/ui/validation/useAppForm"
 import { validationDecoders } from "@/ui/validation/validationDecoders"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -57,28 +57,33 @@ type DebtItemProps = {
 }
 
 export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
-    const [inputDueDate, setInputDueDate] = useState<Dayjs | null>(
-        dayjs(debt.dueDate)
-    )
-
     const text = useRegularText()
     const debtItemView = useDebtItemFormat(debt)
 
     const confirmDeleteDialog = useConfirmDialog()
 
-    const debtAmountInput = useValidatedInput(
-        String(kopekToRuble(debt.amount)),
-        validationDecoders.decimal
-    )
+    // ~~~~~~~~~~~~~~~~ форма ~~~~~~~~~~~~~~~~ //
 
-    const editDebtValidatedForm = useValidatedForm([debtAmountInput])
+    const dueDateInput = useAppDatePicker({
+        name: "due-date",
+        initialValue: dayjs(debt.dueDate),
+    })
+    const debtAmountInput = useValidatedTextField({
+        name: "debt-amount",
+        decoder: validationDecoders.decimal,
+        initialValue: JSON.stringify(kopekToRuble(debt.amount)),
+    })
+    const editDebtForm = useAppForm([dueDateInput, debtAmountInput])
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
     const editModalForm = useModalForm()
 
     const handleEditSubmit = () => {
-        if (!inputDueDate || debtAmountInput.validatedValue === undefined) return
+        if (!dueDateInput.value || debtAmountInput.validatedValue === undefined)
+            return
 
-        updateDebt(inputDueDate.toDate(), debtAmountInput.validatedValue)
+        updateDebt(dueDateInput.value.toDate(), debtAmountInput.validatedValue)
     }
 
     return (
@@ -103,7 +108,7 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
                 <CardActions sx={{ justifyContent: "flex-end" }}>
                     <IconButton
                         onClick={() => {
-                            editDebtValidatedForm.reset()
+                            editDebtForm.reset()
                             editModalForm.open()
                         }}
                     >
@@ -122,15 +127,14 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
             />
             <ModalForm
                 {...editModalForm}
-                {...editDebtValidatedForm}
+                {...editDebtForm}
                 title="Изменение долга"
                 submit={handleEditSubmit}
             >
                 <Stack>
                     <DatePicker
+                        {...dueDateInput.input}
                         label={"Начало просрочки"}
-                        value={inputDueDate}
-                        onChange={setInputDueDate}
                     />
                     <TextField
                         {...debtAmountInput.input}

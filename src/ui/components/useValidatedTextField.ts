@@ -1,6 +1,5 @@
-import { TextFieldProps } from "@mui/material/TextField"
 import { Decoder } from "decoders"
-import { ChangeEvent, useState } from "react"
+import { useState } from "react"
 
 type ValidatedTextFieldParams<T> = {
     name: string
@@ -8,8 +7,16 @@ type ValidatedTextFieldParams<T> = {
     initialValue?: string
 }
 
+type ValidatedTextFieldInputProps = {
+    name?: string
+    value?: string
+    onChange?: (evt: { target: { value: unknown } }) => void
+    error?: boolean
+    helperText?: string
+}
+
 type ValidatedTextField<T> = {
-    input: TextFieldProps
+    input: ValidatedTextFieldInputProps
     validatedValue: T | undefined
     isInitial: boolean
     hasError: boolean
@@ -27,8 +34,8 @@ export function useValidatedTextField<T>({
 
     const decodedRawValue = decoder.decode(rawValue)
 
-    const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-        setRawValue(evt.target.value)
+    const onChange = (evt: { target: { value: unknown } }) => {
+        setRawValue(JSON.stringify(evt.target.value))
         setIsInitial(false)
     }
 

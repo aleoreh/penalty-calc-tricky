@@ -89,6 +89,9 @@ export function PaymentItem({
                         <Typography {...text}>
                             {paymentItemFormat.amount}
                         </Typography>
+                        <Typography {...text}>
+                            {paymentItemFormat.period}
+                        </Typography>
                     </Stack>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end" }}>

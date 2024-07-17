@@ -3,19 +3,18 @@ import FormControl from "@mui/material/FormControl"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
-import Select from "@mui/material/Select"
+import Select, { SelectChangeEvent } from "@mui/material/Select"
 import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { nonEmptyString } from "decoders"
 import { ModalForm } from "../components/ModalForm"
 import { useModalForm } from "../components/useModalForm"
 import { useRegularText } from "../components/useRegularText"
 import { useSectionTitle } from "../components/useSectionTitle"
+import { useSimpleField } from "../components/useSimpleField"
 import { useValidatedTextField } from "../components/useValidatedTextField"
 import { useCalculationSettings } from "../hooks/useCalculationSettings"
 import { useCalculationSettingsFormat } from "../hooks/useCalculationSettingsFormat"
@@ -33,52 +32,15 @@ export function UserSettings() {
 
     const view = useCalculationSettingsFormat(settings)
 
-    const [inputLegalEntity, setInputLegalEntity] = useState(
-        settings.legalEntity
-    )
-    const [inputDistributionMethod, setInputDistributionMethod] = useState(
-        settings.distributionMethod
-    )
-
-    // ~~~~~~~~~~~~~~~~ форма ~~~~~~~~~~~~~~~~ //
-
-    // const legalEntityInput = useValidatedInput(
-    //     settings.legalEntity,
-    //     validationDecoders.nonEmptyString
-    // )
-    // const distributionMethodInput = useValidatedInput(
-    //     settings.distributionMethod,
-    //     validationDecoders.nonEmptyString
-    // )
-    // const keyRateInput = useValidatedInput(
-    //     settings.calculationKeyRate === undefined
-    //         ? undefined
-    //         : String(settings.calculationKeyRate * 100),
-    //     validationDecoders.decimal.transform((x) => x / 100)
-    // )
-    // const validatedForm = useValidatedForm([
-    //     legalEntityInput,
-    //     distributionMethodInput,
-    //     keyRateInput,
-    // ])
-
     // ~~~~~~~~~~~~~~ alt форма ~~~~~~~~~~~~~~ //
 
-    const legalEntityAltInput = useValidatedTextField({
+    const legalEntityAltInput = useSimpleField({
         name: "legal-entity",
-        decoder: nonEmptyString.refine(
-            (value) => isLegalEntity(value),
-            `Недопустимое значение`
-        ),
         initialValue: settings.legalEntity,
     })
 
-    const distributionMethodAltInput = useValidatedTextField({
+    const distributionMethodAltInput = useSimpleField({
         name: "distribution-method",
-        decoder: nonEmptyString.refine(
-            (value) => isDistributionMethod(value),
-            `Недопустимое значение`
-        ),
         initialValue: settings.distributionMethod,
     })
 
@@ -88,7 +50,7 @@ export function UserSettings() {
         initialValue:
             settings.calculationKeyRate === undefined
                 ? undefined
-                : String(settings.calculationKeyRate * 100),
+                : JSON.stringify(settings.calculationKeyRate * 100),
     })
 
     const userSettingsForm = useAppForm([
@@ -103,10 +65,20 @@ export function UserSettings() {
 
     const submit = () => {
         setUserSettings({
-            legalEntity: legalEntityAltInput.validatedValue,
-            distributionMethod: distributionMethodAltInput.validatedValue,
+            legalEntity: legalEntityAltInput.value,
+            distributionMethod: distributionMethodAltInput.value,
             calculationKeyRate: keyRateAltInput.validatedValue,
         })
+    }
+
+    const handleLegalEntityChange = (event: SelectChangeEvent) => {
+        isLegalEntity(event.target.value) &&
+            legalEntityAltInput.setValue(event.target.value)
+    }
+
+    const handleDistributionMethodChange = (event: SelectChangeEvent) => {
+        isDistributionMethod(event.target.value) &&
+            distributionMethodAltInput.setValue(event.target.value)
     }
 
     return (
@@ -144,6 +116,8 @@ export function UserSettings() {
                             labelId="legal-entity-input-label"
                             id="legal-entity-input"
                             label="Порядок расчёта"
+                            value={legalEntityAltInput.value}
+                            onChange={handleLegalEntityChange}
                         >
                             <MenuItem value="natural">Физические лица</MenuItem>
                             <MenuItem value="artificial">
@@ -160,6 +134,8 @@ export function UserSettings() {
                             labelId="distribution-method-input-label"
                             id="distribution-method-input"
                             label="Метод распределения"
+                            value={distributionMethodAltInput.value}
+                            onChange={handleDistributionMethodChange}
                         >
                             <MenuItem value="fifo">
                                 {view.distributionMethods["fifo"]}

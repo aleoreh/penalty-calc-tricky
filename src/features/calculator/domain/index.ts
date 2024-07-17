@@ -6,6 +6,7 @@ import { Debt, getDefaultDueDate } from "./debt"
 import { Payment, PaymentId } from "./payment"
 import { KeyRate, TheStateConstants } from "./types"
 import { UserSettings } from "./userSettings"
+import { CalculationResult } from "./calculation-result"
 
 // ~~~~~~~~~~~~~~ use cases ~~~~~~~~~~~~~~ //
 
@@ -65,6 +66,8 @@ export type UpdatePaymentUseCase = (
 export type DeletePaymentUseCase = (id: PaymentId) => void
 
 export type ClearPaymentsUseCase = () => void
+
+export type RunCalculationUseCase = () => CalculationResult[]
 
 // ~~~~~~~~~~~~~ repositories ~~~~~~~~~~~~ //
 

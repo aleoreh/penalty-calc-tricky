@@ -87,6 +87,10 @@ export function updateDebt(params: { dueDate?: Date; amount?: Kopek }) {
     }
 }
 
+export function clearDebtPayoffs(debt: Debt) {
+    return { ...debt, payoffs: [] }
+}
+
 export const debtShed = {
     initDebt,
     addPayoff: addDebtPayoff,
@@ -94,6 +98,7 @@ export const debtShed = {
     getRemainingBalance: getDebtRemainingBalance,
     getDefaultDueDate,
     updateDebt,
+    clearPayoffs: clearDebtPayoffs,
 }
 
 export default debtShed

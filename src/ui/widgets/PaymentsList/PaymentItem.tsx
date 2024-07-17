@@ -78,10 +78,6 @@ export function PaymentItem({
         setInputPaymentPeriod(dayjs(payment.period))
     }
 
-    const handleInputPaymentPeriodChange = () => {
-        throw new Error("handleInputPaymentChange not implemented")
-    }
-
     return (
         <>
             <Card>
@@ -130,7 +126,7 @@ export function PaymentItem({
                     <DatePicker
                         label={"Период"}
                         value={inputPaymentPeriod}
-                        onChange={handleInputPaymentPeriodChange}
+                        onChange={setInputPaymentPeriod}
                         views={["year", "month"]}
                         openTo="year"
                     />

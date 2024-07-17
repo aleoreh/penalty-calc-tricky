@@ -13,7 +13,6 @@ import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-import { updatePayment } from "@/features/calculator/domain/payment"
 import { billingPeriodFromDate } from "@/lib/billing-period"
 import { kopekFromRuble } from "@/lib/kopek"
 import { ModalForm } from "@/ui/components/ModalForm"
@@ -33,7 +32,7 @@ export function PaymentsList() {
         null
     )
 
-    const { payments, addPayment, deletePayment } = usePayments()
+    const { payments, addPayment, deletePayment, updatePayment } = usePayments()
 
     const sectionTitle = useSectionTitle()
 
@@ -62,10 +61,6 @@ export function PaymentsList() {
         setInputPaymentPeriod(null)
     }
 
-    const handleInputPaymentPeriodChange = () => {
-        throw new Error("handleInputPaymentChange not implemented")
-    }
-
     return (
         <>
             <Accordion>
@@ -80,7 +75,7 @@ export function PaymentsList() {
                                 payment={payment}
                                 deletePayment={() => deletePayment(payment.id)}
                                 updatePayment={(params) => {
-                                    updatePayment(params)(payment)
+                                    updatePayment(params, payment)
                                 }}
                             />
                         ))}
@@ -108,7 +103,7 @@ export function PaymentsList() {
                     <DatePicker
                         label={"Период"}
                         value={inputPaymentPeriod}
-                        onChange={handleInputPaymentPeriodChange}
+                        onChange={setInputPaymentPeriod}
                         views={["year", "month"]}
                         openTo="year"
                     />

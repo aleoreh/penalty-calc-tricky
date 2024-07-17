@@ -24,7 +24,10 @@ import { ModalForm } from "@/ui/components/ModalForm"
 import { useModalForm } from "@/ui/components/useModalForm"
 import { useSectionTitle } from "@/ui/components/useSectionTitle"
 import { useValidatedForm } from "@/ui/components/useValidatedForm"
-import { useValidatedInput } from "@/ui/components/useValidatedInput"
+import {
+    useArbitraryInput,
+    useValidatedInput,
+} from "@/ui/components/useValidatedInput"
 import { useCalculatorConfig } from "@/ui/hooks/useCalculatorConfig"
 import { useDebt } from "@/ui/hooks/useDebt"
 import { useDebts } from "@/ui/hooks/useDebts"
@@ -46,18 +49,23 @@ export function DebtsList() {
     const { getDefaultDueDate } = useDebt()
     const { config } = useCalculatorConfig()
 
-    const [inputDebtPeriod, setInputDebtPeriod] = useState<Dayjs | null>(null)
     const [inputDebtPeriodError, setInputDebtPeriodError] =
         useState<DateValidationError | null>(null)
-    const [inputDueDate, setInputDueDate] = useState<Dayjs | null>(null)
 
+    // ~~~~~~~~~~~~~~~~ форма ~~~~~~~~~~~~~~~~ //
+
+    const debtPeriodInput = useArbitraryInput<Dayjs | null>(null)
+    const dueDateInput = useArbitraryInput<Dayjs | null>(null)
     const debtAmountInput = useValidatedInput("", validationDecoders.decimal)
 
-    const modalForm = useModalForm()
     const validatedForm = useValidatedForm(
         [debtAmountInput],
         inputDebtPeriodError !== null
     )
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+    const modalForm = useModalForm()
 
     const periodErrorMessage = useMemo(() => {
         switch (inputDebtPeriodError) {
@@ -71,9 +79,9 @@ export function DebtsList() {
     const title = useSectionTitle()
 
     const handleInputDebtPeriodChange = (value: Dayjs | null) => {
-        setInputDebtPeriod(value)
-        value &&
-            setInputDueDate(
+        debtPeriodInput.input.onChange?.(value)
+        if (value !== null) {
+            dueDateInput.input.onChange?.(
                 dayjs(
                     getDefaultDueDate(
                         billingPeriodFromDate(value.toDate()),
@@ -81,32 +89,35 @@ export function DebtsList() {
                     )
                 )
             )
+        }
     }
 
     const submitAddDebt = () => {
         if (
-            inputDebtPeriod === null ||
-            inputDueDate === null ||
+            debtPeriodInput.validatedValue === null ||
+            dueDateInput.validatedValue === null ||
             debtAmountInput.validatedValue === undefined
         ) {
             return
         }
 
         addDebt(
-            billingPeriodFromDate(inputDebtPeriod.toDate()),
-            inputDueDate.toDate(),
+            billingPeriodFromDate(debtPeriodInput.validatedValue.toDate()),
+            dueDateInput.validatedValue.toDate(),
             kopekFromRuble(debtAmountInput.validatedValue)
         )
 
-        setInputDebtPeriod(null)
+        // setInputDebtPeriod(null)
         setInputDebtPeriodError(null)
-        setInputDueDate(null)
+        // setInputDueDate(null)
     }
 
     const submitAddDebtAndContinue = () => {
         submitAddDebt()
         modalForm.open()
-        handleInputDebtPeriodChange(inputDebtPeriod?.add(1, "month") || null)
+        handleInputDebtPeriodChange(
+            debtPeriodInput.validatedValue?.add(1, "month") || null
+        )
     }
 
     return (
@@ -152,7 +163,7 @@ export function DebtsList() {
                 <Stack>
                     <DatePicker
                         label={"Период"}
-                        value={inputDebtPeriod}
+                        value={debtPeriodInput.validatedValue}
                         onChange={handleInputDebtPeriodChange}
                         views={["year", "month"]}
                         openTo="year"
@@ -168,8 +179,8 @@ export function DebtsList() {
                     />
                     <DatePicker
                         label={"Начало просрочки"}
-                        value={inputDueDate}
-                        onChange={setInputDueDate}
+                        value={dueDateInput.validatedValue}
+                        onChange={dueDateInput.input.onChange}
                     />
                     <TextField
                         {...debtAmountInput.input}

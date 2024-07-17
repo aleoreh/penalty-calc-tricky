@@ -7,8 +7,7 @@ import Stack from "@mui/material/Stack"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import dayjs, { Dayjs } from "dayjs"
-import { useState } from "react"
+import dayjs from "dayjs"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -20,7 +19,10 @@ import { useConfirmDialog } from "@/ui/components/useConfirmDialog"
 import { useModalForm } from "@/ui/components/useModalForm"
 import { useRegularText } from "@/ui/components/useRegularText"
 import { useValidatedForm } from "@/ui/components/useValidatedForm"
-import { useValidatedInput } from "@/ui/components/useValidatedInput"
+import {
+    useArbitraryInput,
+    useValidatedInput,
+} from "@/ui/components/useValidatedInput"
 import { Payment, usePaymentFormat } from "@/ui/hooks/usePaymentFormat"
 import { validationDecoders } from "@/ui/validation/validationDecoders"
 
@@ -37,13 +39,6 @@ export function PaymentItem({
     deletePayment,
     updatePayment,
 }: PaymentItemProps) {
-    const [inputPaymentDate, setInputPaymentDate] = useState<Dayjs | null>(
-        dayjs(payment.date)
-    )
-    const [inputPaymentPeriod, setInputPaymentPeriod] = useState<Dayjs | null>(
-        dayjs(payment.period)
-    )
-
     const paymentItemFormat = usePaymentFormat(payment)
 
     const text = useRegularText()
@@ -52,30 +47,41 @@ export function PaymentItem({
 
     const editModalForm = useModalForm()
 
+    // ~~~~~~~~~~~~~~~~ форма ~~~~~~~~~~~~~~~~ //
+
     const paymentAmountInput = useValidatedInput(
         String(kopekToRuble(payment.amount)),
         validationDecoders.decimal
     )
-    const editPaymentValidatedForm = useValidatedForm([paymentAmountInput])
+    const paymentDateInput = useArbitraryInput(dayjs(payment.date))
+    const paymentPeriodInput = useArbitraryInput(
+        payment.period !== undefined ? dayjs(payment.period) : undefined
+    )
+    const editPaymentValidatedForm = useValidatedForm([
+        paymentAmountInput,
+        paymentDateInput,
+        paymentPeriodInput,
+    ])
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
     const submitEditPayment = () => {
         if (
-            inputPaymentDate === null ||
+            paymentDateInput.validatedValue === null ||
             paymentAmountInput.validatedValue === undefined
         ) {
             return
         }
 
         updatePayment({
-            date: inputPaymentDate.toDate(),
+            date: paymentDateInput.validatedValue.toDate(),
             amount: kopekFromRuble(paymentAmountInput.validatedValue),
-            period: inputPaymentPeriod
-                ? billingPeriodFromDate(inputPaymentPeriod.toDate())
+            period: paymentPeriodInput.validatedValue
+                ? billingPeriodFromDate(
+                      paymentPeriodInput.validatedValue.toDate()
+                  )
                 : undefined,
         })
-
-        setInputPaymentDate(dayjs(payment.date))
-        setInputPaymentPeriod(dayjs(payment.period))
     }
 
     return (
@@ -95,12 +101,7 @@ export function PaymentItem({
                     </Stack>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end" }}>
-                    <IconButton
-                        onClick={() => {
-                            editPaymentValidatedForm.reset()
-                            editModalForm.open()
-                        }}
-                    >
+                    <IconButton onClick={editModalForm.open}>
                         <Edit />
                     </IconButton>
                     <IconButton onClick={confirmDeleteDialog.open}>
@@ -123,13 +124,13 @@ export function PaymentItem({
                 <Stack>
                     <DatePicker
                         label={"Дата платежа"}
-                        value={inputPaymentDate}
-                        onChange={setInputPaymentDate}
+                        value={paymentDateInput.validatedValue}
+                        onChange={paymentDateInput.input.onChange}
                     />
                     <DatePicker
                         label={"Период"}
-                        value={inputPaymentPeriod}
-                        onChange={setInputPaymentPeriod}
+                        value={paymentPeriodInput.validatedValue}
+                        onChange={paymentPeriodInput.input.onChange}
                         views={["year", "month"]}
                         openTo="year"
                     />

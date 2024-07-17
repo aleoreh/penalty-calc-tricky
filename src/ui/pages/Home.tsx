@@ -8,6 +8,7 @@ import { CalculationConfig } from "@/ui/widgets/CalculationConfig"
 import { DebtsList } from "@/ui/widgets/DebtsList"
 import { InputCalculationDate } from "@/ui/widgets/InputCalculationDate"
 import { PaymentsList } from "@/ui/widgets/PaymentsList"
+import { RunCalculationSection } from "@/ui/widgets/RunCalculationSection"
 import { UserSettings } from "@/ui/widgets/UserSettings"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -22,6 +23,7 @@ export function Home() {
                     <InputCalculationDate />
                     <DebtsList />
                     <PaymentsList />
+                    <RunCalculationSection />
                 </Stack>
             </Container>
         </Box>

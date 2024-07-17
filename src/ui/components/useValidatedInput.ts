@@ -4,12 +4,56 @@ import { useState } from "react"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-type ValidatedInput<T> = {
-    input: TextFieldProps
-    validatedValue: T | undefined
+type CommonInput = {
     hasError: boolean
     isInitial: boolean
     reset: () => void
+}
+
+type ValidatedInput<T> = {
+    tag: "ValidatedInput"
+    validatedValue: T | undefined
+    input: Pick<TextFieldProps, "onChange" | "value" | "error" | "helperText">
+} & CommonInput
+
+type ArbitraryInput<T> = {
+    tag: "ArbitratyInput"
+    validatedValue: T
+    input: Pick<TextFieldProps, "value" | "error" | "helperText"> & {
+        onChange?: (value: T | null | undefined) => void
+    }
+} & CommonInput
+
+export function useArbitraryInput<T>(initialValue: T): ArbitraryInput<T> {
+    const validatedInitial = initialValue
+
+    const [isInitial, setIsInitial] = useState(
+        initialValue === undefined ? true : false
+    )
+    const [validatedValue, setValidatedValue] = useState(validatedInitial)
+    const [value, setValue] = useState(initialValue)
+
+    return {
+        tag: "ArbitratyInput",
+        input: {
+            value,
+            onChange: (x: T | null | undefined) => {
+                if (x === null || x === undefined) return
+
+                setIsInitial(false)
+                setValue(x)
+                setValidatedValue(x)
+            },
+        },
+        hasError: false,
+        validatedValue,
+        isInitial,
+        reset: () => {
+            setValidatedValue(validatedInitial)
+            setIsInitial(initialValue === undefined ? true : false)
+            initialValue !== undefined && setValue(initialValue)
+        },
+    }
 }
 
 export function useValidatedInput<T>(
@@ -29,6 +73,7 @@ export function useValidatedInput<T>(
     const [value, setValue] = useState(initialValue ?? "")
 
     return {
+        tag: "ValidatedInput",
         input: {
             onChange: (evt) => {
                 if (evt.target.value === undefined || evt.target.value === null)

@@ -60,7 +60,7 @@ export function DebtsList() {
 
     const validatedForm = useValidatedForm(
         [debtAmountInput],
-        inputDebtPeriodError !== null
+        inputDebtPeriodError !== null && inputDebtPeriodError !== undefined
     )
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -112,6 +112,11 @@ export function DebtsList() {
         // setInputDueDate(null)
     }
 
+    const handleDeleteDebt = (value: { period: BillingPeriod }) => () => {
+        deleteDebt(value.period)
+        setInputDebtPeriodError(null)
+    }
+
     const submitAddDebtAndContinue = () => {
         submitAddDebt()
         modalForm.open()
@@ -132,7 +137,7 @@ export function DebtsList() {
                             <DebtItem
                                 key={i}
                                 debt={debt}
-                                deleteDebt={() => deleteDebt(debt.period)}
+                                deleteDebt={handleDeleteDebt(debt)}
                                 updateDebt={(dueDate, amountRub) =>
                                     updateDebt(
                                         {

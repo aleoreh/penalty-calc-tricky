@@ -46,19 +46,13 @@ export function ModalForm({
         formRef.current?.reset()
     }
 
-    const closeForm = () => {
-        reset?.()
-        close()
-    }
-
     const sumbitForm = (withContinue: boolean) => () => {
         close()
-        resetForm()
         withContinue ? submitAndContinue?.() : submit?.()
     }
 
     return (
-        <Dialog open={isOpened} onClose={closeForm}>
+        <Dialog open={isOpened} onClose={close}>
             <Card ref={formRef} onReset={resetForm} component="form">
                 <CardHeader
                     title={title}

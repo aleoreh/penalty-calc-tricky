@@ -10,7 +10,7 @@ type ValidatedTextFieldParams<T> = {
 type ValidatedTextFieldInputProps = {
     name?: string
     value?: string
-    onChange?: (evt: { target: { value: unknown } }) => void
+    onChange?: (evt: { target: { value: string } }) => void
     error?: boolean
     helperText?: string
 }
@@ -34,8 +34,8 @@ export function useValidatedTextField<T>({
 
     const decodedRawValue = decoder.decode(rawValue)
 
-    const onChange = (evt: { target: { value: unknown } }) => {
-        setRawValue(JSON.stringify(evt.target.value))
+    const onChange = (evt: { target: { value: string } }) => {
+        setRawValue(evt.target.value)
         setIsInitial(false)
     }
 
@@ -67,3 +67,4 @@ export function useValidatedTextField<T>({
         clear,
     }
 }
+

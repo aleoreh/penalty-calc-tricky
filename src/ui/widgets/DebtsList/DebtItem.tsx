@@ -121,7 +121,11 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
                             alignItems="center"
                         >
                             <Typography>Остаток долга:</Typography>
-                            <Typography align="right" variant="h6">
+                            <Typography
+                                align="right"
+                                variant="h6"
+                                fontWeight="700"
+                            >
                                 {debtItemView.remainder}
                             </Typography>
                         </Stack>

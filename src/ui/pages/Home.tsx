@@ -17,10 +17,12 @@ export function Home() {
     return (
         <Box>
             <Container>
-                <Stack>
+                <Stack paddingBlockStart={2}>
                     <UserSettings />
-                    <CalculationConfig />
-                    <InputCalculationDate />
+                    <Stack direction="row">
+                        <InputCalculationDate />
+                        <CalculationConfig />
+                    </Stack>
                     <DebtsList />
                     <PaymentsList />
                     <RunCalculationSection />

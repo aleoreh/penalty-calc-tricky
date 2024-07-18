@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
+import { Card, CardContent } from "@mui/material"
 import { ModalForm } from "../components/ModalForm"
 import { useModalForm } from "../components/useModalForm"
 import { useRegularText } from "../components/useRegularText"
@@ -83,23 +84,29 @@ export function UserSettings() {
 
     return (
         <>
-            <Typography {...userSettingsTitle}>Настройки расчёта</Typography>
-            <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-            >
-                <Typography {...userSettingsInfo}>
-                    {`${[
-                        view.legalEntity,
-                        view.distributionMethod,
-                        view.keyRate,
-                    ].join("; ")}`}
-                </Typography>
-                <IconButton onClick={modalForm.open}>
-                    <Edit />
-                </IconButton>
-            </Stack>
+            <Card variant="outlined">
+                <CardContent>
+                    <Typography {...userSettingsTitle}>
+                        Настройки расчёта
+                    </Typography>
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <Typography {...userSettingsInfo}>
+                            {`${[
+                                view.legalEntity,
+                                view.distributionMethod,
+                                view.keyRate,
+                            ].join("; ")}`}
+                        </Typography>
+                        <IconButton onClick={modalForm.open}>
+                            <Edit />
+                        </IconButton>
+                    </Stack>
+                </CardContent>
+            </Card>
             <ModalForm
                 title="Настройки"
                 {...modalForm}

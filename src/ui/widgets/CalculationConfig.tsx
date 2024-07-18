@@ -3,24 +3,25 @@ import Accordion from "@mui/material/Accordion"
 import AccordionDetails from "@mui/material/AccordionDetails"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import Typography from "@mui/material/Typography"
-import { useRegularText } from "../components/useRegularText"
-import { useSectionTitle } from "../components/useSectionTitle"
-import { useCalculatorConfig } from "../hooks/useCalculatorConfig"
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+import { useRegularText } from "@/ui/components/useRegularText"
+import { useCalculatorConfig } from "@/ui/hooks/useCalculatorConfig"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function CalculationConfig() {
-    const title = useSectionTitle()
     const text = useRegularText()
     const { view } = useCalculatorConfig()
     return (
-        <Accordion>
+        <Accordion sx={{ flex: 1 }}>
             <AccordionSummary
                 aria-controls="panel1-content"
                 id="panel1-header"
                 expandIcon={<ExpandMore />}
             >
-                <Typography {...title}>Константы</Typography>
+                <Typography variant="body2">Константы</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <Typography {...text}>{view.daysToPay}</Typography>
@@ -34,3 +35,4 @@ export function CalculationConfig() {
         </Accordion>
     )
 }
+

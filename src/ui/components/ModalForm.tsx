@@ -84,6 +84,7 @@ export function ModalForm({
                             type="button"
                             disabled={isInitial || !isValid}
                             onClick={sumbitForm(true)}
+                            sx={{ alignSelf: "stretch" }}
                         >
                             Применить и продолжить
                         </Button>
@@ -93,6 +94,7 @@ export function ModalForm({
                             type="button"
                             disabled={isInitial || !isValid}
                             onClick={sumbitForm(false)}
+                            sx={{ alignSelf: "stretch" }}
                         >
                             Применить
                         </Button>

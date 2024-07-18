@@ -135,8 +135,8 @@ const CalculationResultComponent = ({
                 <Table>
                     <TableHead>
                         <TableRow>
-                            {fields.map((field) => (
-                                <TableCell>{field}</TableCell>
+                            {fields.map((field, i) => (
+                                <TableCell key={i}>{field}</TableCell>
                             ))}
                         </TableRow>
                     </TableHead>

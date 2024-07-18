@@ -22,7 +22,7 @@ export function useDebtItemFormat(item: Debt) {
             minimumFractionDigits: 2,
         }).format(kopekToRuble(item.amount)),
         dueDate: `Просрочка с ${dayjs(item.dueDate).format("LL")}`,
-        remainder: `Остаток долга: ${new Intl.NumberFormat("ru", {
+        remainder: `${new Intl.NumberFormat("ru", {
             style: "currency",
             currency: "RUB",
             minimumFractionDigits: 2,

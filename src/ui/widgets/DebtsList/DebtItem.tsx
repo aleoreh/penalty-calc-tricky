@@ -57,7 +57,6 @@ type DebtItemProps = {
 }
 
 export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
-    const text = useRegularText()
     const debtItemView = useDebtItemFormat(debt)
 
     const confirmDeleteDialog = useConfirmDialog()
@@ -90,20 +89,36 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
         <>
             <Card>
                 <CardContent>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Typography {...text}>{debtItemView.period}</Typography>
-                        <Typography {...text}>{debtItemView.amount}</Typography>
+                    <Stack gap={1}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography>{debtItemView.period}</Typography>
+                            <Typography variant="h6">
+                                {debtItemView.amount}
+                            </Typography>
+                        </Stack>
+                        <Typography align="left">
+                            {debtItemView.dueDate}
+                        </Typography>
+                        <Stack direction="row" justifyContent="flex-end">
+                            <Typography>Оплачено:</Typography>
+                            <Stack>
+                                {debt.payoffs.map((payoff, i) => (
+                                    <PayoffItem key={i} payoff={payoff} />
+                                ))}
+                            </Stack>
+                        </Stack>
+                        <Divider />
+                        <Stack
+                            direction="row"
+                            justifyContent="flex-end"
+                            alignItems="center"
+                        >
+                            <Typography>Остаток долга:</Typography>
+                            <Typography align="right" variant="h6">
+                                {debtItemView.remainder}
+                            </Typography>
+                        </Stack>
                     </Stack>
-                    <Typography {...text} align="right">
-                        {debtItemView.dueDate}
-                    </Typography>
-                    {debt.payoffs.map((payoff, i) => (
-                        <PayoffItem key={i} payoff={payoff} />
-                    ))}
-                    <Divider />
-                    <Typography {...text} align="right">
-                        {debtItemView.remainder}
-                    </Typography>
                 </CardContent>
                 <CardActions sx={{ justifyContent: "flex-end" }}>
                     <IconButton

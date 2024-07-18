@@ -2,20 +2,33 @@ import { Close } from "@mui/icons-material"
 import {
     AppBar,
     Button,
+    Container,
     Dialog,
     IconButton,
+    Slide,
     Stack,
     Toolbar,
     Typography,
 } from "@mui/material"
+import { TransitionProps } from "@mui/material/transitions"
+import { forwardRef } from "react"
+import { CalculationResults } from "./CalculationResults"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { useApplication } from "@/ui/hooks/useApplication"
 import { useCalculationResults } from "@/ui/hooks/useCalculationResults"
-import { CalculationResults } from "./CalculationResults"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement
+    },
+    ref: React.Ref<unknown>
+) {
+    return <Slide direction="up" ref={ref} {...props} />
+})
 
 export function RunCalculationSection() {
     const {
@@ -48,21 +61,31 @@ export function RunCalculationSection() {
                 fullScreen
                 open={isResultOpened}
                 onClose={handleDialogClose}
+                TransitionComponent={Transition}
             >
-                <AppBar sx={{ position: "relative" }}>
-                    <Toolbar>
-                        <Typography sx={{ flex: 1 }}>
-                            Результат расчёта пеней
-                        </Typography>
+                <AppBar
+                    variant="outlined"
+                    sx={({ palette }) => ({
+                        position: "relative",
+                        backgroundColor: palette.background.default,
+                        border: "none",
+                    })}
+                >
+                    <Toolbar sx={{ justifyContent: "flex-end" }}>
                         <IconButton
                             edge="end"
                             onClick={handleDialogClose}
-                            color="inherit"
+                            // color="inherit"
                         >
                             <Close />
                         </IconButton>
                     </Toolbar>
                 </AppBar>
+                <Container>
+                    <Stack>
+                        <Typography variant="h5">Результат расчёта</Typography>
+                    </Stack>
+                </Container>
                 <CalculationResults
                     calculationDate={calculator.calculationDate}
                     calculationResults={calculationResults}

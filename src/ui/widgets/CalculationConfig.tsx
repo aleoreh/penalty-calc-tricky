@@ -21,7 +21,7 @@ export function CalculationConfig() {
                 id="panel1-header"
                 expandIcon={<ExpandMore />}
             >
-                <Typography variant="body2">Константы</Typography>
+                <Typography>Константы</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <Typography {...text}>{view.daysToPay}</Typography>

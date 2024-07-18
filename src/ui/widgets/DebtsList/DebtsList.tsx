@@ -120,7 +120,6 @@ export function DebtsList() {
         clearDebts()
         addDebts(
             debtsData.map((x) => ({
-                ...debtsData,
                 period: billingPeriodFromDate(x.period),
                 amount: kopekFromRuble(x.amount),
             }))

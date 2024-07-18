@@ -22,6 +22,7 @@
     "dayjs": "^1.11.11",
     "decoders": "^2.4.2",
     "react": "^18.3.1",
+    "react-data-grid": "^7.0.0-beta.44",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
     "ts-opaque": "^3.0.1",

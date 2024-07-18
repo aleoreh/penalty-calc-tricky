@@ -1219,7 +1219,7 @@ check-error@^1.0.3:
   dependencies:
     get-func-name "^2.0.2"
 
-clsx@^2.1.0, clsx@^2.1.1:
+clsx@^2.0.0, clsx@^2.1.0, clsx@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.1.tgz#eed397c9fd8bd882bfb18deab7102049a2f32999"
   integrity sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==
@@ -2335,6 +2335,13 @@ queue-tick@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/queue-tick/-/queue-tick-1.0.1.tgz#f6f07ac82c1fd60f82e098b417a80e52f1f4c142"
   integrity sha512-kJt5qhMxoszgU/62PLP1CJytzd2NKetjSRnyuj31fDd3Rlcz3fzlFdFLD1SItunPwyqEOkca6GbV612BWfaBag==
+
+react-data-grid@^7.0.0-beta.44:
+  version "7.0.0-beta.44"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-7.0.0-beta.44.tgz#b2c462ab9fa82b994d9884826b3bbb192866cd87"
+  integrity sha512-VTql8VPBJEf7E+zkrqYW+jaQT1/m47dxigWzPq59QESJ8LhU59kHyzIx06BUpjdZKdK/tzbWaw2yyJpKoNnt5g==
+  dependencies:
+    clsx "^2.0.0"
 
 react-dom@^18.3.1:
   version "18.3.1"

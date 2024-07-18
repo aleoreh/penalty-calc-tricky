@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Калькулятор пеней за услуги ЖКХ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Калькулятор пеней - это инструмент для расчёта пеней за просроченную оплату услуг ЖКХ
 
-Currently, two official plugins are available:
+## Основные возможности
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Возможность выбора параметров расчёта, таких как: порядок расчёта (для физических или юридических лиц), метод распределения оплаты (FIFO или с приоритетом целевого расчётного периода оплаты)
+- Расчёт пеней производится с учётом действующих мораториев правительства РФ
+- Массовая загрузка долгов и платежей из буфера обмена
+- Вывод формулы, по которой была рассчитана пеня
+- Выгрузка расчётов в формате Excel (xlsx)
 
-## Expanding the ESLint configuration
+## Используемые технологии
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [React](https://react.dev/) - UI-библиотека
+- [Vite | Next Generation Frontend Tooling](https://vitejs.dev/) - система сборки
+- [MUI: The React component library you always wanted](https://mui.com/) - библиотека компонентов React
 
-- Configure the top-level `parserOptions` property like this:
+## Установка и запуск
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+> yarn install
+> yarn build
+> yarn preview
+
+или для разработки:
+> yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Почему был начат этот проект?
+
+Мы вместе с моими коллегами не смогли найти калькулятор, который выводит все расчёты, включая периоды с мораториями, а также позволяет задать правила распределения оплаты, поэтому было решено создать свой собственный
+

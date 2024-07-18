@@ -42,7 +42,7 @@ function generateNextId(calculator: Calculator): PaymentId {
     if (calculator.payments.length === 0) return paymentShed.numberToId(1)
 
     const lastId = [...calculator.payments].sort(
-        (x, y) => paymentShed.idToNumber(x.id) - paymentShed.idToNumber(y.id)
+        (x, y) => paymentShed.idToNumber(y.id) - paymentShed.idToNumber(x.id)
     )[0].id
     const res = paymentIdToNumber(lastId) + 1
 

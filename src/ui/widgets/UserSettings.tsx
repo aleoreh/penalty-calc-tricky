@@ -147,8 +147,9 @@ export function UserSettings() {
                             <MenuItem value="fifo">
                                 {view.distributionMethods["fifo"]}
                             </MenuItem>
-                            <MenuItem value="byPaymentPeriod">
-                                {view.distributionMethods["byPaymentPeriod"]}
+                            <MenuItem value="byPaymentPeriod" disabled>
+                                {view.distributionMethods["byPaymentPeriod"]}{" "}
+                                (не реализовано)
                             </MenuItem>
                         </Select>
                     </FormControl>

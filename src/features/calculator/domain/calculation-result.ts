@@ -28,8 +28,16 @@ export function calculationResultItemsTotal(
     }, kopekShed.asKopek(0))
 }
 
+export function getTotalAmount(value: CalculationResult): Kopek {
+    return value.rows.reduce(
+        (acc, x) => acc + Math.round(x.penaltyAmount * 100) / 100,
+        0
+    ) as Kopek
+}
+
 export const calculationResultShed = {
     itemsTotal: calculationResultItemsTotal,
 }
 
 export default calculationResultShed
+

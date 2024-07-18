@@ -32,6 +32,7 @@ import { useCalculatorConfig } from "@/ui/hooks/useCalculatorConfig"
 import { useDebt } from "@/ui/hooks/useDebt"
 import { useDebts } from "@/ui/hooks/useDebts"
 import { validationDecoders } from "@/ui/validation/validationDecoders"
+import { DebtsClipboardLoader } from "../DebtsClipboardLoader"
 import { DebtItem } from "./DebtItem"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -44,7 +45,10 @@ function periodIsIn(periods: BillingPeriod[]) {
 }
 
 export function DebtsList() {
-    const { debts, addDebt, deleteDebt, updateDebt } = useDebts()
+    const [isLoadFormOpened, setIsLoadFormOpened] = useState(false)
+
+    const { debts, addDebt, addDebts, deleteDebt, updateDebt, clearDebts } =
+        useDebts()
 
     const { getDefaultDueDate } = useDebt()
     const { config } = useCalculatorConfig()
@@ -107,9 +111,20 @@ export function DebtsList() {
             kopekFromRuble(debtAmountInput.validatedValue)
         )
 
-        // setInputDebtPeriod(null)
         setInputDebtPeriodError(null)
-        // setInputDueDate(null)
+    }
+
+    const submitAddDebts = (
+        debtsData: Array<{ period: Date; amount: number }>
+    ) => {
+        clearDebts()
+        addDebts(
+            debtsData.map((x) => ({
+                ...debtsData,
+                period: billingPeriodFromDate(x.period),
+                amount: kopekFromRuble(x.amount),
+            }))
+        )
     }
 
     const handleDeleteDebt = (value: { period: BillingPeriod }) => () => {
@@ -155,9 +170,16 @@ export function DebtsList() {
                     <Button type="button" onClick={modalForm.open}>
                         Добавить
                     </Button>
-                    <Button>Добавить несколько</Button>
+                    <Button onClick={() => setIsLoadFormOpened(true)}>
+                        Загрузить несколько
+                    </Button>
                 </AccordionActions>
             </Accordion>
+            <DebtsClipboardLoader
+                submit={submitAddDebts}
+                isOpened={isLoadFormOpened}
+                closeForm={() => setIsLoadFormOpened(false)}
+            />
             <ModalForm
                 title="Добавить долг"
                 {...modalForm}

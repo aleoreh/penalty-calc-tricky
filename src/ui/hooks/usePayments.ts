@@ -7,8 +7,10 @@ export function usePayments() {
         dispatch,
         calculator,
         addCalculatorPayment,
+        addCalculatorPayments,
         deleteCalculatorPayment,
         updateCalculatorPayment,
+        clearCalculatorPayments,
     } = useApplication()
 
     const addPayment = (...params: Parameters<typeof addCalculatorPayment>) => {
@@ -27,10 +29,24 @@ export function usePayments() {
         dispatch(() => updateCalculatorPayment(...params))
     }
 
+    const addPayments = (
+        ...params: Parameters<typeof addCalculatorPayments>
+    ) => {
+        dispatch(() => addCalculatorPayments(...params))
+    }
+
+    const clearPayments = (
+        ...params: Parameters<typeof clearCalculatorPayments>
+    ) => {
+        dispatch(() => clearCalculatorPayments(...params))
+    }
+
     return {
         payments: calculator.payments,
         addPayment,
+        addPayments,
         deletePayment,
         updatePayment,
+        clearPayments,
     }
 }

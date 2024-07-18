@@ -23,6 +23,7 @@ import { useValidatedInput } from "@/ui/components/useValidatedInput"
 import { usePayments } from "@/ui/hooks/usePayments"
 import { validationDecoders } from "@/ui/validation/validationDecoders"
 import { PaymentItem } from "./PaymentItem"
+import { PaymentsClipboardLoader } from "../PaymentsClipboardLoader"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -31,8 +32,16 @@ export function PaymentsList() {
     const [inputPaymentPeriod, setInputPaymentPeriod] = useState<Dayjs | null>(
         null
     )
+    const [isLoadFormOpened, setIsLoadFormOpened] = useState(false)
 
-    const { payments, addPayment, deletePayment, updatePayment } = usePayments()
+    const {
+        payments,
+        addPayment,
+        addPayments,
+        deletePayment,
+        updatePayment,
+        clearPayments,
+    } = usePayments()
 
     const sectionTitle = useSectionTitle()
 
@@ -61,6 +70,26 @@ export function PaymentsList() {
         setInputPaymentPeriod(null)
     }
 
+    const submitAddPayments = (
+        paymentsData: Array<{
+            date: Date
+            amount: number
+            period?: Date
+        }>
+    ) => {
+        clearPayments(),
+            addPayments(
+                paymentsData.map((x) => ({
+                    date: x.date,
+                    amount: kopekFromRuble(x.amount),
+                    period:
+                        x.period !== undefined
+                            ? billingPeriodFromDate(x.period)
+                            : undefined,
+                }))
+            )
+    }
+
     return (
         <>
             <Accordion>
@@ -85,9 +114,16 @@ export function PaymentsList() {
                     <Button type="button" onClick={modalForm.open}>
                         Добавить
                     </Button>
-                    <Button>Добавить несколько</Button>
+                    <Button onClick={() => setIsLoadFormOpened(true)}>
+                        Загрузить несколько
+                    </Button>
                 </AccordionActions>
             </Accordion>
+            <PaymentsClipboardLoader
+                submit={submitAddPayments}
+                isOpened={isLoadFormOpened}
+                closeForm={() => setIsLoadFormOpened(false)}
+            />
             <ModalForm
                 title="Добавить оплату"
                 {...modalForm}

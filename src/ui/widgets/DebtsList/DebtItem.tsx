@@ -100,12 +100,19 @@ export function DebtItem({ debt, deleteDebt, updateDebt }: DebtItemProps) {
                             {debtItemView.dueDate}
                         </Typography>
                         <Stack direction="row" justifyContent="flex-end">
-                            <Typography>Оплачено:</Typography>
-                            <Stack>
-                                {debt.payoffs.map((payoff, i) => (
-                                    <PayoffItem key={i} payoff={payoff} />
-                                ))}
-                            </Stack>
+                            {debt.payoffs.length > 0 && (
+                                <>
+                                    <Typography>Оплачено:</Typography>
+                                    <Stack>
+                                        {debt.payoffs.map((payoff, i) => (
+                                            <PayoffItem
+                                                key={i}
+                                                payoff={payoff}
+                                            />
+                                        ))}
+                                    </Stack>
+                                </>
+                            )}
                         </Stack>
                         <Divider />
                         <Stack

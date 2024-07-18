@@ -15,7 +15,7 @@ export { type Debt, type Payoff } from "@/features/calculator/domain/debt"
 
 export function useDebtItemFormat(item: Debt) {
     return {
-        period: dayjs(item.period).format("LL"),
+        period: dayjs(item.period).format("MMMM YYYY"),
         amount: new Intl.NumberFormat("ru", {
             style: "currency",
             currency: "RUB",

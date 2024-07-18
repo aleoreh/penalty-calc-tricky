@@ -1,12 +1,14 @@
 import { Delete, Edit } from "@mui/icons-material"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import IconButton from "@mui/material/IconButton"
-import Stack from "@mui/material/Stack"
-import TextField from "@mui/material/TextField"
-import Typography from "@mui/material/Typography"
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import {
+    Card,
+    CardActions,
+    CardContent,
+    IconButton,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material"
+import { DatePicker } from "@mui/x-date-pickers"
 import dayjs from "dayjs"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -17,7 +19,6 @@ import { ModalConfirmDialog } from "@/ui/components/ConfirmDialog"
 import { ModalForm } from "@/ui/components/ModalForm"
 import { useConfirmDialog } from "@/ui/components/useConfirmDialog"
 import { useModalForm } from "@/ui/components/useModalForm"
-import { useRegularText } from "@/ui/components/useRegularText"
 import { useValidatedForm } from "@/ui/components/useValidatedForm"
 import {
     useArbitraryInput,
@@ -41,8 +42,6 @@ export function PaymentItem({
 }: PaymentItemProps) {
     const paymentItemFormat = usePaymentFormat(payment)
 
-    const text = useRegularText()
-
     const confirmDeleteDialog = useConfirmDialog()
 
     const editModalForm = useModalForm()
@@ -55,7 +54,7 @@ export function PaymentItem({
     )
     const paymentDateInput = useArbitraryInput(dayjs(payment.date))
     const paymentPeriodInput = useArbitraryInput(
-        payment.period !== undefined ? dayjs(payment.period) : undefined
+        payment.period !== undefined ? dayjs(payment.period) : null
     )
     const editPaymentValidatedForm = useValidatedForm([
         paymentAmountInput,
@@ -88,15 +87,17 @@ export function PaymentItem({
         <>
             <Card>
                 <CardContent>
-                    <Stack direction="row">
-                        <Typography {...text}>
-                            {paymentItemFormat.date}
-                        </Typography>
-                        <Typography {...text}>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="center"
+                    >
+                        <Stack direction="row" flexGrow={1}>
+                            <Typography>{paymentItemFormat.date}</Typography>
+                            <Typography>{paymentItemFormat.period}</Typography>
+                        </Stack>
+                        <Typography variant="h6">
                             {paymentItemFormat.amount}
-                        </Typography>
-                        <Typography {...text}>
-                            {paymentItemFormat.period}
                         </Typography>
                     </Stack>
                 </CardContent>

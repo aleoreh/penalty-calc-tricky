@@ -32,7 +32,7 @@ export type AddDebtUseCase = (
     debtPeriod: BillingPeriod,
     dueDate: Date,
     debtAmount: Kopek
-) => Promise<void>
+) => void
 
 export type UpdateDebtUseCase = (
     params: {

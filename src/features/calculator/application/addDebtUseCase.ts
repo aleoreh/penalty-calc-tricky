@@ -5,7 +5,7 @@ import debtShed from "../domain/debt"
 export function createAddDebtUseCase(
     calculatorStoreRepo: CalculatorStoreRepo
 ): AddDebtUseCase {
-    return async (debtPeriod, dueDate, debtAmount) => {
+    return (debtPeriod, dueDate, debtAmount) => {
         const debt = debtShed.initDebt(debtPeriod, dueDate, debtAmount)
 
         const calculator = calculatorStoreRepo.getCalculator()

@@ -16,7 +16,7 @@ export function AppHeader() {
             <Container>
                 <Toolbar>
                     <Typography {...title} sx={{ flexGrow: 1 }}>
-                        Калькулятор пеней ЖКХ
+                        Калькулятор пеней за ЖКУ
                     </Typography>
                 </Toolbar>
             </Container>

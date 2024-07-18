@@ -1,4 +1,10 @@
-import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material"
+import {
+    Box,
+    createTheme,
+    CssBaseline,
+    Stack,
+    ThemeProvider,
+} from "@mui/material"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { ruRU } from "@mui/x-date-pickers/locales"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
@@ -22,6 +28,7 @@ import theStateConstantsRepo from "../features/calculator/infrastructure/theStat
 import { ApplicationProvider } from "./contexts/applicationContext"
 import { ErrorPage } from "./pages/ErrorPage"
 import { Home } from "./pages/Home"
+import { AppFooter } from "./widgets/AppFooter"
 import { AppHeader } from "./widgets/AppHeader"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
@@ -130,13 +137,14 @@ function App() {
                         dateAdapter={AdapterDayjs}
                         adapterLocale="ru"
                     >
-                        <>
+                        <Stack gap={0} sx={{ blockSize: "100vh" }}>
                             <CssBaseline />
                             <AppHeader />
-                            <Box component="main">
+                            <Box component="main" flexGrow={1} marginBottom={1}>
                                 <RouterProvider router={router} />
                             </Box>
-                        </>
+                            <AppFooter />
+                        </Stack>
                     </LocalizationProvider>
                 </ThemeProvider>
             </ApplicationProvider>

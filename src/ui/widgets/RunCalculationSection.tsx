@@ -1,32 +1,74 @@
-import Button from "@mui/material/Button"
-import Stack from "@mui/material/Stack"
+import { Close } from "@mui/icons-material"
+import {
+    AppBar,
+    Button,
+    Dialog,
+    IconButton,
+    Stack,
+    Toolbar,
+    Typography,
+} from "@mui/material"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 import { useApplication } from "@/ui/hooks/useApplication"
-import { useDebts } from "../hooks/useDebts"
+import { useCalculationResults } from "@/ui/hooks/useCalculationResults"
+import { CalculationResults } from "./CalculationResults"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 export function RunCalculationSection() {
-    const { debts } = useDebts()
-    const { runCalculation } = useApplication()
+    const {
+        calculate,
+        calculationAllowed,
+        calculationResults,
+        clearCalculationResults,
+    } = useCalculationResults()
 
-    const calculationAllowed = debts.length > 0
+    const { calculator } = useApplication()
 
-    const handleRunCalculation = () => {
-        const calculationResults = runCalculation()
+    const isResultOpened = calculationResults.length > 0
+
+    const handleDialogClose = () => {
+        clearCalculationResults()
     }
 
     return (
-        <Stack>
-            <Button
-                type="button"
-                onClick={handleRunCalculation}
-                disabled={!calculationAllowed}
+        <>
+            <Stack>
+                <Button
+                    type="button"
+                    onClick={calculate}
+                    disabled={!calculationAllowed}
+                >
+                    Рассчитать
+                </Button>
+            </Stack>
+            <Dialog
+                fullScreen
+                open={isResultOpened}
+                onClose={handleDialogClose}
             >
-                Рассчитать
-            </Button>
-        </Stack>
+                <AppBar sx={{ position: "relative" }}>
+                    <Toolbar>
+                        <Typography sx={{ flex: 1 }}>
+                            Результат расчёта пеней
+                        </Typography>
+                        <IconButton
+                            edge="end"
+                            onClick={handleDialogClose}
+                            color="inherit"
+                        >
+                            <Close />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <CalculationResults
+                    calculationDate={calculator.calculationDate}
+                    calculationResults={calculationResults}
+                />
+            </Dialog>
+        </>
     )
 }
+

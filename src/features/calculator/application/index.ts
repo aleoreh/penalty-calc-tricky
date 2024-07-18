@@ -1,3 +1,8 @@
+/**
+ * В файле index.ts находится конструктор, раскрывающий сценарии приложения,
+ * которые используют переданные в него репозитории
+ */
+
 import { CalculatorStoreRepo } from "../domain"
 import { createAddDebtUseCase as createAddCalculatorDebtUseCase } from "./addDebtUseCase"
 import { createInitialiseCalculatorUseCase } from "./initialiseCalculatorUseCase"

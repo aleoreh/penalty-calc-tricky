@@ -26,7 +26,7 @@ type ModalFormProps = {
 /**
  * Удобнее использовать вместе с `useModalForm` hook
  *
- * Для добавления валидации возьмите хуки `useValidatedForm` и `useValidatedInput`
+ * Для добавления валидации возьмите хуки `useValidatedForm` и `useValidatedXXX`
  */
 export function ModalForm({
     title,

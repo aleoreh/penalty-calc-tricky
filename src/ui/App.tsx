@@ -105,6 +105,8 @@ function App() {
         ReturnType<typeof createDependencies> | undefined
     >(undefined)
 
+    // Инициализируем репозитории и внедряем их в приложение
+
     useEffect(() => {
         theStateConstantsRepo
             .getTheStateConstants()

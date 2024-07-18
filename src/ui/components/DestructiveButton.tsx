@@ -5,6 +5,9 @@ const StyledButton = styled(Button)<ButtonProps>(() => ({
     textTransform: "lowercase",
 }))
 
+/**
+ * Показывает, что кнопка может иметь деструктивное действие
+ */
 export function DestructiveButton(props: ButtonProps) {
     return (
         <StyledButton size="small" variant="text" {...props}>

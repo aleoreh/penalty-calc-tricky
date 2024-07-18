@@ -1,3 +1,7 @@
+/**
+ * Контест, с помощью которого в приложение в виде зависимостей внедряются репозитории
+ */
+
 import { ReactNode, createContext } from "react"
 import { createCalculatorUseCases } from "../../features/calculator/application"
 import { CalculatorStoreRepo } from "../../features/calculator/domain"

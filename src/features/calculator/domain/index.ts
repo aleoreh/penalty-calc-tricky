@@ -1,3 +1,8 @@
+/**
+ * В файле index.ts описаны интерфейсы для сценариев использования и репозиториев
+ * (сервисов, которые взаимодействуют с внешним миром)
+ */
+
 import { BillingPeriod } from "@/lib/billing-period"
 import { Kopek } from "@/lib/kopek"
 import { Calculator } from "./calculator"

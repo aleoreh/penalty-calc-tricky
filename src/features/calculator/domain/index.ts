@@ -56,6 +56,14 @@ export type AddPaymentUseCase = (
     period?: BillingPeriod
 ) => void
 
+export type AddPaymentsUseCase = (
+    paymentsData: Array<{
+        date: Date
+        amount: Kopek
+        period?: BillingPeriod
+    }>
+) => void
+
 export type UpdatePaymentUseCase = (
     params: {
         date?: Date

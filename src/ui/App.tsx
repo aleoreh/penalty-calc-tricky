@@ -29,7 +29,18 @@ import { AppHeader } from "./widgets/AppHeader"
 const theme = createTheme(
     {
         palette: {
-            primary: { main: "#1976d2" },
+            primary: {
+                main: "#353535",
+            },
+            secondary: {
+                main: "#c1c1c1",
+            },
+        },
+        typography: {
+            fontFamily: '"Noto Sans", "Helvetica", "Arial", sans-serif',
+        },
+        shape: {
+            borderRadius: 0,
         },
         components: {
             MuiContainer: {
@@ -46,6 +57,22 @@ const theme = createTheme(
             MuiAccordion: {
                 defaultProps: {
                     variant: "outlined",
+                    disableGutters: true,
+                },
+            },
+            MuiButton: {
+                defaultProps: {
+                    variant: "outlined",
+                },
+            },
+            MuiCard: {
+                defaultProps: {
+                    variant: "outlined",
+                },
+                styleOverrides: {
+                    root: {
+                        borderColor: "#eee",
+                    },
                 },
             },
         },

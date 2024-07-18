@@ -35,7 +35,7 @@ export function RunCalculationSection() {
 
     return (
         <>
-            <Stack>
+            <Stack direction="row" justifyContent="flex-end">
                 <Button
                     type="button"
                     onClick={calculate}

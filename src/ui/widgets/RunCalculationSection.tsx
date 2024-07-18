@@ -18,6 +18,8 @@ import { CalculationResults } from "./CalculationResults"
 
 import { useApplication } from "@/ui/hooks/useApplication"
 import { useCalculationResults } from "@/ui/hooks/useCalculationResults"
+import { useCalculationSettings } from "@/ui/hooks/useCalculationSettings"
+import { useCalculationSettingsFormat } from "@/ui/hooks/useCalculationSettingsFormat"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -39,6 +41,8 @@ export function RunCalculationSection() {
     } = useCalculationResults()
 
     const { calculator } = useApplication()
+    const settings = useCalculationSettings()
+    const view = useCalculationSettingsFormat(settings)
 
     const isResultOpened = calculationResults.length > 0
 
@@ -80,6 +84,21 @@ export function RunCalculationSection() {
                 <Container>
                     <Stack>
                         <Typography variant="h5">Результат расчёта</Typography>
+                        <Stack direction="row">
+                            <Typography>Параметры расчёта:</Typography>
+                            <Stack>
+                                <Typography>
+                                    Дата расчёта:{" "}
+                                    {calculator.calculationDate.toLocaleDateString()}
+                                </Typography>
+
+                                <Typography>
+                                    {view.distributionMethod}
+                                </Typography>
+                                <Typography>{view.legalEntity}</Typography>
+                                <Typography>{view.keyRate}</Typography>
+                            </Stack>
+                        </Stack>
                     </Stack>
                 </Container>
                 <CalculationResults

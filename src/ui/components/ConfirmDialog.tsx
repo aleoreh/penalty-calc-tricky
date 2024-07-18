@@ -1,10 +1,16 @@
-import Button from "@mui/material/Button"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardHeader from "@mui/material/CardHeader"
-import Dialog from "@mui/material/Dialog"
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Dialog,
+} from "@mui/material"
 import { ReactNode } from "react"
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
+import { DestructiveButton } from "./DestructiveButton"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -40,11 +46,11 @@ export function ModalConfirmDialog({
                 <CardHeader title={title}></CardHeader>
                 {children && <CardContent>{children}</CardContent>}
                 <CardActions sx={{ justifyContent: "flex-end" }}>
+                    <DestructiveButton onClick={submitDialog}>
+                        {submitMessage || "OK"}
+                    </DestructiveButton>
                     <Button onClick={cancel}>
                         {cancelMessage || "Отмена"}
-                    </Button>
-                    <Button onClick={submitDialog}>
-                        {submitMessage || "OK"}
                     </Button>
                 </CardActions>
             </Card>

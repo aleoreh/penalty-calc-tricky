@@ -66,17 +66,13 @@ export function RunCalculationSection() {
                 <AppBar
                     variant="outlined"
                     sx={({ palette }) => ({
-                        position: "relative",
+                        position: "sticky",
                         backgroundColor: palette.background.default,
                         border: "none",
                     })}
                 >
                     <Toolbar sx={{ justifyContent: "flex-end" }}>
-                        <IconButton
-                            edge="end"
-                            onClick={handleDialogClose}
-                            // color="inherit"
-                        >
+                        <IconButton edge="end" onClick={handleDialogClose}>
                             <Close />
                         </IconButton>
                     </Toolbar>

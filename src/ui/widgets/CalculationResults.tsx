@@ -207,35 +207,37 @@ export function CalculationResults({
     // ~~~~~~~~~~~~~~~~~ jsx ~~~~~~~~~~~~~~~~~ //
 
     return calculationResults.length > 0 ? (
-        <Container>
-            <Stack className="calculation-results">
-                <Button
-                    onClick={() => setDownloadTrigger(true)}
-                    sx={{ alignSelf: "flex-end" }}
-                    startIcon={<FileDownloadOutlined />}
-                >
-                    Сохранить все расчёты
-                </Button>
-                <List>
-                    {calculationResults.map((calculationResult) => (
-                        <ListItem key={calculationResult.period.getTime()}>
-                            <CalculationResultComponent
-                                calculationDate={calculationDate}
-                                calculationResult={calculationResult}
-                            />
-                        </ListItem>
-                    ))}
-                </List>
-                <Typography variant="h5" align="right">
-                    Итого:{" "}
-                    {formatCurrency(
-                        kopekToRuble(
-                            calculationResultsTotal(calculationResults)
-                        )
-                    )}
-                </Typography>
-            </Stack>
-        </Container>
+        <Stack marginBlockEnd={2}>
+            <Container>
+                <Stack className="calculation-results">
+                    <Button
+                        onClick={() => setDownloadTrigger(true)}
+                        sx={{ alignSelf: "flex-end" }}
+                        startIcon={<FileDownloadOutlined />}
+                    >
+                        Сохранить все расчёты
+                    </Button>
+                    <List>
+                        {calculationResults.map((calculationResult) => (
+                            <ListItem key={calculationResult.period.getTime()}>
+                                <CalculationResultComponent
+                                    calculationDate={calculationDate}
+                                    calculationResult={calculationResult}
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Typography variant="h5" align="right">
+                        Итого:{" "}
+                        {formatCurrency(
+                            kopekToRuble(
+                                calculationResultsTotal(calculationResults)
+                            )
+                        )}
+                    </Typography>
+                </Stack>
+            </Container>
+        </Stack>
     ) : (
         <></>
     )

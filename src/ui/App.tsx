@@ -89,13 +89,16 @@ const theme = createTheme(
 
 theme.spacing(2)
 
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Home />,
-        errorElement: <ErrorPage />,
-    },
-])
+const router = createBrowserRouter(
+    [
+        {
+            path: "/",
+            element: <Home />,
+            errorElement: <ErrorPage />,
+        },
+    ],
+    { basename: "/penalty-calc" }
+)
 
 function App() {
     const [calculator, setCalculator] = useState<Calculator | undefined>(

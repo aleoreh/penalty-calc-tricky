@@ -1,4 +1,4 @@
-import { Kopek } from "@/lib/kopek"
+import { Kopek, kopekToRuble } from "@/lib/kopek"
 import { KeyRatePart } from "./keyrate-part"
 
 export type Formula = string
@@ -29,7 +29,7 @@ export function createFormula({
     const debtAmountFormatted = new Intl.NumberFormat("ru-RU", {
         style: "decimal",
         minimumFractionDigits: 2,
-    }).format(debtAmount)
+    }).format(kopekToRuble(debtAmount))
     const keyRateFormatted = `${rate * 100}%`
     return doesDefermentActs
         ? "Отсрочка"

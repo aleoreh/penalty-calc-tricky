@@ -273,8 +273,10 @@ function penaltyToResult(penalty: Penalty): CalculationResult {
             ...resultRow,
             dateTo: row.date,
             totalDays: resultRow.totalDays + 1,
-            penaltyAmount: (resultRow.penaltyAmount +
-                row.penaltyAmount) as Kopek,
+            penaltyAmount: kopekShed.add(
+                resultRow.penaltyAmount,
+                row.penaltyAmount
+            ),
             formula: "",
         }
         return { ...res, formula: formulaShed.create(res) }

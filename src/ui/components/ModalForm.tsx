@@ -6,6 +6,7 @@ import CardHeader from "@mui/material/CardHeader"
 import Dialog from "@mui/material/Dialog"
 import Stack from "@mui/material/Stack"
 import { ReactNode, useRef } from "react"
+import { DestructiveButton, DestructiveStack } from "./DestructiveButton"
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
@@ -58,14 +59,21 @@ export function ModalForm({
                     title={title}
                     action={
                         <Stack direction="row">
-                            <Stack direction="row">
-                                {reset && <Button type="reset">сброс</Button>}
-                                {cancel && (
-                                    <Button type="button" onClick={cancel}>
-                                        отмена
-                                    </Button>
+                            <DestructiveStack direction="row">
+                                {reset && (
+                                    <DestructiveButton type="reset">
+                                        сброс
+                                    </DestructiveButton>
                                 )}
-                            </Stack>
+                                {cancel && (
+                                    <DestructiveButton
+                                        type="button"
+                                        onClick={cancel}
+                                    >
+                                        отмена
+                                    </DestructiveButton>
+                                )}
+                            </DestructiveStack>
                         </Stack>
                     }
                 />

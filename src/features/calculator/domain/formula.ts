@@ -1,6 +1,9 @@
 import { Kopek, kopekToRuble } from "@/lib/kopek"
 import { KeyRatePart } from "./keyrate-part"
 
+/**
+ * Формула расчёта, которая выводится в результат
+ */
 export type Formula = string
 
 type CreateFormulaParams = {

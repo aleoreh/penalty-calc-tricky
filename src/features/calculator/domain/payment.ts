@@ -10,6 +10,9 @@ export type PaymentBody = {
     period?: BillingPeriod
 }
 
+/**
+ * Оплата
+ */
 export type Payment = {
     id: PaymentId
 } & PaymentBody

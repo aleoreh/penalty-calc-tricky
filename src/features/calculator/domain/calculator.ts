@@ -49,6 +49,9 @@ function generateNextId(calculator: Calculator): PaymentId {
     return numberToPaymentId(res)
 }
 
+/**
+ * Функция распределения оплаты по периодам долгов
+ */
 function distributePayment(
     payment: Payment,
     debts: Debt[],
@@ -157,6 +160,11 @@ function doesDefermentActs(
     )
 }
 
+/**
+ * Вычисляет количество дней просрочки
+ * @param dueDate - дата, до которой необходимо оплатить счёт
+ * @param date - дата, на которую вычисляется результат
+ */
 function daysOverdue(dueDate: Date, date: Date): number {
     return daysShed.delta(dueDate, date)
 }

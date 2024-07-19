@@ -1,6 +1,9 @@
 import Opaque, { create, widen } from "ts-opaque"
 import daysShed, { beginOfPeriod } from "./days"
 
+/**
+ * Расчётный период (месяц)
+ */
 export type BillingPeriod = Opaque<Date, "BillingPeriod">
 
 export function billingPeriodFromDate(

@@ -1,5 +1,8 @@
 import Opaque, * as O from "ts-opaque"
 
+/**
+ * Тип для выражения копеек
+ */
 export type Kopek = Opaque<number, "Kopek">
 
 export function numberAsKopek(x: number): Kopek {

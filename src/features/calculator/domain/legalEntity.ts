@@ -1,3 +1,10 @@
+/**
+ * Правовая форма абонента
+ *
+ * natural - физическое лицо
+ *
+ * artificial - юридическое лицо
+ */
 export type LegalEntity = "natural" | "artificial"
 
 export function isLegalEntity(value: string): value is LegalEntity {
@@ -9,3 +16,4 @@ export const legalEntityShed = {
 }
 
 export default legalEntityShed
+

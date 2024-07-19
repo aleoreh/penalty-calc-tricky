@@ -3,6 +3,10 @@ import { KeyRatePart } from "./keyrate-part"
 import { LegalEntity } from "./legalEntity"
 import { TheStateConstants } from "./types"
 
+/**
+ * Временной интервал (включительный),
+ * внутри которого действует мораторий на начисление пеней
+ */
 export type Moratorium = [Date, Date]
 
 export type CalculatorConfig = {

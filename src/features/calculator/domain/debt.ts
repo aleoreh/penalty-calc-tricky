@@ -4,12 +4,18 @@ import kopekShed, { Kopek } from "@/lib/kopek"
 import { pipe } from "@mobily/ts-belt"
 import { PaymentId } from "./payment"
 
+/**
+ * Часть платежа, которая погашает определённый долг
+ */
 export type Payoff = {
     paymentId: PaymentId
     paymentDate: Date
     repaymentAmount: Kopek
 }
 
+/**
+ * Долг за определённый расчётный период
+ */
 export type Debt = {
     period: BillingPeriod
     amount: Kopek

@@ -1,3 +1,8 @@
+/**
+ * Доля ключевой ставки для расчёта
+ *
+ * Меняется в зависимости от количества просроченных дней
+ */
 export type KeyRatePart = {
     numerator: number
     denominator: number
@@ -23,3 +28,4 @@ export const keyRatePartShed = {
 }
 
 export default keyRatePartShed
+

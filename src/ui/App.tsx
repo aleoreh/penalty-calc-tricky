@@ -97,7 +97,7 @@ const router = createBrowserRouter(
             errorElement: <ErrorPage />,
         },
     ],
-    { basename: "/penalty-calc" }
+    { basename: "/penalty-calc-tricky" }
 )
 
 function App() {
